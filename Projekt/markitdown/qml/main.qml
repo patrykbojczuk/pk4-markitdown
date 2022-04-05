@@ -26,6 +26,17 @@ Window {
             anchors.leftMargin: 0
 
             isMaximized: window.visibility === 4
+
+            onClose:{
+                window.close();
+                Qt.quit();
+            }
+            onMinimize: {
+                window.visibility = window.visibility !== 3 ? 3 : 1
+            }
+            onResize: {
+                window.visibility = window.visibility !== 4 ? 4 : 2
+            }
         }
     }
 }
