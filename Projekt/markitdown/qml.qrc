@@ -5,7 +5,9 @@
         <file alias="qmldir">qml/qmldir</file>
     </qresource>
     <qresource prefix="/assets"/>
-    <qresource prefix="/components"/>
+    <qresource prefix="/components">
+        <file alias="WindowTabBar.qml">qml/components/WindowTabBar.qml</file>
+    </qresource>
     <qresource prefix="/views"/>
     <qresource prefix="/assets/fonts/Poppins">
         <file alias="ThinItalic.ttf">qml/assets/fonts/Poppins/Poppins-ThinItalic.ttf</file>
