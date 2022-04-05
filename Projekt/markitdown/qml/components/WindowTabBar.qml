@@ -40,6 +40,30 @@ Rectangle {
         leftPadding: 1
         spacing: 8
 
+        HoverHandler {
+            onHoveredChanged: {
+                if (hovered) {
+                    closeButton.color = Constants.closeButtonColor
+                    closeButton.borderColor = Constants.closeButtonBorderColor
+
+                    minimizeButton.color = Constants.minimizeButtonColor
+                    minimizeButton.borderColor = Constants.minimizeButtonBorderColor
+
+                    resizeButton.color = Constants.resizeButtonColor
+                    resizeButton.borderColor = Constants.resizeButtonBorderColor
+                } else if (!closeButton.hovered && !minimizeButton.hovered && !resizeButton.hovered) {
+                    closeButton.color = "#00000000"
+                    closeButton.borderColor = Constants.backgroundColor
+
+                    minimizeButton.color = "#00000000"
+                    minimizeButton.borderColor = Constants.backgroundColor
+
+                    resizeButton.color = "#00000000"
+                    resizeButton.borderColor = Constants.backgroundColor
+                }
+            }
+        }
+
         WindowButton {
             id: closeButton
             width: 12
