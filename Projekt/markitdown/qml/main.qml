@@ -10,6 +10,8 @@ Window {
     title: "Mark It Down"
     color: "transparent"
     flags: Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
+    minimumWidth: 510
+    minimumHeight: 300
 
     Rectangle {
         id: contentWrapper
@@ -54,6 +56,18 @@ Window {
         anchors.fill: parent
         onChangeGeometry: function(x, y, w, h) {
             window.setGeometry(x, y, w, h)
+        }
+    }
+
+    onWidthChanged: {
+        if (width < minimumWidth) {
+            width = minimumWidth
+        }
+    }
+
+    onHeightChanged: {
+        if (height < minimumHeight) {
+            height = minimumHeight
         }
     }
 }
