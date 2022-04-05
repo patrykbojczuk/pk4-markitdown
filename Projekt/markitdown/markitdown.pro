@@ -1,7 +1,8 @@
 QT += \
     quick \
     svg \
-    xml
+    xml \
+    quickcontrols2
 
 CONFIG += \
     c++2b

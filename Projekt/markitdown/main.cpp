@@ -3,6 +3,7 @@
 #include <QFont>
 #include <QFontDatabase>
 #include <QDir>
+#include <QQuickStyle>
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +12,8 @@ int main(int argc, char *argv[])
     for(auto& font: QDir(":/assets/fonts/Poppins").entryList(QStringList{"*.ttf"}, QDir::Files)){
         QFontDatabase::addApplicationFont(":/assets/fonts/Poppins/" + font);
     }
+
+    QQuickStyle::setStyle("Basic");
 
     app.setApplicationDisplayName("Mark It Down");
     app.setApplicationName("Mark It Down");
