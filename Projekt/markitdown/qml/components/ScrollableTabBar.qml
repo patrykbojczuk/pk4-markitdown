@@ -17,6 +17,7 @@ TabBar {
 
         ScrollBar.horizontal: ScrollBar {
             id: scrollBar
+            policy: ScrollBar.AsNeeded
 
             contentItem: Rectangle {
                 color: "transparent"
@@ -24,11 +25,14 @@ TabBar {
                 anchors.bottom: parent.bottom
 
                 Rectangle {
-                    color: scrollBar.pressed
-                           ? Constants.fontColor50
-                           : scrollBar.hovered
-                             ? Constants.fontColor25
-                             : Constants.fontColor10
+                    color: scrollBar.size > 0.999
+                           ? "transparent"
+                           : scrollBar.pressed
+                             ? Constants.fontColor50
+                             : scrollBar.hovered
+                               ? Constants.fontColor25
+                               : Constants.fontColor10
+
                     anchors.fill: parent
                     anchors.topMargin: 1
                     anchors.leftMargin: 3
@@ -39,7 +43,7 @@ TabBar {
                     Behavior on color {
                         ColorAnimation {
                             duration: 150
-                            easing: Easing.OutQuad
+                            easing.type: Easing.OutQuad
                         }
                     }
                 }
