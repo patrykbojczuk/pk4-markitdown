@@ -46,7 +46,7 @@ TabButton {
     width: (btnText.implicitWidth > maxTextWidth
                 ? maxTextWidth
                 : btnText.implicitWidth)
-                    + 3 * 13 + closeIcon.width
+                    + 3 * 13 + close.width
 
     MouseArea {
         id: close
