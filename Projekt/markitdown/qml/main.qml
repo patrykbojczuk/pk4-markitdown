@@ -50,6 +50,15 @@ Window {
                 window.setY(window.y + dY)
             }
         }
+
+        Rectangle {
+            // Subtle frame
+            anchors.fill: parent
+            color: "#00000000"
+            border.width: 1
+            border.color: "#40ffffff"
+            radius: 8
+        }
     }
 
     ResizeHandler {
