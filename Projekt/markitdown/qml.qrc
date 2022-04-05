@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="main.qml">qml/main.qml</file>
+    </qresource>
+    <qresource prefix="/assets"/>
+    <qresource prefix="/components"/>
+    <qresource prefix="/views"/>
+</RCC>
