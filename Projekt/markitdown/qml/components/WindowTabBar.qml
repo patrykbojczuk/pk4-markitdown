@@ -4,9 +4,23 @@ import "qrc:/"
 
 Rectangle {
     height: 40
+    color: Constants.lighterBackgroundColor
+    radius: Constants.windowRadius
     border.color: "transparent"
 
     property bool isMaximized: false
+
+    Rectangle {
+        // Hides bottom radius
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        anchors.rightMargin: 0
+        anchors.leftMargin: 0
+        height: Constants.windowRadius
+        color: Constants.lighterBackgroundColor
+    }
 
     Row {
         id: appButtons
