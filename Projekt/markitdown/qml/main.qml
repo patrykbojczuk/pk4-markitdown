@@ -37,6 +37,16 @@ Window {
             onResize: {
                 window.visibility = window.visibility !== 4 ? 4 : 2
             }
+
+            onStartSystemMove: {
+                supportsSystemMove = window.startSystemMove()
+            }
+            onAddWindowX: function(dX) {
+                window.setX(window.x + dX)
+            }
+            onAddWindowY: function(dY) {
+                window.setY(window.y + dY)
+            }
         }
     }
 }

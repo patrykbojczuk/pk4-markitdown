@@ -10,10 +10,48 @@ Rectangle {
     border.color: "transparent"
 
     property bool isMaximized: false
+    property bool supportsSystemMove: false
 
     signal close
     signal minimize
     signal resize
+
+    signal startSystemMove
+    signal addWindowX(real dX)
+    signal addWindowY(real dY)
+
+    MouseArea {
+        // Move window
+        anchors.fill: parent
+        anchors.rightMargin: 5
+        anchors.leftMargin: 5
+        anchors.topMargin: 5
+        propagateComposedEvents: true
+
+        property real previousX: 0
+        property real previousY: 0
+
+        onPressed: function(mouse){
+            startSystemMove()
+            if (!supportsSystemMove){
+                previousX = mouseX
+                previousY = mouseY
+            }
+        }
+
+        onMouseXChanged: {
+            if (previousX){
+                var dx = mouseX - previousX
+                addWindowX(dx)
+            }
+        }
+        onMouseYChanged: {
+            if (previousY){
+                var dy = mouseY - previousY
+                addWindowY(dy)
+            }
+        }
+    }
 
     Rectangle {
         // Hides bottom radius
