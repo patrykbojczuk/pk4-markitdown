@@ -11,6 +11,11 @@
         <file alias="ResizeHandler.qml">qml/components/ResizeHandler.qml</file>
     </qresource>
     <qresource prefix="/views"/>
+    <qresource prefix="/assets/icons">
+        <file alias="tab-close.svg">qml/assets/icons/tab-close.svg</file>
+        <file alias="home-screen.svg">qml/assets/icons/home-screen.svg</file>
+        <file alias="tab-new.svg">qml/assets/icons/tab-new.svg</file>
+    </qresource>
     <qresource prefix="/assets/window/buttons">
         <file alias="maximize.svg">qml/assets/window/buttons/maximize.svg</file>
         <file alias="close.svg">qml/assets/window/buttons/close.svg</file>
