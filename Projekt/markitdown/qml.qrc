@@ -2,7 +2,30 @@
     <qresource prefix="/">
         <file alias="main.qml">qml/main.qml</file>
     </qresource>
-    <qresource prefix="/assets"/>
+    <qresource prefix="/assets">
+        
+    </qresource>
     <qresource prefix="/components"/>
     <qresource prefix="/views"/>
+    <qresource prefix="/assets/fonts/Poppins">
+        <file alias="ThinItalic.ttf">qml/assets/fonts/Poppins/Poppins-ThinItalic.ttf</file>
+        <file alias="Thin.ttf">qml/assets/fonts/Poppins/Poppins-Thin.ttf</file>
+        <file alias="SemiBoldItalic.ttf">qml/assets/fonts/Poppins/Poppins-SemiBoldItalic.ttf</file>
+        <file alias="SemiBold.ttf">qml/assets/fonts/Poppins/Poppins-SemiBold.ttf</file>
+        <file alias="RegularItalic.ttf">qml/assets/fonts/Poppins/Poppins-Italic.ttf</file>
+        <file alias="Regular.ttf">qml/assets/fonts/Poppins/Poppins-Regular.ttf</file>
+        <file alias="MediumItalic.ttf">qml/assets/fonts/Poppins/Poppins-MediumItalic.ttf</file>
+        <file alias="Medium.ttf">qml/assets/fonts/Poppins/Poppins-Medium.ttf</file>
+        <file alias="LightItalic.ttf">qml/assets/fonts/Poppins/Poppins-LightItalic.ttf</file>
+        <file alias="Light.ttf">qml/assets/fonts/Poppins/Poppins-Light.ttf</file>
+        <file alias="ExtraLightItalic.ttf">qml/assets/fonts/Poppins/Poppins-ExtraLightItalic.ttf</file>
+        <file alias="ExtraLight.ttf">qml/assets/fonts/Poppins/Poppins-ExtraLight.ttf</file>
+        <file alias="ExtraBoldItalic.ttf">qml/assets/fonts/Poppins/Poppins-ExtraBoldItalic.ttf</file>
+        <file alias="ExtraBold.ttf">qml/assets/fonts/Poppins/Poppins-ExtraBold.ttf</file>
+        <file alias="BoldItalic.ttf">qml/assets/fonts/Poppins/Poppins-BoldItalic.ttf</file>
+        <file alias="Bold.ttf">qml/assets/fonts/Poppins/Poppins-Bold.ttf</file>
+        <file alias="BlackItalic.ttf">qml/assets/fonts/Poppins/Poppins-BlackItalic.ttf</file>
+        <file alias="Black.ttf">qml/assets/fonts/Poppins/Poppins-Black.ttf</file>
+        <file alias="OFL.txt">qml/assets/fonts/Poppins/OFL.txt</file>
+    </qresource>
 </RCC>
