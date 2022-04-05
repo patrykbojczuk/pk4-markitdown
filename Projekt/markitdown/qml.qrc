@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file alias="main.qml">qml/main.qml</file>
+        <file alias="Constants.qml">qml/Constants.qml</file>
+        <file alias="qmldir">qml/qmldir</file>
     </qresource>
-    <qresource prefix="/assets">
-        
-    </qresource>
+    <qresource prefix="/assets"/>
     <qresource prefix="/components"/>
     <qresource prefix="/views"/>
     <qresource prefix="/assets/fonts/Poppins">
