@@ -49,4 +49,11 @@ Window {
             }
         }
     }
+
+    ResizeHandler {
+        anchors.fill: parent
+        onChangeGeometry: function(x, y, w, h) {
+            window.setGeometry(x, y, w, h)
+        }
+    }
 }
