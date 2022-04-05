@@ -3,6 +3,9 @@ pragma Singleton
 import QtQuick
 
 QtObject {
+    // Window
+    readonly property int windowRadius: 10
+
     // Background
     readonly property color backgroundColor: "#121212"
     readonly property color lighterBackgroundColor: "#3A3A3A"
