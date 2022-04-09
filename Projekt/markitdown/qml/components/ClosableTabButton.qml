@@ -56,6 +56,7 @@ TabButton {
         width: 14
         height: width
         hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
         onClicked: {
             closed(customId)
