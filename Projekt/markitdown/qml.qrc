@@ -47,4 +47,9 @@
         <file alias="Black.ttf">qml/assets/fonts/Poppins/Poppins-Black.ttf</file>
         <file alias="OFL.txt">qml/assets/fonts/Poppins/OFL.txt</file>
     </qresource>
+    <qresource prefix="/assets/icons/HomeScreen">
+        <file alias="markdown-link.svg">qml/assets/icons/HomeScreen/markdown-link.svg</file>
+        <file alias="open-file.svg">qml/assets/icons/HomeScreen/open-file.svg</file>
+        <file alias="new-file.svg">qml/assets/icons/HomeScreen/new-file.svg</file>
+    </qresource>
 </RCC>
