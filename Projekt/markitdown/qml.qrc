@@ -53,5 +53,6 @@
         <file alias="markdown-link.svg">qml/assets/icons/HomeScreen/markdown-link.svg</file>
         <file alias="open-file.svg">qml/assets/icons/HomeScreen/open-file.svg</file>
         <file alias="new-file.svg">qml/assets/icons/HomeScreen/new-file.svg</file>
+        <file alias="markdown.svg">qml/assets/icons/HomeScreen/markdown.svg</file>
     </qresource>
 </RCC>
