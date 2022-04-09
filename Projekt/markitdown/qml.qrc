@@ -13,6 +13,7 @@
         <file alias="ImageTabButton.qml">qml/components/ImageTabButton.qml</file>
         <file alias="ScrollableTabBar.qml">qml/components/ScrollableTabBar.qml</file>
         <file alias="IconLink.qml">qml/components/IconLink.qml</file>
+        <file alias="CustomToolTip.qml">qml/components/CustomToolTip.qml</file>
     </qresource>
     <qresource prefix="/views">
         <file alias="HomeScreen.qml">qml/views/HomeScreen.qml</file>
