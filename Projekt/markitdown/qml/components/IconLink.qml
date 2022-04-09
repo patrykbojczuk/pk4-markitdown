@@ -6,7 +6,7 @@ import "qrc:/components"
 MouseArea {
     id: iconLink
     cursorShape: Qt.PointingHandCursor
-    width: row.implicitWidth < maxWidth ? row.implicitWidth : maxWidth
+    width: maxWidth && row.implicitWidth > maxWidth ? maxWidth : row.implicitWidth;
 
     property url iconSource
     property string linkText
