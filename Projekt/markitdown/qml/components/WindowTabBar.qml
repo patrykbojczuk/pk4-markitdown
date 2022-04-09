@@ -12,8 +12,18 @@ Rectangle {
     border.color: "transparent"
     border.width: 0
 
+    QtObject {
+        id: readonlyProperties
+        property int currentId: -1
+    }
+
     property bool isMaximized: false
     property bool supportsSystemMove: false
+
+    readonly property alias currentId: readonlyProperties.currentId
+    readonly property alias currentIndex: tabs.currentIndex
+
+    signal addNewFile
 
     signal close
     signal minimize
@@ -81,6 +91,9 @@ Rectangle {
         background: Rectangle {
             color: "transparent"
         }
+        onCurrentItemChanged: {
+            windowTabBar.readonlyProperties.currentId = currentItem.customId
+        }
 
         ImageTabButton {
             y: 0
@@ -90,47 +103,55 @@ Rectangle {
             imageSource: "qrc:/assets/icons/home-screen.svg"
             imageSize: 18
             checked: true
+            property int customId: -1
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test1"
+            customId: 0
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test2asdasdasdasdasdasd"
+            customId: 1
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test1asdasdasdasdasdasdasdas"
+            customId: 2
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test2asdasdasdasdasdsadasd"
+            customId: 4
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test1asdasdasdasd"
+            customId: 5
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test2asdasdasdasdasd"
+            customId: 7
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test1asdasdasdasdasdasdasdasdasdasdasdasdasd"
+            customId: 9
         }
         ClosableTabButton {
             y: 0
             height: parent.height
             text: "test2asdasdasd"
-            onClicked: {}
+            customId: 10
         }
         ImageTabButton {
             y: 0
@@ -140,9 +161,7 @@ Rectangle {
             imageSource: "qrc:/assets/icons/tab-new.svg"
             imageSize: 15
             checkable: false
-            onClicked: {
-
-            }
+            onClicked: addNewFile
         }
     }
 
