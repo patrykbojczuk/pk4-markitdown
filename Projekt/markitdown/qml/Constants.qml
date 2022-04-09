@@ -9,6 +9,7 @@ QtObject {
     // Background
     readonly property color backgroundColor: "#121212"
     readonly property color lighterBackgroundColor: "#3A3A3A"
+    readonly property color lighterLighterBackgroundColor: "#626262"
 
     // Font
     readonly property color fontColor: "#ffffff"
