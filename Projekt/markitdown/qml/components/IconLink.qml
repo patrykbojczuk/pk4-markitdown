@@ -6,7 +6,9 @@ import "qrc:/components"
 MouseArea {
     id: iconLink
     cursorShape: Qt.PointingHandCursor
-    width: maxWidth && row.implicitWidth > maxWidth ? maxWidth : row.implicitWidth;
+    width: maxWidth && (row.implicitWidth > maxWidth)
+           ? maxWidth
+           : row.implicitWidth;
 
     property url iconSource
     property string linkText
@@ -48,14 +50,16 @@ MouseArea {
             id: linkPathEl
             text: linkPath
             elide: Text.ElideMiddle
+            width: iconLink.maxWidth && linkPathEl.implicitWidth > (iconLink.maxWidth - icon.width - linkTextEl.width)
+                   ? iconLink.maxWidth - icon.width - linkTextEl.width
+                   : linkPathEl.implicitWidth
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment: Text.AlignVCenter
             leftPadding: 5
             textFormat: Text.PlainText
-            fontSizeMode: Text.HorizontalFit
             font.pointSize: fontSize
             color: Constants.fontColor25
-            visible: linkPath.length
+            visible: linkPath.length && linkPathEl.width > 150
         }
     }
 
@@ -68,8 +72,4 @@ MouseArea {
     }
 }
 
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:20;width:640}
-}
-##^##*/
+
