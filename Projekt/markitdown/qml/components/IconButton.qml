@@ -31,6 +31,13 @@ MouseArea {
             anchors.leftMargin: mouseArea.iconPadding
             anchors.rightMargin: mouseArea.iconPadding
         }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 200
+                easing.type: Easing.OutQuad
+            }
+        }
     }
 
     readonly property alias hovered: readonlyProperties.hovered
