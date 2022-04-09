@@ -14,7 +14,9 @@
         <file alias="ScrollableTabBar.qml">qml/components/ScrollableTabBar.qml</file>
         <file alias="IconLink.qml">qml/components/IconLink.qml</file>
     </qresource>
-    <qresource prefix="/views"/>
+    <qresource prefix="/views">
+        <file alias="HomeScreen.qml">qml/views/HomeScreen.qml</file>
+    </qresource>
     <qresource prefix="/assets/icons">
         <file alias="tab-close.svg">qml/assets/icons/tab-close.svg</file>
         <file alias="home-screen.svg">qml/assets/icons/home-screen.svg</file>

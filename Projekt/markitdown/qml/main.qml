@@ -1,6 +1,8 @@
 import QtQuick
+import QtQuick.Layouts
 import "qrc:/"
 import "qrc:/components"
+import "qrc:/views"
 
 Window {
     id: window
@@ -14,12 +16,12 @@ Window {
     minimumHeight: 300
 
     Rectangle {
-        id: contentWrapper
         color: Constants.backgroundColor
         radius: Constants.windowRadius
         anchors.fill: parent
 
         WindowTabBar {
+            id: tabBar
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
@@ -49,6 +51,18 @@ Window {
             onAddWindowY: function(dY) {
                 window.setY(window.y + dY)
             }
+
+            onAddNewFile: {
+                console.log("Handle file opening")
+            }
+        }
+
+        StackLayout {
+            id: contentWrapper
+            anchors.fill: parent
+            anchors.topMargin: tabBar.height
+
+            HomeScreen {}
         }
 
         Rectangle {
