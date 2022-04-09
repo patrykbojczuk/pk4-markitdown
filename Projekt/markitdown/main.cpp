@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    for(auto& font: QDir(":/assets/fonts/Poppins").entryList(QStringList{"*.ttf"}, QDir::Files)){
+    for (auto& font: QDir(":/assets/fonts/Poppins").entryList(QStringList{"*.ttf"}, QDir::Files)) {
         QFontDatabase::addApplicationFont(":/assets/fonts/Poppins/" + font);
     }
 

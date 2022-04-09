@@ -1,7 +1,7 @@
 import QtQuick
 import "qrc:/"
 
-MouseArea{
+MouseArea {
     id: mouseArea
     width: 12
     height: mouseArea.width
@@ -9,7 +9,7 @@ MouseArea{
 
     property bool hovered: false
 
-    HoverHandler{
+    HoverHandler {
         onHoveredChanged: {
             mouseArea.hovered = hovered
         }
@@ -23,13 +23,13 @@ MouseArea{
         anchors.fill: parent
 
         Image {
-           id: icon
-           source: mouseArea.iconUrl
-           fillMode: Image.PreserveAspectFit
-           sourceSize.height: 24
-           sourceSize.width: 24
-           anchors.fill: parent
-           visible: false
+            id: icon
+            source: mouseArea.iconUrl
+            fillMode: Image.PreserveAspectFit
+            sourceSize.height: 24
+            sourceSize.width: 24
+            anchors.fill: parent
+            visible: false
         }
     }
 
