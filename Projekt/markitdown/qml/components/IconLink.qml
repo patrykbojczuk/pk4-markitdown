@@ -37,6 +37,10 @@ MouseArea {
         Text {
             id: linkTextEl
             text: linkText
+            elide: Text.ElideMiddle
+            width: iconLink.maxWidth && linkTextEl.implicitWidth > (iconLink.maxWidth - icon.width)
+                   ? iconLink.maxWidth - icon.width
+                   : linkTextEl.implicitWidth
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment: Text.AlignVCenter
             leftPadding: 10
