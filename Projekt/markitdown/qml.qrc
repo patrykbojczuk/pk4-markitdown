@@ -12,6 +12,7 @@
         <file alias="ClosableTabButton.qml">qml/components/ClosableTabButton.qml</file>
         <file alias="ImageTabButton.qml">qml/components/ImageTabButton.qml</file>
         <file alias="ScrollableTabBar.qml">qml/components/ScrollableTabBar.qml</file>
+        <file alias="IconLink.qml">qml/components/IconLink.qml</file>
     </qresource>
     <qresource prefix="/views"/>
     <qresource prefix="/assets/icons">

@@ -15,6 +15,7 @@ QtObject {
     readonly property color fontColor50: "#80ffffff"
     readonly property color fontColor25: "#40ffffff"
     readonly property color fontColor10: "#0affffff"
+    readonly property color linkColor: "#158fff"
 
     // Close Button
     readonly property color closeButtonColor: "#FF453A"
