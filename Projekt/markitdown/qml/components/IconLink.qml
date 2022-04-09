@@ -1,14 +1,19 @@
 import QtQuick
 import QtQuick.Controls
 import "qrc:/"
+import "qrc:/components"
 
 MouseArea {
     id: iconLink
+    cursorShape: Qt.PointingHandCursor
+    width: row.implicitWidth < maxWidth ? row.implicitWidth : maxWidth
+
     property url iconSource
     property string linkText
     property string linkPath
     property string tooltipText
     property int fontSize: 14
+    property int maxWidth
 
     readonly property alias hovered: hoverHandler.hovered
 
@@ -16,62 +21,50 @@ MouseArea {
         id: hoverHandler
     }
 
-    Image {
-        id: icon
-        width: height
-        height: 20
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        source: iconSource
-        fillMode: Image.PreserveAspectFit
+    Row {
+        id: row
+
+        Image {
+            id: icon
+            width: height
+            height: 20
+            source: iconSource
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Text {
+            id: linkTextEl
+            text: linkText
+            anchors.verticalCenter: parent.verticalCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: 10
+            font.underline: iconLink.hovered
+            textFormat: Text.PlainText
+            color: Constants.linkColor
+            font.pointSize: fontSize
+        }
+
+        Text {
+            id: linkPathEl
+            text: linkPath
+            elide: Text.ElideMiddle
+            anchors.verticalCenter: parent.verticalCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: 5
+            textFormat: Text.PlainText
+            fontSizeMode: Text.HorizontalFit
+            font.pointSize: fontSize
+            color: Constants.fontColor25
+            visible: linkPath.length
+        }
     }
 
-    Text {
-        id: linkTextEl
-        text: linkText
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: icon.right
-        font.underline: iconLink.hovered
-        textFormat: Text.PlainText
-        anchors.leftMargin: 10
-        color: Constants.linkColor
-        font.pointSize: fontSize
-    }
-
-    Text {
-        id: linkPathEl
-        text: linkPath
-        elide: Text.ElideMiddle
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: linkTextEl.right
-        verticalAlignment: Text.AlignVCenter
-        textFormat: Text.PlainText
-        fontSizeMode: Text.HorizontalFit
-        font.pointSize: fontSize
-        anchors.leftMargin: 5
-        color: Constants.fontColor25
-        visible: linkPath.length
-    }
-
-    ToolTip {
+    CustomToolTip {
         id: toolTip
-        delay: 250
         text: tooltipText
-        horizontalPadding: tooltipTextEl.font.pointSize * 1.2
         visible: tooltipText.length && hovered
         x: linkTextEl.x + 0.5 * linkTextEl.width - 0.5 * toolTip.width
         y: linkTextEl.height
-        background: Rectangle {
-            color: Constants.lighterBackgroundColor
-            border.width: 0
-            radius: Constants.windowRadius / 2
-        }
-        contentItem: Text {
-            id: tooltipTextEl
-            color: Constants.fontColor
-            text: toolTip.text
-        }
     }
 }
 
