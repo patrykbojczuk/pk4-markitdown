@@ -113,7 +113,6 @@ Rectangle {
 
             IconLink {
                 anchors.left: parent.left
-                anchors.right: parent.right
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
                 height: 16
@@ -124,7 +123,6 @@ Rectangle {
 
             IconLink {
                 anchors.left: parent.left
-                anchors.right: parent.right
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
                 height: 16
@@ -159,8 +157,8 @@ Rectangle {
             spacing: 5
 
             IconLink {
+                maxWidth: parent.width
                 anchors.left: parent.left
-                anchors.right: parent.right
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
                 height: 20
@@ -171,8 +169,8 @@ Rectangle {
             }
 
             IconLink {
+                maxWidth: parent.width
                 anchors.left: parent.left
-                anchors.right: parent.right
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
                 height: 20
@@ -183,8 +181,8 @@ Rectangle {
             }
 
             IconLink {
+                maxWidth: parent.width
                 anchors.left: parent.left
-                anchors.right: parent.right
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
                 height: 20
@@ -195,8 +193,8 @@ Rectangle {
             }
 
             IconLink {
+                maxWidth: parent.width
                 anchors.left: parent.left
-                anchors.right: parent.right
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
                 height: 20
