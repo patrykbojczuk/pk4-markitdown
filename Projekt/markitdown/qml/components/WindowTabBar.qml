@@ -47,22 +47,22 @@ Rectangle {
         property real previousX: 0
         property real previousY: 0
 
-        onPressed: function(mouse){
+        onPressed: function (mouse) {
             startSystemMove()
-            if (!supportsSystemMove){
+            if (!supportsSystemMove) {
                 previousX = mouseX
                 previousY = mouseY
             }
         }
 
-        onMouseXChanged: {
-            if (previousX){
+        onMouseXChanged: function (mouse) {
+            if (previousX) {
                 var dx = mouseX - previousX
                 addWindowX(dx)
             }
         }
-        onMouseYChanged: {
-            if (previousY){
+        onMouseYChanged: function (mouse) {
+            if (previousY) {
                 var dy = mouseY - previousY
                 addWindowY(dy)
             }
@@ -73,9 +73,9 @@ Rectangle {
         id: tabs
         position: TabBar.Header
         anchors.fill: parent
+        contentHeight: 40
         activeFocusOnTab: false
         spacing: 0
-        contentHeight: 40
         anchors.leftMargin: appButtons.width + appButtons.anchors.leftMargin * 2
         anchors.rightMargin: anchors.leftMargin
         background: Rectangle {
@@ -152,6 +152,17 @@ Rectangle {
         anchors.bottom: parent.bottom
         width: 80
         color: Constants.lighterBackgroundColor
+        radius: Constants.windowRadius
+
+
+        Rectangle {
+            // Hide
+            color: Constants.lighterBackgroundColor
+            width: Constants.windowRadius
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+        }
 
         Row {
             id: appButtons
