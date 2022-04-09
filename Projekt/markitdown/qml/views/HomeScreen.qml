@@ -1,4 +1,7 @@
 import QtQuick
+import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
+import "qrc:/"
 import "qrc:/components"
 
 Rectangle {
@@ -21,7 +24,7 @@ Rectangle {
 
         Text {
             id: appNameHeader
-            color: "#ffffff"
+            color: Constants.fontColor
             text: "Mark It Down"
             verticalAlignment: Text.AlignVCenter
             padding: 0
@@ -32,31 +35,68 @@ Rectangle {
             font.kerning: true
             font.weight: Font.DemiBold
             font.pointSize: 64
-
         }
 
         Text {
             id: appNameSubheader
-            color: "#ffffff"
+            color: Constants.fontColor
             text: "markdown editor"
             anchors.left: parent.left
             anchors.leftMargin: 0
             anchors.top: appNameHeader.bottom
             anchors.topMargin: -6
             font.pixelSize: 36
+            font.kerning: true
             verticalAlignment: Text.AlignVCenter
             font.weight: Font.Thin
         }
 
+        Item {
+            id: markdownCheatsheetButtonGroup
+            anchors.verticalCenter: appNameSubheader.verticalCenter
+            anchors.right: leftContainer.right
+            anchors.rightMargin: 3
+            width: 30
+            height: width
+
+            DropShadow {
+                color: "#000"
+                radius: markdownCheatsheetButton.radius * 2
+                source: markdownCheatsheetButton
+                spread: 0.5
+                cached: true
+                transparentBorder: true
+                anchors.fill: markdownCheatsheetButton
+            }
+
+            IconButton {
+                id: markdownCheatsheetButton
+                color: Constants.lighterBackgroundColor
+                hoveredColor: Constants.lighterLighterBackgroundColor
+                iconPadding: 5
+                radius: width / 5
+                iconSource: "qrc:/assets/icons/HomeScreen/markdown.svg"
+                anchors.fill: parent
+            }
+
+            CustomToolTip {
+                id: markdownCheatsheetButtonToolTip
+                visible: markdownCheatsheetButton.hovered
+                text: 'Markdown Cheatsheet'
+                y: markdownCheatsheetButton.y + 0.5 * markdownCheatsheetButton.height - 0.5 * markdownCheatsheetButtonToolTip.height
+                x: -(markdownCheatsheetButtonToolTip.width + 10)
+            }
+        }
+
         Text {
             id: startSectionHeader
-            color: "#ffffff"
+            color: Constants.fontColor
             text: "Start"
             anchors.left: parent.left
             anchors.top: appNameSubheader.bottom
             font.pixelSize: 24
+            font.kerning: true
             verticalAlignment: Text.AlignVCenter
-            anchors.leftMargin: 0
             anchors.topMargin: 40
             font.weight: Font.Normal
         }
@@ -96,11 +136,12 @@ Rectangle {
 
         Text {
             id: recentFilesSectionHeader
-            color: "#ffffff"
+            color: Constants.fontColor
             text: "Recent files"
             anchors.left: parent.left
             anchors.top: startSectionLinks.bottom
             font.pixelSize: 24
+            font.kerning: true
             verticalAlignment: Text.AlignVCenter
             anchors.topMargin: 64
         }
@@ -165,24 +206,20 @@ Rectangle {
                 tooltipText: linkPath + '/' + linkText
             }
         }
-
-
     }
 
     states: [
         State {
-            name: 'oneColumn'
-            when: homeScreen.width < 1400
-//            PropertyChanges {
-//                target: object
-//            }
-        },
-        State {
             name: 'twoColumns'
             when: homeScreen.width >= 1400
-//            PropertyChanges {
-//                target: object
-//            }
+            PropertyChanges {
+                target: markdownCheatsheetButtonGroup
+                visible: false
+            }
+            PropertyChanges {
+                target: leftContainer
+                anchors.horizontalCenter: undefined
+            }
         }
     ]
 }
