@@ -85,6 +85,7 @@ Rectangle {
                 text: 'Markdown Cheatsheet'
                 y: markdownCheatsheetButton.y + 0.5 * markdownCheatsheetButton.height - 0.5 * markdownCheatsheetButtonToolTip.height
                 x: -(markdownCheatsheetButtonToolTip.width + 10)
+                enterTransition: CustomToolTip.EnterDirection.FromRight
             }
         }
 
@@ -165,7 +166,7 @@ Rectangle {
                 iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
                 linkText: "example.md"
                 linkPath: "~/Documents/projects/mid"
-                tooltipText: linkPath + '/' + linkText
+                tooltipText: 'Open ' + linkPath + '/' + linkText
             }
 
             IconLink {
@@ -177,7 +178,7 @@ Rectangle {
                 iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
                 linkText: "README.md"
                 linkPath: "~/Documents/projects/mid"
-                tooltipText: linkPath + '/' + linkText
+                tooltipText: 'Open ' + linkPath + '/' + linkText
             }
 
             IconLink {
@@ -187,9 +188,9 @@ Rectangle {
                 anchors.leftMargin: 0
                 height: 20
                 iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
-                linkText: "privacy policy.md"
+                linkText: "privacy policy but the filename definitely exceeds allowed length.md"
                 linkPath: "~/Documents/projects/mid"
-                tooltipText: linkPath + '/' + linkText
+                tooltipText: 'Open ' + linkPath + '/' + linkText
             }
 
             IconLink {
@@ -201,7 +202,7 @@ Rectangle {
                 iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
                 linkText: "example2.md"
                 linkPath: "~/Documents/projects/mid"
-                tooltipText: linkPath + '/' + linkText
+                tooltipText: 'Open ' + linkPath + '/' + linkText
             }
         }
     }

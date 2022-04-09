@@ -73,6 +73,7 @@ MouseArea {
         visible: tooltipText.length && hovered
         x: linkTextEl.x + 0.5 * linkTextEl.width - 0.5 * toolTip.width
         y: linkTextEl.height
+        enterTransition: CustomToolTip.EnterDirection.FromTop
     }
 }
 
