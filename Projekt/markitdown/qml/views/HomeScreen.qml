@@ -90,7 +90,7 @@ Rectangle {
                 text: 'Markdown Cheatsheet'
                 y: markdownCheatsheetButton.y + 0.5 * markdownCheatsheetButton.height - 0.5 * markdownCheatsheetButtonToolTip.height
                 x: -(markdownCheatsheetButtonToolTip.width + 10)
-                enterTransition: CustomToolTip.EnterDirection.FromRight
+                transitionDirection: CustomToolTip.EnterDirection.FromRight
             }
         }
 
