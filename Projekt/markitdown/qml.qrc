@@ -16,6 +16,7 @@
         <file alias="IconButton.qml">qml/components/IconButton.qml</file>
         <file alias="CustomToolTip.qml">qml/components/CustomToolTip.qml</file>
         <file alias="CustomScrollBar.qml">qml/components/CustomScrollBar.qml</file>
+        <file alias="CheatsheetComparison.qml">qml/components/CheatsheetComparison.qml</file>
     </qresource>
     <qresource prefix="/views">
         <file alias="HomeScreen.qml">qml/views/HomeScreen.qml</file>
