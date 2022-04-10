@@ -11,165 +11,215 @@ ToolTip {
         FromLeft
     }
 
-    property int enterTransition: CustomToolTip.EnterDirection.Center
+    property int transitionDuration: 150
+    property int transitionDirection: CustomToolTip.EnterDirection.Center
 
     id: toolTip
     delay: 250
     horizontalPadding: tooltipTextEl.font.pointSize * 1.2
     background: Rectangle {
+        id: tooltipBackgroundEl
         color: Constants.lighterBackgroundColor
         border.width: 0
         radius: Constants.windowRadius / 2
+
+        transform: Translate {
+            id: tooltipBackgroundElTranslate
+            x: 0
+            y: 0
+        }
     }
     contentItem: Text {
         id: tooltipTextEl
         color: Constants.fontColor
         text: toolTip.text
+
+        transform: Translate {
+            id: tooltipTextElTranslate
+            x: 0
+            y: 0
+        }
     }
 
+
     enter: Transition {
+        id: enterTransition
+
         ParallelAnimation {
+            id: enterTransitionMainAnimation
             NumberAnimation {
                 target: toolTip
                 property: "opacity"
                 from: 0
                 to: 1
-                duration: enterTransition === CustomToolTip.EnterDirection.Center ? 250 : 200
+                duration: transitionDuration
                 easing.type: Easing.OutQuad
             }
-            NumberAnimation {
-                target: toolTip
-                property: (enterTransition === CustomToolTip.EnterDirection.Center ||
-                           enterTransition === CustomToolTip.EnterDirection.FromLeft ||
-                           enterTransition === CustomToolTip.EnterDirection.FromRight)
-                           ? "x"
-                           : "y"
-                from: {
-                    switch (enterTransition) {
-                        case CustomToolTip.EnterDirection.Center: {
-                            return toolTip.x
-                        }
-                        case CustomToolTip.EnterDirection.FromTop: {
-                            return toolTip.y - 25
-                        }
-                        case CustomToolTip.EnterDirection.FromRight: {
-                            return toolTip.x + 25
-                        }
-                        case CustomToolTip.EnterDirection.FromBottom: {
-                            return toolTip.y + 25
-                        }
-                        case CustomToolTip.EnterDirection.FromLeft: {
-                            return toolTip.x - 25
-                        }
-                    }
-                }
-                to: {
-                    switch (enterTransition) {
+            PropertyAnimation {
+                target: tooltipBackgroundElTranslate
+                property: {
+                    switch (transitionDirection) {
                         case CustomToolTip.EnterDirection.Center:
-                        case CustomToolTip.EnterDirection.FromRight:
-                        case CustomToolTip.EnterDirection.FromLeft: {
-                            return toolTip.x
+                        case CustomToolTip.EnterDirection.FromLeft:
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 'x'
                         }
                         case CustomToolTip.EnterDirection.FromTop:
                         case CustomToolTip.EnterDirection.FromBottom: {
-                            return toolTip.y
+                            return 'y'
                         }
                     }
                 }
-                duration: enterTransition === CustomToolTip.EnterDirection.Center ? 250 : 200
-                easing.type: Easing.OutQuad
+                from: {
+                    switch (transitionDirection) {
+                        case CustomToolTip.EnterDirection.FromLeft: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.FromTop: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromBottom: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.Center: {
+                            return 0
+                        }
+                    }
+                }
+                to: 0
+                duration: transitionDuration
+            }
+            PropertyAnimation {
+                target: tooltipTextElTranslate
+                property: {
+                    switch (transitionDirection) {
+                        case CustomToolTip.EnterDirection.Center:
+                        case CustomToolTip.EnterDirection.FromLeft:
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 'x'
+                        }
+                        case CustomToolTip.EnterDirection.FromTop:
+                        case CustomToolTip.EnterDirection.FromBottom: {
+                            return 'y'
+                        }
+                    }
+                }
+                from: {
+                    switch (transitionDirection) {
+                        case CustomToolTip.EnterDirection.FromLeft: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.FromTop: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromBottom: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.Center: {
+                            return 0
+                        }
+                    }
+                }
+                to: 0
+                duration: transitionDuration
             }
         }
     }
     exit: Transition {
+        id: exitTransition
+
         ParallelAnimation {
+            id: exitTransitionMainAnimation
             NumberAnimation {
                 target: toolTip
                 property: "opacity"
                 from: 1
                 to: 0
-                duration: enterTransition === CustomToolTip.EnterDirection.Center ? 250 : 200
+                duration: transitionDuration
                 easing.type: Easing.OutQuad
             }
-            SequentialAnimation {
-                NumberAnimation {
-                    target: toolTip
-                    property: (enterTransition === CustomToolTip.EnterDirection.Center ||
-                               enterTransition === CustomToolTip.EnterDirection.FromLeft ||
-                               enterTransition === CustomToolTip.EnterDirection.FromRight)
-                               ? "x"
-                               : "y"
-                    from: {
-                        switch (enterTransition) {
-                            case CustomToolTip.EnterDirection.Center:
-                            case CustomToolTip.EnterDirection.FromRight:
-                            case CustomToolTip.EnterDirection.FromLeft: {
-                                return toolTip.x
-                            }
-                            case CustomToolTip.EnterDirection.FromTop:
-                            case CustomToolTip.EnterDirection.FromBottom: {
-                                return toolTip.y
-                            }
-                        }
-                    }
-                    to: {
-                        switch (enterTransition) {
-                            case CustomToolTip.EnterDirection.Center: {
-                                return toolTip.x
-                            }
-                            case CustomToolTip.EnterDirection.FromTop: {
-                                return toolTip.y - 25
-                            }
-                            case CustomToolTip.EnterDirection.FromRight: {
-                                return toolTip.x + 25
-                            }
-                            case CustomToolTip.EnterDirection.FromBottom: {
-                                return toolTip.y + 25
-                            }
-                            case CustomToolTip.EnterDirection.FromLeft: {
-                                return toolTip.x - 25
-                            }
-                        }
-                    }
-                    duration: enterTransition === CustomToolTip.EnterDirection.Center ? 250 : 200
-                    easing.type: Easing.OutQuad
-                }
-                NumberAnimation {
-                    target: toolTip
-                    property: (enterTransition === CustomToolTip.EnterDirection.Center ||
-                               enterTransition === CustomToolTip.EnterDirection.FromLeft ||
-                               enterTransition === CustomToolTip.EnterDirection.FromRight)
-                               ? "x"
-                               : "y"
-                    from: {
-                        switch (enterTransition) {
-                            case CustomToolTip.EnterDirection.Center:
-                            case CustomToolTip.EnterDirection.FromRight:
-                            case CustomToolTip.EnterDirection.FromLeft: {
-                                return toolTip.x
-                            }
-                            case CustomToolTip.EnterDirection.FromTop:
-                            case CustomToolTip.EnterDirection.FromBottom: {
-                                return toolTip.y
-                            }
-                        }
-                    }
-                    to: {
-                        switch (enterTransition) {
-                            case CustomToolTip.EnterDirection.Center:
-                            case CustomToolTip.EnterDirection.FromRight:
-                            case CustomToolTip.EnterDirection.FromLeft: {
-                                return toolTip.x
-                            }
-                            case CustomToolTip.EnterDirection.FromTop:
-                            case CustomToolTip.EnterDirection.FromBottom: {
-                                return toolTip.y
-                            }
-                        }
-                    }
-                    duration: 1
-                }
 
+            PropertyAnimation {
+                target: tooltipBackgroundElTranslate
+                property: {
+                    switch (transitionDirection) {
+                        case CustomToolTip.EnterDirection.Center:
+                        case CustomToolTip.EnterDirection.FromLeft:
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 'x'
+                        }
+                        case CustomToolTip.EnterDirection.FromTop:
+                        case CustomToolTip.EnterDirection.FromBottom: {
+                            return 'y'
+                        }
+                    }
+                }
+                to: {
+                    switch (transitionDirection) {
+                        case CustomToolTip.EnterDirection.FromLeft: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.FromTop: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromBottom: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.Center: {
+                            return 0
+                        }
+                    }
+
+                }
+                from: 0
+                duration: transitionDuration
+            }
+            PropertyAnimation {
+                target: tooltipTextElTranslate
+                property: {
+                    switch (transitionDirection) {
+                        case CustomToolTip.EnterDirection.Center:
+                        case CustomToolTip.EnterDirection.FromLeft:
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 'x'
+                        }
+                        case CustomToolTip.EnterDirection.FromTop:
+                        case CustomToolTip.EnterDirection.FromBottom: {
+                            return 'y'
+                        }
+                    }
+                }
+                to: {
+                    switch (transitionDirection) {
+                        case CustomToolTip.EnterDirection.FromLeft: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromRight: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.FromTop: {
+                            return -25
+                        }
+                        case CustomToolTip.EnterDirection.FromBottom: {
+                            return 25
+                        }
+                        case CustomToolTip.EnterDirection.Center: {
+                            return 0
+                        }
+                    }
+
+                }
+                from: 0
+                duration: transitionDuration
             }
         }
     }
