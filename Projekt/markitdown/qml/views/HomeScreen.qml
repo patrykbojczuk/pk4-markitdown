@@ -3,6 +3,7 @@ import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 import "qrc:/"
 import "qrc:/components"
+import "qrc:/views"
 
 Rectangle {
     id: homeScreen
@@ -18,8 +19,8 @@ Rectangle {
         height: 480
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 100
         anchors.topMargin: 100
+        anchors.bottomMargin: 100
         anchors.horizontalCenter: parent.horizontalCenter
 
         Text {
@@ -77,6 +78,10 @@ Rectangle {
                 radius: width / 5
                 iconSource: "qrc:/assets/icons/HomeScreen/markdown.svg"
                 anchors.fill: parent
+
+                onClicked: {
+                    cheatsheetWindow.visible = true
+                }
             }
 
             CustomToolTip {
@@ -207,17 +212,76 @@ Rectangle {
         }
     }
 
+    Item {
+        id: rightContainer
+        visible: false
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 50
+        anchors.bottomMargin: 50
+        anchors.left: leftContainer.right
+        anchors.right: parent.right
+        anchors.leftMargin: 150
+        anchors.rightMargin: 150
+
+        MarkdownCheatsheet {
+            id: rightContainerCheatsheet
+            anchors.fill: parent
+            anchors.leftMargin: 25
+            anchors.rightMargin: 25
+            anchors.bottomMargin: 0
+            anchors.topMargin: 0
+        }
+    }
+
+    Window {
+        id: cheatsheetWindow
+        title: "markdown cheatsheet"
+        visible: false
+        color: Constants.backgroundColor
+        minimumWidth: 420
+        width: 700
+        height: 620
+        maximumHeight: cheatsheetWindowCheatsheet.maxHeight
+
+        MarkdownCheatsheet {
+            id: cheatsheetWindowCheatsheet
+            anchors.fill: parent
+            anchors.leftMargin: 25
+            anchors.rightMargin: 25
+            anchors.bottomMargin: 0
+            anchors.topMargin: 0
+        }
+    }
+
     states: [
         State {
             name: 'twoColumns'
             when: homeScreen.width >= 1400
             PropertyChanges {
                 target: markdownCheatsheetButtonGroup
+                restoreEntryValues: true
+
                 visible: false
+            }
+            AnchorChanges {
+                target: leftContainer
+                anchors.horizontalCenter: undefined
+                anchors.left: parent.left
+                anchors.right: parent.horizontalCenter
             }
             PropertyChanges {
                 target: leftContainer
-                anchors.horizontalCenter: undefined
+                restoreEntryValues: true
+
+                anchors.leftMargin: 200
+                anchors.rightMargin: 100
+            }
+            PropertyChanges {
+                target: rightContainer
+                restoreEntryValues: true
+
+                visible: true
             }
         }
     ]
