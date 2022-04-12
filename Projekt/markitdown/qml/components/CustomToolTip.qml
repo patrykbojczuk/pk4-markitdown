@@ -33,6 +33,7 @@ ToolTip {
         id: tooltipTextEl
         color: Constants.fontColor
         text: toolTip.text
+        elide: Text.ElideRight
 
         transform: Translate {
             id: tooltipTextElTranslate
@@ -56,44 +57,7 @@ ToolTip {
                 easing.type: Easing.OutQuad
             }
             PropertyAnimation {
-                target: tooltipBackgroundElTranslate
-                property: {
-                    switch (transitionDirection) {
-                        case CustomToolTip.EnterDirection.Center:
-                        case CustomToolTip.EnterDirection.FromLeft:
-                        case CustomToolTip.EnterDirection.FromRight: {
-                            return 'x'
-                        }
-                        case CustomToolTip.EnterDirection.FromTop:
-                        case CustomToolTip.EnterDirection.FromBottom: {
-                            return 'y'
-                        }
-                    }
-                }
-                from: {
-                    switch (transitionDirection) {
-                        case CustomToolTip.EnterDirection.FromLeft: {
-                            return -25
-                        }
-                        case CustomToolTip.EnterDirection.FromRight: {
-                            return 25
-                        }
-                        case CustomToolTip.EnterDirection.FromTop: {
-                            return -25
-                        }
-                        case CustomToolTip.EnterDirection.FromBottom: {
-                            return 25
-                        }
-                        case CustomToolTip.EnterDirection.Center: {
-                            return 0
-                        }
-                    }
-                }
-                to: 0
-                duration: transitionDuration
-            }
-            PropertyAnimation {
-                target: tooltipTextElTranslate
+                targets:[tooltipBackgroundElTranslate, tooltipTextElTranslate]
                 property: {
                     switch (transitionDirection) {
                         case CustomToolTip.EnterDirection.Center:
@@ -146,45 +110,7 @@ ToolTip {
             }
 
             PropertyAnimation {
-                target: tooltipBackgroundElTranslate
-                property: {
-                    switch (transitionDirection) {
-                        case CustomToolTip.EnterDirection.Center:
-                        case CustomToolTip.EnterDirection.FromLeft:
-                        case CustomToolTip.EnterDirection.FromRight: {
-                            return 'x'
-                        }
-                        case CustomToolTip.EnterDirection.FromTop:
-                        case CustomToolTip.EnterDirection.FromBottom: {
-                            return 'y'
-                        }
-                    }
-                }
-                to: {
-                    switch (transitionDirection) {
-                        case CustomToolTip.EnterDirection.FromLeft: {
-                            return -25
-                        }
-                        case CustomToolTip.EnterDirection.FromRight: {
-                            return 25
-                        }
-                        case CustomToolTip.EnterDirection.FromTop: {
-                            return -25
-                        }
-                        case CustomToolTip.EnterDirection.FromBottom: {
-                            return 25
-                        }
-                        case CustomToolTip.EnterDirection.Center: {
-                            return 0
-                        }
-                    }
-
-                }
-                from: 0
-                duration: transitionDuration
-            }
-            PropertyAnimation {
-                target: tooltipTextElTranslate
+                targets: [tooltipBackgroundElTranslate, tooltipTextElTranslate]
                 property: {
                     switch (transitionDirection) {
                         case CustomToolTip.EnterDirection.Center:
