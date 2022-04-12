@@ -92,7 +92,7 @@ Rectangle {
             color: "transparent"
         }
         onCurrentItemChanged: {
-            windowTabBar.readonlyProperties.currentId = currentItem.customId
+            readonlyProperties.currentId = (tabs.currentItem as ClosableTabButton | ImageTabButton)?.customId ?? -1
         }
 
         ImageTabButton {
