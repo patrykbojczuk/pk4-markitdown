@@ -5,16 +5,13 @@ import "qrc:/"
 import "qrc:/components"
 import "qrc:/views"
 
-Rectangle {
+Item {
     id: homeScreen
     width: 510
     height: 1080
-    color: "transparent"
-    border.width: 0
 
-    Rectangle {
+    Item {
         id: leftContainer
-        color: "transparent"
         width: appNameHeader.implicitWidth
         height: 480
         anchors.top: parent.top
