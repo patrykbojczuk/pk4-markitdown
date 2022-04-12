@@ -125,6 +125,7 @@ Item {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         contentHeight: cheatsheetContents.implicitHeight
+        boundsBehavior: Flickable.StopAtBounds
 
         Column {
             id: cheatsheetContents
