@@ -21,6 +21,7 @@
     <qresource prefix="/views">
         <file alias="HomeScreen.qml">qml/views/HomeScreen.qml</file>
         <file alias="MarkdownCheatsheet.qml">qml/views/MarkdownCheatsheet.qml</file>
+        <file alias="EditorScreen.qml">qml/views/EditorScreen.qml</file>
     </qresource>
     <qresource prefix="/assets/icons">
         <file alias="tab-close.svg">qml/assets/icons/tab-close.svg</file>
