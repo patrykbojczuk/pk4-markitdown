@@ -61,4 +61,17 @@
         <file alias="new-file.svg">qml/assets/icons/HomeScreen/new-file.svg</file>
         <file alias="markdown.svg">qml/assets/icons/HomeScreen/markdown.svg</file>
     </qresource>
+    <qresource prefix="/assets/icons/EditorScreen/MarkdownToolBar">
+        <file alias="image.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/image.svg</file>
+        <file alias="codeblock.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/codeblock.svg</file>
+        <file alias="inline-code.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/inline-code.svg</file>
+        <file alias="blockquote.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/blockquote.svg</file>
+        <file alias="ordered-list.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/ordered-list.svg</file>
+        <file alias="unordered-list.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/unordered-list.svg</file>
+        <file alias="link.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/link.svg</file>
+        <file alias="strikethrough.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/strikethrough.svg</file>
+        <file alias="italic.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/italic.svg</file>
+        <file alias="bold.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/bold.svg</file>
+        <file alias="heading.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/heading.svg</file>
+    </qresource>
 </RCC>
