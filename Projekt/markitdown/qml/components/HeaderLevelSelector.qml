@@ -11,6 +11,7 @@ Rectangle {
     border.color: Constants.lighterLighterBackgroundColor
     border.width: 2
 
+    signal formatHeader(int level)
     signal closed
 
     Row {
@@ -27,6 +28,8 @@ Rectangle {
             width: 18
             cursorShape: Qt.PointingHandCursor
 
+            onClicked: formatHeader(1)
+
             Text {
                 text: "H1"
                 width: parent.width
@@ -41,6 +44,8 @@ Rectangle {
             height: 16
             width: 18
             cursorShape: Qt.PointingHandCursor
+
+            onClicked: formatHeader(2)
 
             Text {
                 text: "H2"
@@ -57,6 +62,8 @@ Rectangle {
             width: 18
             cursorShape: Qt.PointingHandCursor
 
+            onClicked: formatHeader(3)
+
             Text {
                 text: "H3"
                 width: parent.width
@@ -71,6 +78,8 @@ Rectangle {
             height: 16
             width: 18
             cursorShape: Qt.PointingHandCursor
+
+            onClicked: formatHeader(4)
 
             Text {
                 text: "H4"
@@ -87,6 +96,8 @@ Rectangle {
             width: 18
             cursorShape: Qt.PointingHandCursor
 
+            onClicked: formatHeader(5)
+
             Text {
                 text: "H5"
                 width: parent.width
@@ -101,6 +112,8 @@ Rectangle {
             height: 16
             width: 18
             cursorShape: Qt.PointingHandCursor
+
+            onClicked: formatHeader(6)
 
             Text {
                 text: "H6"
@@ -125,9 +138,7 @@ Rectangle {
                 anchors.right: parent.right
                 cursorShape: Qt.PointingHandCursor
 
-                onClicked: {
-                    background.closed()
-                }
+                onClicked: background.closed()
 
                 Image {
                     id: closeIcon
