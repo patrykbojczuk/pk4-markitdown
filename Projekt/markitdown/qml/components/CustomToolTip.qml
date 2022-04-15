@@ -10,6 +10,12 @@ ToolTip {
         FromBottom,
         FromLeft
     }
+    enum Position {
+        Top,
+        Right,
+        Bottom,
+        Left
+    }
 
     property int transitionDuration: 150
     property int transitionDirection: CustomToolTip.EnterDirection.Center

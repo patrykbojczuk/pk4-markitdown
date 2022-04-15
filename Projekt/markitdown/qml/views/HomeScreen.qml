@@ -49,45 +49,25 @@ Item {
             font.weight: Font.Thin
         }
 
-        Item {
-            id: markdownCheatsheetButtonGroup
+
+        IconButton {
+            id: markdownCheatsheetButton
             anchors.verticalCenter: appNameSubheader.verticalCenter
             anchors.right: leftContainer.right
             anchors.rightMargin: 3
             width: 30
             height: width
+            color: Constants.lighterBackgroundColor
+            hoveredColor: Constants.lighterLighterBackgroundColor
+            iconPadding: 5
+            radius: width / 5
+            iconSource: "qrc:/assets/icons/HomeScreen/markdown.svg"
+            toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
+            toolTipPosition: CustomToolTip.Position.Left
+            toolTipText: "Markdown Cheatsheet"
 
-            DropShadow {
-                color: "#000"
-                radius: markdownCheatsheetButton.radius * 2
-                source: markdownCheatsheetButton
-                spread: 0.5
-                cached: true
-                transparentBorder: true
-                anchors.fill: markdownCheatsheetButton
-            }
-
-            IconButton {
-                id: markdownCheatsheetButton
-                color: Constants.lighterBackgroundColor
-                hoveredColor: Constants.lighterLighterBackgroundColor
-                iconPadding: 5
-                radius: width / 5
-                iconSource: "qrc:/assets/icons/HomeScreen/markdown.svg"
-                anchors.fill: parent
-
-                onClicked: {
-                    cheatsheetWindow.visible = true
-                }
-            }
-
-            CustomToolTip {
-                id: markdownCheatsheetButtonToolTip
-                visible: markdownCheatsheetButton.hovered
-                text: 'Markdown Cheatsheet'
-                y: markdownCheatsheetButton.y + 0.5 * markdownCheatsheetButton.height - 0.5 * markdownCheatsheetButtonToolTip.height
-                x: -(markdownCheatsheetButtonToolTip.width + 10)
-                transitionDirection: CustomToolTip.EnterDirection.FromRight
+            onClicked: {
+                cheatsheetWindow.visible = true
             }
         }
 
@@ -256,7 +236,7 @@ Item {
             name: 'twoColumns'
             when: homeScreen.width >= 1400
             PropertyChanges {
-                target: markdownCheatsheetButtonGroup
+                target: markdownCheatsheetButton
                 restoreEntryValues: true
 
                 visible: false
