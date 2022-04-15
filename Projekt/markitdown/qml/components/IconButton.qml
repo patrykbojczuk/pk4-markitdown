@@ -1,9 +1,9 @@
 import QtQuick
 import Qt5Compat.GraphicalEffects
 import "qrc:/"
+import "qrc:/components"
 
-
-MouseArea {
+HoverableMouseArea {
     id: mouseArea
     width: 40
     height: 40
@@ -54,7 +54,6 @@ MouseArea {
             }
         }
     }
-
 
     CustomToolTip {
         id: buttonToolTip
@@ -111,15 +110,4 @@ MouseArea {
             }
         }
     ]
-
-    readonly property alias hovered: readonlyProperties.hovered
-
-    QtObject {
-        id: readonlyProperties
-        property bool hovered: hoverHandler.hovered
-    }
-
-    HoverHandler {
-        id: hoverHandler
-    }
 }
