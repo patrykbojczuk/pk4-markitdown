@@ -8,6 +8,19 @@ Item {
     width: 1920
     height: 50
 
+    signal formatBold
+    signal formatItalic
+    signal formatStrikethrough
+    signal formatHeading(int level)
+    signal formatLink
+    signal formatUL
+    signal formatOL
+    signal formatBlockquote
+    signal formatInlineCode
+    signal formatCodeblock
+    signal formatImage
+
+
     Rectangle {
         id: rectangle
         height: 1
@@ -62,6 +75,7 @@ Item {
             toolTipText: "Bold"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromLeft
             toolTipPosition: CustomToolTip.Position.Right
+            onClicked: toolBar.formatBold()
         }
 
         IconButton {
@@ -79,6 +93,7 @@ Item {
             toolTipText: "Italic"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatItalic()
         }
 
         IconButton {
@@ -96,6 +111,7 @@ Item {
             toolTipText: "Strikethrough"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatStrikethrough()
         }
 
         IconButton {
@@ -134,6 +150,7 @@ Item {
             toolTipText: "Link"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatLink()
         }
 
         IconButton {
@@ -151,6 +168,7 @@ Item {
             toolTipText: "Unordered list"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatUL()
         }
 
         IconButton {
@@ -168,6 +186,7 @@ Item {
             toolTipText: "Ordered list"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatOL()
         }
 
         IconButton {
@@ -185,6 +204,7 @@ Item {
             toolTipText: "Blockquote"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatBlockquote()
         }
 
         IconButton {
@@ -202,6 +222,7 @@ Item {
             toolTipText: "Inline code"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatInlineCode()
         }
 
         IconButton {
@@ -219,6 +240,7 @@ Item {
             toolTipText: "Code block"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatCodeblock()
         }
 
         IconButton {
@@ -236,6 +258,7 @@ Item {
             toolTipText: "Image"
             toolTipEnterDirection: CustomToolTip.EnterDirection.FromRight
             toolTipPosition: CustomToolTip.Position.Left
+            onClicked: toolBar.formatImage()
         }
     }
 
@@ -250,9 +273,11 @@ Item {
         visible: opacity > 0
         opacity: 0
 
-        onClosed: {
-            headerLevelSelector.opacity = 0
-        }
+        onClosed: headerLevelSelector.opacity = 0
+        onFormatHeader: (level) => {
+                            toolBar.formatHeading(level)
+                            headerLevelSelector.closed()
+                        }
 
         Behavior on opacity {
             NumberAnimation {
