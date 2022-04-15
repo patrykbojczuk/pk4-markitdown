@@ -74,5 +74,6 @@
         <file alias="italic.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/italic.svg</file>
         <file alias="bold.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/bold.svg</file>
         <file alias="heading.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/heading.svg</file>
+        <file alias="close.svg">qml/assets/icons/EditorScreen/MarkdownToolBar/close.svg</file>
     </qresource>
 </RCC>
