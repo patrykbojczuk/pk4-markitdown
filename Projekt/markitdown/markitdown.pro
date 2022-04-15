@@ -9,7 +9,8 @@ CONFIG += \
     qmltypes
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        src/backendconnection.cpp
 
 RESOURCES += qml.qrc
 
@@ -28,3 +29,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+
+HEADERS += \
+    src/backendconnection.h

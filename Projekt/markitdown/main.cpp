@@ -4,6 +4,7 @@
 #include <QFontDatabase>
 #include <QDir>
 #include <QQuickStyle>
+#include "src/backendconnection.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +23,9 @@ int main(int argc, char *argv[])
     app.setFont(QFont("Poppins"));
 
     QQmlApplicationEngine engine;
+
+    qmlRegisterSingletonInstance("pb.pk.markitdown", 1, 0, "BackendConnection", &BackendConnection::getInstance());
+
     const QUrl url(u"qrc:/main.qml"_qs);
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
