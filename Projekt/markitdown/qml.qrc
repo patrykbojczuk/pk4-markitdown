@@ -18,6 +18,7 @@
         <file alias="CustomScrollBar.qml">qml/components/CustomScrollBar.qml</file>
         <file alias="CheatsheetComparison.qml">qml/components/CheatsheetComparison.qml</file>
         <file alias="HoverableMouseArea.qml">qml/components/HoverableMouseArea.qml</file>
+        <file alias="HeaderLevelSelector.qml">qml/components/HeaderLevelSelector.qml</file>
     </qresource>
     <qresource prefix="/views">
         <file alias="HomeScreen.qml">qml/views/HomeScreen.qml</file>
