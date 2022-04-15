@@ -8,13 +8,23 @@ Item {
     width: 1920
     height: 1080
 
+    MarkdownToolBar {
+        id: toolBar
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: 50
+    }
+
     Item {
         id: mainEditor
-        anchors.fill: parent
+        anchors.top: toolBar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         anchors.bottomMargin: 13
         anchors.rightMargin: 13
         anchors.leftMargin: 13
-        anchors.topMargin: 50
 
 
         Flickable {

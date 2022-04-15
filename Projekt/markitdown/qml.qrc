@@ -17,6 +17,7 @@
         <file alias="CustomToolTip.qml">qml/components/CustomToolTip.qml</file>
         <file alias="CustomScrollBar.qml">qml/components/CustomScrollBar.qml</file>
         <file alias="CheatsheetComparison.qml">qml/components/CheatsheetComparison.qml</file>
+        <file alias="MarkdownToolBar.qml">qml/components/MarkdownToolBar.qml</file>
         <file alias="HoverableMouseArea.qml">qml/components/HoverableMouseArea.qml</file>
         <file alias="HeaderLevelSelector.qml">qml/components/HeaderLevelSelector.qml</file>
     </qresource>
