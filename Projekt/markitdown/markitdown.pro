@@ -5,7 +5,7 @@ QT += \
     quickcontrols2
 
 CONFIG += \
-    c++2b
+    c++latest
     qmltypes
 
 SOURCES += \
@@ -32,3 +32,14 @@ QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
 
 HEADERS += \
     src/backendconnection.h
+
+INCLUDEPATH += $$PWD/lib/include
+DEPENDPATH += $$PWD/lib/include
+
+CONFIG(release, debug|release) {
+    macx: LIBS += -L$$PWD/lib/ -lmarkdownparser
+    macx: PRE_TARGETDEPS += $$PWD/lib/libmarkdownparser.a
+} else {
+    macx: LIBS += -L$$PWD/lib/ -lmarkdownparserd
+    macx: PRE_TARGETDEPS += $$PWD/lib/libmarkdownparserd.a
+}
