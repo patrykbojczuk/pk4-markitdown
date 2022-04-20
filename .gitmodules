@@ -1,0 +1,3 @@
+[submodule "Projekt/markitdown/lib/src/markdown-parser/tests/lib/googletest"]
+	path = Projekt/markitdown/lib/src/markdown-parser/tests/lib/googletest
+	url = https://github.com/google/googletest.git
