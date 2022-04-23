@@ -4,7 +4,11 @@ add_subdirectory(tests)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(markdownparser main.cpp)
+set(H_FILES markdown-document/markdown-elements/plaintextelement.h)
+
+set(SRC_FILES markdown-document/markdown-elements/plaintextelement.cpp)
+
+add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
 # $<TARGET_FILE_PREFIX:markdownparser>$<TARGET_FILE_BASE_NAME:markdownparser>$<$<STREQUAL:${CMAKE_BUILD_TYPE},Debug>:d>$<TARGET_FILE_SUFFIX:markdownparser>
 # Prefix (lib if library) + Base (without lib) file name + (${CMAKE_BUILD_TYPE} === 'Debug' ? 'd' : '') + File extension
