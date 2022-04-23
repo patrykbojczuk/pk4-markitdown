@@ -4,9 +4,17 @@ add_subdirectory(tests)
 
 set(CMAKE_CXX_STANDARD 23)
 
-set(H_FILES markdown-document/markdown-elements/plaintextelement.h)
+set(H_FILES
+        markdown-document/markdown-elements/plaintextelement.h
+        markdown-document/markdown-elements/linkableelement.h
+        markdown-document/markdown-elements/linkelement.h
+        markdown-document/markdown-elements/imageelement.h)
 
-set(SRC_FILES markdown-document/markdown-elements/plaintextelement.cpp)
+set(SRC_FILES
+        markdown-document/markdown-elements/plaintextelement.cpp
+        markdown-document/markdown-elements/linkableelement.cpp
+        markdown-document/markdown-elements/linkelement.cpp
+        markdown-document/markdown-elements/imageelement.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
