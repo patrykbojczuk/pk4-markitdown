@@ -14,7 +14,8 @@ set(H_FILES
         markdown-document/markdown-elements/strongemphasiselement.h
         markdown-document/markdown-elements/emphasiselement.h
         markdown-document/markdown-elements/inlinecodeelement.h
-        markdown-document/markdown-elements/vinlinemarkdownelement.h)
+        markdown-document/markdown-elements/vinlinemarkdownelement.h
+        markdown-document/markdown-elements/textlineelement.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -25,7 +26,8 @@ set(SRC_FILES
         markdown-document/markdown-elements/strikethroughelement.cpp
         markdown-document/markdown-elements/strongemphasiselement.cpp
         markdown-document/markdown-elements/emphasiselement.cpp
-        markdown-document/markdown-elements/inlinecodeelement.cpp)
+        markdown-document/markdown-elements/inlinecodeelement.cpp
+        markdown-document/markdown-elements/textlineelement.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
