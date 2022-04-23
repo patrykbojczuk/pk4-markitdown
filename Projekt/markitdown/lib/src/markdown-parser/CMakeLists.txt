@@ -8,13 +8,24 @@ set(H_FILES
         markdown-document/markdown-elements/plaintextelement.h
         markdown-document/markdown-elements/linkableelement.h
         markdown-document/markdown-elements/linkelement.h
-        markdown-document/markdown-elements/imageelement.h)
+        markdown-document/markdown-elements/imageelement.h
+        markdown-document/markdown-elements/nestedelement.h
+        markdown-document/markdown-elements/strikethroughelement.h
+        markdown-document/markdown-elements/strongemphasiselement.h
+        markdown-document/markdown-elements/emphasiselement.h
+        markdown-document/markdown-elements/inlinecodeelement.h
+        markdown-document/markdown-elements/vinlinemarkdownelement.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
         markdown-document/markdown-elements/linkableelement.cpp
         markdown-document/markdown-elements/linkelement.cpp
-        markdown-document/markdown-elements/imageelement.cpp)
+        markdown-document/markdown-elements/imageelement.cpp
+        markdown-document/markdown-elements/nestedelement.cpp
+        markdown-document/markdown-elements/strikethroughelement.cpp
+        markdown-document/markdown-elements/strongemphasiselement.cpp
+        markdown-document/markdown-elements/emphasiselement.cpp
+        markdown-document/markdown-elements/inlinecodeelement.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
