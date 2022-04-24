@@ -7,7 +7,7 @@ enable_testing()
 
 set(TEST_FILES
         src/markdown-document/markdown-elements/plaintextelement.cpp
-        src/markdown-document/markdown-elements/linkelement.cpp
+        src/markdown-document/markdown-elements/linkableelements.cpp
         src/markdown-document/markdown-elements/nestableelements.cpp
         src/markdown-document/markdown-elements/textlineelement.cpp
         src/markdown-document/markdown-elements/multilinetextelement.cpp
