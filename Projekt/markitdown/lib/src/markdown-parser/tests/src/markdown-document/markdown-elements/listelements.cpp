@@ -7,7 +7,7 @@
 
 using namespace MarkdownParser::MarkdownDocument;
 
-TEST(ListElements$UnorderedList, SetsTextLineElementOnConstruction) {
+TEST(ListElements$UnorderedList, SetsMultilineTextElementOnConstruction) {
     VInlineMarkdownElement textElement(make_recursive<PlainTextElement>(L"Example text"));
     TextLineElement textLine(textElement);
     MultilineTextElement text(textLine);
@@ -21,7 +21,7 @@ TEST(ListElements$UnorderedList, SetsTextLineElementOnConstruction) {
     EXPECT_STREQ(retStr.c_str(), L"Example text");
 }
 
-TEST(ListElements$UnorderedList, AddsTextLineElements) {
+TEST(ListElements$UnorderedList, AddsMultilineTextElements) {
     VInlineMarkdownElement textElement1(make_recursive<PlainTextElement>(L"Example text"));
     TextLineElement textLine1(textElement1);
     MultilineTextElement text1(textLine1);
@@ -49,7 +49,7 @@ TEST(ListElements$UnorderedList, AddsTextLineElements) {
     EXPECT_STREQ(retStr.c_str(), L"Yet another text");
 }
 
-TEST(ListElements$OrderedList, SetsTextLineElementOnConstruction) {
+TEST(ListElements$OrderedList, SetsMultilineTextElementOnConstruction) {
     VInlineMarkdownElement textElement(make_recursive<PlainTextElement>(L"Example text"));
     TextLineElement textLine(textElement);
     MultilineTextElement text(textLine);
@@ -63,7 +63,7 @@ TEST(ListElements$OrderedList, SetsTextLineElementOnConstruction) {
     EXPECT_STREQ(retStr.c_str(), L"Example text");
 }
 
-TEST(ListElements$OrderedList, AddsTextLineElements) {
+TEST(ListElements$OrderedList, AddsMultilineTextElements) {
     VInlineMarkdownElement textElement1(make_recursive<PlainTextElement>(L"Example text"));
     TextLineElement textLine1(textElement1);
     MultilineTextElement text1(textLine1);
