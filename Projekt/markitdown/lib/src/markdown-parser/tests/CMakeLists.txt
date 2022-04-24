@@ -10,7 +10,8 @@ set(TEST_FILES
         src/markdown-document/markdown-elements/linkelement.cpp
         src/markdown-document/markdown-elements/nestableelements.cpp
         src/markdown-document/markdown-elements/textlineelement.cpp
-        src/markdown-document/markdown-elements/multilinetextelement.cpp) # Files with tests to run
+        src/markdown-document/markdown-elements/multilinetextelement.cpp
+        src/markdown-document/markdown-elements/listelements.cpp) # Files with tests to run
 
 add_executable(run_gtest ${TEST_FILES})
 target_link_libraries(run_gtest markdownparser)
