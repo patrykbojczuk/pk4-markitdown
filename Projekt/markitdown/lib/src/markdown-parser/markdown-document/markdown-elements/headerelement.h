@@ -11,10 +11,13 @@ namespace MarkdownParser {
         private:
             MarkdownHeaderLevel level;
             TextLineElement text;
+            std::wstring id;
         public:
-            HeaderElement(MarkdownHeaderLevel level, const TextLineElement& text);
+            HeaderElement(MarkdownHeaderLevel level, const TextLineElement& text, const std::wstring& id = L"");
             MarkdownHeaderLevel getLevel() const;
             const TextLineElement& getText() const;
+            bool hasId() const;
+            const std::wstring& getId() const;
         };
     };
 };
