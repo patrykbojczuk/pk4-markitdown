@@ -16,7 +16,10 @@ set(H_FILES
         markdown-document/markdown-elements/inlinecodeelement.h
         markdown-document/markdown-elements/vinlinemarkdownelement.h
         markdown-document/markdown-elements/textlineelement.h
-        markdown-document/markdown-elements/multilinetextelement.h)
+        markdown-document/markdown-elements/multilinetextelement.h
+        markdown-document/markdown-elements/listelement.h
+        markdown-document/markdown-elements/unorderedlistelement.h
+        markdown-document/markdown-elements/orderedlistelement.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -29,7 +32,10 @@ set(SRC_FILES
         markdown-document/markdown-elements/emphasiselement.cpp
         markdown-document/markdown-elements/inlinecodeelement.cpp
         markdown-document/markdown-elements/textlineelement.cpp
-        markdown-document/markdown-elements/multilinetextelement.cpp)
+        markdown-document/markdown-elements/multilinetextelement.cpp
+        markdown-document/markdown-elements/listelement.cpp
+        markdown-document/markdown-elements/unorderedlistelement.cpp
+        markdown-document/markdown-elements/orderedlistelement.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
