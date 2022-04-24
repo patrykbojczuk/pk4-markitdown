@@ -19,7 +19,9 @@ set(H_FILES
         markdown-document/markdown-elements/multilinetextelement.h
         markdown-document/markdown-elements/listelement.h
         markdown-document/markdown-elements/unorderedlistelement.h
-        markdown-document/markdown-elements/orderedlistelement.h)
+        markdown-document/markdown-elements/orderedlistelement.h
+        markdown-document/markdown-elements/headerelement.h
+        markdownheaderlevel.enum.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -35,7 +37,8 @@ set(SRC_FILES
         markdown-document/markdown-elements/multilinetextelement.cpp
         markdown-document/markdown-elements/listelement.cpp
         markdown-document/markdown-elements/unorderedlistelement.cpp
-        markdown-document/markdown-elements/orderedlistelement.cpp)
+        markdown-document/markdown-elements/orderedlistelement.cpp
+        markdown-document/markdown-elements/headerelement.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
