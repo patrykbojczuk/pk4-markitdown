@@ -14,3 +14,7 @@ const std::vector<MarkdownParser::MarkdownDocument::VInlineMarkdownElement> &Mar
 {
     return contents;
 }
+
+MarkdownParser::MarkdownDocument::VInlineMarkdownElement &MarkdownParser::MarkdownDocument::TextLineElement::operator[](int pos) {
+    return contents.at(pos);
+}

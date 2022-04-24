@@ -15,3 +15,7 @@ const std::vector<MarkdownParser::MarkdownDocument::PlainTextElement> &MarkdownP
 const std::wstring &MarkdownParser::MarkdownDocument::CodeblockElement::getLanguage() const {
     return language;
 }
+
+MarkdownParser::MarkdownDocument::PlainTextElement &MarkdownParser::MarkdownDocument::CodeblockElement::operator[](int pos) {
+    return lines.at(pos);
+}

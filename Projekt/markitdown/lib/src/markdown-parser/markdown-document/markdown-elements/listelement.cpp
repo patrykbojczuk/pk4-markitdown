@@ -14,3 +14,7 @@ const std::vector<MarkdownParser::MarkdownDocument::MultilineTextElement> &Markd
 {
     return items;
 }
+
+MarkdownParser::MarkdownDocument::MultilineTextElement &MarkdownParser::MarkdownDocument::ListElement::operator[](int pos) {
+    return items.at(pos);
+}

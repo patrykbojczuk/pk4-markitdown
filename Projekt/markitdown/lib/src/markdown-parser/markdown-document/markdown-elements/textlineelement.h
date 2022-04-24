@@ -13,6 +13,7 @@ namespace MarkdownParser {
             TextLineElement(VInlineMarkdownElement& element);
             void add(VInlineMarkdownElement& element);
             const std::vector<VInlineMarkdownElement>& getContents() const;
+            VInlineMarkdownElement& operator[](int pos);
         };
     };
 };

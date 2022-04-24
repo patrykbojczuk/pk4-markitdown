@@ -17,6 +17,7 @@ namespace MarkdownParser {
             void add(const PlainTextElement& line);
             const std::vector<PlainTextElement>& getLines() const;
             const std::wstring& getLanguage() const;
+            PlainTextElement& operator[](int pos);
         };
     };
 };

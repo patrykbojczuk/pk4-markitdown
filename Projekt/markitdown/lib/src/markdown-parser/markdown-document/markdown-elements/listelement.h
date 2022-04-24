@@ -14,6 +14,7 @@ namespace MarkdownParser {
         public:
             void add(MultilineTextElement& item);
             const std::vector<MultilineTextElement>& getItems() const;
+            MultilineTextElement& operator[](int pos);
         };
     };
 };

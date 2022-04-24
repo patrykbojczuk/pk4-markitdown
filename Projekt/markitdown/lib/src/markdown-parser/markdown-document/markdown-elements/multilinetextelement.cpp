@@ -14,3 +14,7 @@ const std::vector<MarkdownParser::MarkdownDocument::TextLineElement> &MarkdownPa
 {
     return lines;
 }
+
+MarkdownParser::MarkdownDocument::TextLineElement &MarkdownParser::MarkdownDocument::MultilineTextElement::operator[](int pos) {
+    return lines.at(pos);
+}

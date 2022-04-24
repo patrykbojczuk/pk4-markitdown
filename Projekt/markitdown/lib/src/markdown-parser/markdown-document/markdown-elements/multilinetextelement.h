@@ -13,6 +13,7 @@ namespace MarkdownParser {
             MultilineTextElement(const TextLineElement& line);
             void add(const TextLineElement& line);
             const std::vector<TextLineElement>& getLines() const;
+            TextLineElement& operator[](int pos);
         };
     };
 };
