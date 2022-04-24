@@ -36,3 +36,27 @@ TEST(TextLineElement, AddsInlineElements) {
     EXPECT_STREQ(retStr1.c_str(), L"Another text");
     EXPECT_STREQ(retStr2.c_str(), L"Yet another text");
 }
+
+TEST(TextLineElement, ThrowsOnOutOfRangeIndex) {
+    VInlineMarkdownElement textElement(make_recursive<PlainTextElement>(L"Example text"));
+    VInlineMarkdownElement emphasisElement(make_recursive<EmphasisElement>(textElement));
+    TextLineElement element(emphasisElement);
+
+    EXPECT_NO_THROW(element[0]);
+    EXPECT_THROW(element[9], std::out_of_range);
+}
+
+TEST(TextLineElement, ReturnsElementOnIndex) {
+    VInlineMarkdownElement textElement(make_recursive<PlainTextElement>(L"Example text"));
+    VInlineMarkdownElement emphasisElement(make_recursive<EmphasisElement>(textElement));
+    TextLineElement element(emphasisElement);
+    VInlineMarkdownElement textElement2(make_recursive<PlainTextElement>(L"Another text"));
+    element.add(textElement2);
+    VInlineMarkdownElement textElement3(make_recursive<PlainTextElement>(L"Yet another text"));
+    element.add(textElement3);
+
+    EXPECT_STREQ(std::get<Recursive<PlainTextElement>>(
+        std::get<Recursive<EmphasisElement>>(element[0])->getElement()
+    )->getText().c_str(), L"Example text");
+    EXPECT_STREQ(std::get<Recursive<PlainTextElement>>(element[2])->getText().c_str(), L"Yet another text");
+}
