@@ -21,7 +21,8 @@ set(H_FILES
         markdown-document/markdown-elements/unorderedlistelement.h
         markdown-document/markdown-elements/orderedlistelement.h
         markdown-document/markdown-elements/headerelement.h
-        markdownheaderlevel.enum.h)
+        markdownheaderlevel.enum.h
+        markdown-document/markdown-elements/codeblockelement.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -38,7 +39,8 @@ set(SRC_FILES
         markdown-document/markdown-elements/listelement.cpp
         markdown-document/markdown-elements/unorderedlistelement.cpp
         markdown-document/markdown-elements/orderedlistelement.cpp
-        markdown-document/markdown-elements/headerelement.cpp)
+        markdown-document/markdown-elements/headerelement.cpp
+        markdown-document/markdown-elements/codeblockelement.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
