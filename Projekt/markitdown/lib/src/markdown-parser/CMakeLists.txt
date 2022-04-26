@@ -29,7 +29,8 @@ set(H_FILES
         markdown-document/markdown-elements/vtoplevelmarkdownelement.h
         markdown-document/markdowndocument.h
         markdown-tokens/plaintexttoken.h
-        markdown-tokens/headertoken.h)
+        markdown-tokens/headertoken.h
+        markdown-tokens/headerunderlinetoken.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -53,7 +54,8 @@ set(SRC_FILES
         markdown-document/markdown-elements/paragraphelement.cpp
         markdown-document/markdowndocument.cpp
         markdown-tokens/plaintexttoken.cpp
-        markdown-tokens/headertoken.cpp)
+        markdown-tokens/headertoken.cpp
+        markdown-tokens/headerunderlinetoken.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
