@@ -13,7 +13,7 @@ namespace MarkdownParser {
             std::wstring id;
         public:
             HeaderToken(MarkdownHeaderLevel level, const std::wstring& text, const std::wstring& id = L"");
-            MarkdownHeaderLevel getLevel();
+            MarkdownHeaderLevel getLevel() const;
             bool hasId() const;
             const std::wstring& getId() const;
         };

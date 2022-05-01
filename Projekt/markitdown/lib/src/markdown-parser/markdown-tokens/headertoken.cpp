@@ -2,7 +2,7 @@
 
 MarkdownParser::MarkdownParser::HeaderToken::HeaderToken(MarkdownHeaderLevel level, const std::wstring& text, const std::wstring& id) : PlainTextToken(text), level(level), id(id) { }
 
-MarkdownHeaderLevel MarkdownParser::MarkdownParser::HeaderToken::getLevel()
+MarkdownHeaderLevel MarkdownParser::MarkdownParser::HeaderToken::getLevel() const
 {
     return level;
 }
