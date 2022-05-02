@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
+#include <ranges>
 #include "markdown-tokens/blockquotetoken.h"
 #include "markdown-tokens/codetoken.h"
 #include "markdown-tokens/emptytoken.h"
@@ -16,6 +17,15 @@
 #include "markdown-tokens/plaintexttoken.h"
 #include "markdown-tokens/unorderedlisttoken.h"
 #include "linkablereference.h"
+
+namespace std::ranges {
+    template<>
+    inline constexpr bool enable_view<std::wstring_view> = true;
+}
+
+using namespace std::string_view_literals;
+
+using split_view_iterator = decltype(std::declval<std::ranges::split_view<std::wstring_view, std::wstring_view>>().begin());
 
 namespace MarkdownParser {
     namespace MarkdownParser {
@@ -37,18 +47,20 @@ namespace MarkdownParser {
             std::unordered_map<std::wstring, LinkableReference> references;
             std::vector<VMarkdownToken> tokens;
             const std::wstring sourceMarkdown;
+            std::ranges::split_view<std::wstring_view, std::wstring_view> lines;
             bool finished = false;
             size_t numOfLines = 0;
 
             void start();
-
+            
             std::vector<VMarkdownToken>
-            tokenize(std::wstring::const_iterator from, std::wstring::const_iterator to) const;
+            tokenize(
+                    std::ranges::subrange<split_view_iterator> sublines) const;
 
             void addReference(const std::wstring &refId, const std::wstring &url, const std::wstring &title = L"");
 
             void createNextThread(std::vector<std::future<std::vector<VMarkdownToken>>> &futures, size_t increment,
-                                  std::wstring::const_iterator &start, std::wstring::const_iterator &end) const;
+                                  split_view_iterator &start, split_view_iterator &end) const;
         };
     }
 }
