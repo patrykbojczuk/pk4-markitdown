@@ -6,7 +6,7 @@
 #include <string_view>
 #include "markdowntokenizer.h"
 #include "nthelement.hpp"
-#include "helpers/trim.cpp"
+#include "helpers/trim.h"
 
 MarkdownParser::MarkdownParser::MarkdownTokenizer::MarkdownTokenizer(const std::wstring &markdown) : sourceMarkdown(
         markdown), lines(std::wstring_view(sourceMarkdown.begin(), sourceMarkdown.end()) |
@@ -91,34 +91,46 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
     for (auto _line: sublines) {
         std::wstring_view line(_line.begin(), _line.end());
         line = wsv_trim(line, L"\n\r");
+        std::match_results<std::wstring_view::const_iterator> match;
 
         if (wsv_trim(line).empty()) {
             // Empty Token
             retVec.push_back(EmptyToken{});
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^>[ ]?(.*)"))) {
+        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^>[ ]?(.*)"))) {
             // Blockquote
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^`{3}(.*)"))) {
+        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^`{3}(.*)"))) {
             // Code block
         } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^={3,}\\s*$"))) {
             // Lvl 1 Header Underline
         } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^-{3,}\\s*$"))) {
             // Lvl 2 Header Underline
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^(#{1,6})\\s+(.*)"))) {
+        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^(#{1,6})\\s+(.*)"))) {
             // Header
-        } else if (std::regex_match(line.begin(), line.end(),
+            std::match_results<std::wstring_view::const_iterator> idMatch;
+            const std::wstring_view text = wsv_rtrim(match[2].first, L"\t\n\v\f\r# ");
+            if (std::regex_match(text.begin(), text.end(), idMatch, std::wregex(L"^(.*)\\s+\\{#(.*)\\}\\s*"))) {
+                retVec.push_back(
+                        HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(idMatch[1].str()),
+                                    std::wstring(idMatch[2].str())));
+            } else {
+                retVec.push_back(HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(text)));
+            }
+        } else if (std::regex_match(line.begin(), line.end(), match,
                                     std::wregex(L"^((\\*\\s*){3,} | (-\\s*){3,} | (_\\s*){3,} )$",
                                                 std::regex_constants::extended))) {
             // Horizontal Rule
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^[-*+]\\s+(.+)"))) {
+        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^[-*+]\\s+(.+)"))) {
             // Unordered list
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^\\d+\\.\\s+(.+)"))) {
+        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^\\d+\\.\\s+(.+)"))) {
             // Ordered list
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(
-                L"^[ ]{0,3} \\[([^\\]]+)\\] : \\s* (\\S+) \\s* (?| \\\"([^\\\"]+)\\\" | '([^']+)' | \\(([^)]+)\\) | () ) \\s*$",
+        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(
+                //L"^[ ]{0,3} \\[([^\\]]+)\\] : \\s* (\\S+) \\s* (?| \\\"([^\\\"]+)\\\" | '([^']+)' | \\(([^)]+)\\) | () ) \\s*$",
+                L"^[ ]{0,3} ", // Mismatched '(' and ')'
                 std::regex_constants::extended))) {
             // Reference
         } else {
             // Plain Text
+            retVec.push_back(PlainTextToken(std::wstring(wsv_trim(line)), std::wstring(line)));
         }
     }
 
