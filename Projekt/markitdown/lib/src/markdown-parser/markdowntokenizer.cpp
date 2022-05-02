@@ -94,6 +94,7 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
 
         if (wsv_trim(line).empty()) {
             // Empty Token
+            retVec.push_back(EmptyToken{});
         } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^>[ ]?(.*)"))) {
             // Blockquote
         } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^`{3}(.*)"))) {
