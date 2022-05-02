@@ -106,8 +106,10 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
             retVec.push_back(EmptyToken{});
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^>[ ]?(.*)"))) {
             // Blockquote
+            retVec.push_back(BlockquoteToken(std::wstring(match[1].str())));
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^`{3}(.*)"))) {
             // Code block
+            retVec.push_back(CodeToken(std::wstring(match[1].str())));
         } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^={1,}\\s*$"))) {
             // Lvl 1 Header Underline
             retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level1));
