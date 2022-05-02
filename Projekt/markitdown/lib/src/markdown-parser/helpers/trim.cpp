@@ -1,5 +1,6 @@
 #include <string_view>
 #include <iostream>
+#include "trim.h"
 
 using namespace std::string_view_literals;
 
@@ -8,7 +9,7 @@ auto rtrim(std::basic_string_view<_CharT, _Traits> sv,
            std::basic_string<_CharT, _Traits> chars) {
     auto lNO = sv.find_last_not_of(chars);
     if (lNO != std::string_view::npos) {
-        sv.remove_suffix(std::min(sv.length() - lNO - 1, sv.length()));
+        sv.remove_suffix(std::min(sv.length() - (lNO + 1), sv.length()));
     }
 
     return sv;
@@ -28,14 +29,14 @@ auto trim(std::basic_string_view<_CharT, _Traits> sv,
     return rtrim(ltrim(sv, chars), chars);
 }
 
-auto wsv_rtrim(std::wstring_view sv, std::wstring chars = L"\t\n\v\f\r ") {
+std::wstring_view wsv_rtrim(std::wstring_view sv, std::wstring chars) {
     return rtrim(sv, chars);
 }
 
-auto wsv_ltrim(std::wstring_view sv, std::wstring chars = L"\t\n\v\f\r ") {
+std::wstring_view wsv_ltrim(std::wstring_view sv, std::wstring chars) {
     return ltrim(sv, chars);
 }
 
-auto wsv_trim(std::wstring_view sv, std::wstring chars = L"\t\n\v\f\r ") {
+std::wstring_view wsv_trim(std::wstring_view sv, std::wstring chars) {
     return trim(sv, chars);
 }

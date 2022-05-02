@@ -38,7 +38,8 @@ set(H_FILES
         markdown-tokens/emptytoken.h
         markdown-tokens/horizontalruletoken.h
         markdown-tokens/orderedlisttoken.h
-        markdown-tokens/unorderedlisttoken.h)
+        markdown-tokens/unorderedlisttoken.h
+        helpers/trim.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
