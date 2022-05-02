@@ -132,8 +132,10 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
             retVec.push_back(HorizontalRuleToken{});
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^[-*+]\\s+(.+)"))) {
             // Unordered list
+            retVec.push_back(UnorderedListToken(std::wstring(match[1].str())));
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^\\d+\\.\\s+(.+)"))) {
             // Ordered list
+            retVec.push_back(OrderedListToken(std::wstring(match[1].str())));
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(
                 //L"^[ ]{0,3} \\[([^\\]]+)\\] : \\s* (\\S+) \\s* (?| \\\"([^\\\"]+)\\\" | '([^']+)' | \\(([^)]+)\\) | () ) \\s*$",
                 L"^[ ]{0,3} ", // Mismatched '(' and ')'
