@@ -10,7 +10,9 @@
 
 MarkdownParser::MarkdownParser::MarkdownTokenizer::MarkdownTokenizer(const std::wstring &markdown) : sourceMarkdown(
         markdown), lines(std::wstring_view(sourceMarkdown.begin(), sourceMarkdown.end()) |
-                         std::views::split(L"\n"sv)), numOfLines(std::ranges::distance(lines)) {}
+                         std::views::split(L"\n"sv)), numOfLines(std::ranges::distance(lines)) {
+    start();
+}
 
 const bool MarkdownParser::MarkdownParser::MarkdownTokenizer::isTokenizationFinished() const {
     return finished;
@@ -31,6 +33,10 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::getReference(const std::wstri
 }
 
 void MarkdownParser::MarkdownParser::MarkdownTokenizer::start() {
+    if (!numOfLines) {
+        finished = true;
+        return;
+    }
     std::vector<std::future<std::vector<VMarkdownToken>>> futures;
 
     unsigned int availableThreads = std::thread::hardware_concurrency() ?: 1;
