@@ -271,25 +271,55 @@ TEST(MarkdownTokenizer, CreatesHorizontalRule) {
 
     EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer1.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer2.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer3.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer4.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer5.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer6.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer7.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer8.getTokens()[0]);
+    );
+    EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer9.getTokens()[0]);
     );
 
     // should not create HR
     MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer10(L"__");
-    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer11(L"--");
+    // MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer11(L"--");
+    //      - it can actually happen as HeaderUnderlineToken collision creates HorizontalRuleToken by default
     MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer12(L"**");
     EXPECT_THROW(
-            std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer10.getTokens()[0]);
-            std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer11.getTokens()[0]);
-            std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer12.getTokens()[0]);,
+            std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer10.getTokens()[0]),
+            std::bad_variant_access
+    );
+//    EXPECT_THROW(
+//            std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer11.getTokens()[0]),
+//            std::bad_variant_access
+//    );
+    EXPECT_THROW(
+            std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer12.getTokens()[0]),
             std::bad_variant_access);
+
+
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer13(L"Example text\n----");
+    EXPECT_THROW(
+            std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokenizer13.getTokens()[1]),
+            std::bad_variant_access
+    );
 }
 
 TEST(MarkdownTokenizer, CreatesOrderedList) {
