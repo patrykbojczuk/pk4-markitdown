@@ -58,7 +58,8 @@ set(SRC_FILES
         markdown-tokens/plaintexttoken.cpp
         markdown-tokens/headertoken.cpp
         markdown-tokens/headerunderlinetoken.cpp
-        markdown-tokens/codetoken.cpp)
+        markdown-tokens/codetoken.cpp
+        helpers/trim.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
@@ -66,6 +67,6 @@ add_library(markdownparser ${SRC_FILES} ${H_FILES})
 # Prefix (lib if library) + Base (without lib) file name + (${CMAKE_BUILD_TYPE} === 'Debug' ? 'd' : '') + File extension
 # e.g. library markdownparser.a built in debug = 'lib' + 'markdownparser' + 'd' + '.a' = libmarkdownparserd.a
 add_custom_command(TARGET markdownparser
-                   POST_BUILD COMMAND ${CMAKE_COMMAND} -E
-                        copy $<TARGET_FILE:markdownparser>
-                        $<TARGET_FILE_DIR:markdownparser>/../../$<TARGET_FILE_PREFIX:markdownparser>$<TARGET_FILE_BASE_NAME:markdownparser>$<$<STREQUAL:${CMAKE_BUILD_TYPE},Debug>:d>$<TARGET_FILE_SUFFIX:markdownparser>)
+        POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+        copy $<TARGET_FILE:markdownparser>
+        $<TARGET_FILE_DIR:markdownparser>/../../$<TARGET_FILE_PREFIX:markdownparser>$<TARGET_FILE_BASE_NAME:markdownparser>$<$<STREQUAL:${CMAKE_BUILD_TYPE},Debug>:d>$<TARGET_FILE_SUFFIX:markdownparser>)
