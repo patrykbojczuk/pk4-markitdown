@@ -1,3 +1,3 @@
 #include "orderedlisttoken.h"
 
-OrderedListToken::OrderedListToken(const std::wstring& text) : PlainTextToken(text) { }
+MarkdownParser::MarkdownParser::OrderedListToken::OrderedListToken(const std::wstring &text) : PlainTextToken(text) {}
