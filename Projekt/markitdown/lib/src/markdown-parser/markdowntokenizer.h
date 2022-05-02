@@ -6,6 +6,7 @@
 #include <variant>
 #include <vector>
 #include <ranges>
+#include <unordered_set>
 #include "markdown-tokens/blockquotetoken.h"
 #include "markdown-tokens/codetoken.h"
 #include "markdown-tokens/emptytoken.h"
@@ -52,15 +53,17 @@ namespace MarkdownParser {
             size_t numOfLines = 0;
 
             void start();
-            
-            std::vector<VMarkdownToken>
+
+            std::pair<std::vector<VMarkdownToken>, std::unordered_set<size_t>>
             tokenize(
                     std::ranges::subrange<split_view_iterator> sublines) const;
 
             void addReference(const std::wstring &refId, const std::wstring &url, const std::wstring &title = L"");
 
-            void createNextThread(std::vector<std::future<std::vector<VMarkdownToken>>> &futures, size_t increment,
-                                  split_view_iterator &start, split_view_iterator &end) const;
+            void createNextThread(
+                    std::vector<std::future<std::pair<std::vector<VMarkdownToken>, std::unordered_set<size_t>>>> &futures,
+                    size_t increment,
+                    split_view_iterator &start, split_view_iterator &end) const;
         };
     }
 }

@@ -37,7 +37,7 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::start() {
         finished = true;
         return;
     }
-    std::vector<std::future<std::vector<VMarkdownToken>>> futures;
+    std::vector<std::future<std::pair<std::vector<VMarkdownToken>, std::unordered_set<size_t>>>> futures;
 
     unsigned int availableThreads = std::thread::hardware_concurrency() ?: 1;
     unsigned int runOnThreads = numOfLines < availableThreads
@@ -64,10 +64,16 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::start() {
 
     for (i = 0; i < runOnThreads; ++i) {
         auto returnedTokens = futures[i].get();
-        tokens.reserve(tokens.size() + returnedTokens.size());
+        tokens.reserve(tokens.size() + returnedTokens.first.size());
 
-        for (auto &token: returnedTokens) {
-            tokens.push_back(std::move(token));
+        for (size_t j = 0; j < returnedTokens.first.size(); ++j) {
+            if (returnedTokens.second.contains(j) &&
+                ((tokens.size() && !std::holds_alternative<PlainTextToken>(tokens[tokens.size() - 1])) ||
+                 !tokens.size())) {
+                tokens.push_back(HorizontalRuleToken{});
+                continue;
+            }
+            tokens.push_back(std::move(returnedTokens.first[j]));
         }
     }
 
@@ -75,7 +81,8 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::start() {
 }
 
 void MarkdownParser::MarkdownParser::MarkdownTokenizer::createNextThread(
-        std::vector<std::future<std::vector<MarkdownTokenizer::VMarkdownToken>>> &futures, size_t increment,
+        std::vector<std::future<std::pair<std::vector<MarkdownTokenizer::VMarkdownToken>, std::unordered_set<size_t>>>> &futures,
+        size_t increment,
         split_view_iterator &start, split_view_iterator &end) const {
     futures.push_back(std::async(std::launch::async, &MarkdownTokenizer::tokenize, this,
                                  std::ranges::subrange(start, end)));
@@ -83,10 +90,11 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::createNextThread(
     std::ranges::advance(end, increment);
 }
 
-std::vector<MarkdownParser::MarkdownParser::MarkdownTokenizer::VMarkdownToken>
+std::pair<std::vector<MarkdownParser::MarkdownParser::MarkdownTokenizer::VMarkdownToken>, std::unordered_set<size_t>>
 MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
         std::ranges::subrange<decltype(std::declval<std::ranges::split_view<std::wstring_view, std::wstring_view>>().begin())> sublines) const {
     std::vector<VMarkdownToken> retVec;
+    std::unordered_set<size_t> retVecCollisionIds;
 
     for (auto _line: sublines) {
         std::wstring_view line(_line.begin(), _line.end());
@@ -105,6 +113,7 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
             retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level1));
         } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^-{1,}\\s*$"))) {
             // Lvl 2 Header Underline
+            retVecCollisionIds.insert(retVec.size());
             retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level2));
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^(#{1,6})\\s+(.*)"))) {
             // Header
@@ -117,10 +126,10 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
             } else {
                 retVec.push_back(HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(text)));
             }
-        } else if (std::regex_match(line.begin(), line.end(), match,
-                                    std::wregex(L"^((\\*\\s*){3,} | (-\\s*){3,} | (_\\s*){3,} )$",
-                                                std::regex_constants::extended))) {
+        } else if (std::regex_match(line.begin(), line.end(),
+                                    std::wregex(L"^([-_*][ \\t]*){3,}$"))) {
             // Horizontal Rule
+            retVec.push_back(HorizontalRuleToken{});
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^[-*+]\\s+(.+)"))) {
             // Unordered list
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^\\d+\\.\\s+(.+)"))) {
@@ -136,7 +145,7 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
         }
     }
 
-    return std::move(retVec);
+    return std::make_pair(std::move(retVec), std::move(retVecCollisionIds));
 }
 
 void MarkdownParser::MarkdownParser::MarkdownTokenizer::addReference(const std::wstring &refId, const std::wstring &url,
