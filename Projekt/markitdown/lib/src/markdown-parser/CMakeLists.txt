@@ -33,7 +33,12 @@ set(H_FILES
         markdown-tokens/headerunderlinetoken.h
         markdown-tokens/codetoken.h
         markdowntokenizer.h
-        nthelement.hpp)
+        nthelement.hpp
+        markdown-tokens/blockquotetoken.h
+        markdown-tokens/emptytoken.h
+        markdown-tokens/horizontalruletoken.h
+        markdown-tokens/orderedlisttoken.h
+        markdown-tokens/unorderedlisttoken.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -61,7 +66,12 @@ set(SRC_FILES
         markdown-tokens/headerunderlinetoken.cpp
         markdown-tokens/codetoken.cpp
         markdowntokenizer.cpp
-        helpers/trim.cpp)
+        helpers/trim.cpp
+        markdown-tokens/blockquotetoken.cpp
+        markdown-tokens/emptytoken.cpp
+        markdown-tokens/horizontalruletoken.cpp
+        markdown-tokens/orderedlisttoken.cpp
+        markdown-tokens/unorderedlisttoken.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 
