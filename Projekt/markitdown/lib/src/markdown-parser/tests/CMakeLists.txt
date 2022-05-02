@@ -1,5 +1,7 @@
 project(tests)
 
+set(CMAKE_CXX_STANDARD 23)
+
 add_subdirectory(lib/googletest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
@@ -18,7 +20,8 @@ set(TEST_FILES
         src/markdown-tokens/plaintexttoken.cpp
         src/markdown-tokens/headertoken.cpp
         src/markdown-tokens/headerunderlinetoken.cpp
-        src/markdown-tokens/codetoken.cpp) # Files with tests to run
+        src/markdown-tokens/codetoken.cpp
+        src/markdowntokenizer.cpp) # Files with tests to run
 
 add_executable(run_gtest ${TEST_FILES})
 target_link_libraries(run_gtest markdownparser)
