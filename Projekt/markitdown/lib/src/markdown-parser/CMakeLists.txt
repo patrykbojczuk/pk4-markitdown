@@ -32,6 +32,7 @@ set(H_FILES
         markdown-tokens/headertoken.h
         markdown-tokens/headerunderlinetoken.h
         markdown-tokens/codetoken.h
+        markdowntokenizer.h
         nthelement.hpp)
 
 set(SRC_FILES
@@ -59,6 +60,7 @@ set(SRC_FILES
         markdown-tokens/headertoken.cpp
         markdown-tokens/headerunderlinetoken.cpp
         markdown-tokens/codetoken.cpp
+        markdowntokenizer.cpp
         helpers/trim.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
