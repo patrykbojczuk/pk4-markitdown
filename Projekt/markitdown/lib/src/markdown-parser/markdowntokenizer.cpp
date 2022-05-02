@@ -100,10 +100,12 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
             // Blockquote
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^`{3}(.*)"))) {
             // Code block
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^={3,}\\s*$"))) {
+        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^={1,}\\s*$"))) {
             // Lvl 1 Header Underline
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^-{3,}\\s*$"))) {
+            retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level1));
+        } else if (std::regex_match(line.begin(), line.end(), std::wregex(L"^-{1,}\\s*$"))) {
             // Lvl 2 Header Underline
+            retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level2));
         } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(L"^(#{1,6})\\s+(.*)"))) {
             // Header
             std::match_results<std::wstring_view::const_iterator> idMatch;
