@@ -361,3 +361,24 @@ TEST(MarkdownTokenizer, CreatesUnorderedList) {
             std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[2]);,
             std::bad_variant_access);
 }
+
+TEST(MarkdownTokenizer, AddsLinkableReferences) {
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer1(L"[test-id]:https://example.com/ \"Example title\"");
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer2(
+            L"  [test-id]  :  https://example.com/    \"Example title\"   ");
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer3(L"  [test-id]  :  https://example.com/     ");
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer4(
+            L"  [test-id]  :  https://example.com/     \n[test-id]:https://polsl.pl/ \"Politechnika Śląska\"");
+
+    EXPECT_STREQ(tokenizer1.getReference(L"test-id").url.c_str(), L"https://example.com/");
+    EXPECT_STREQ(tokenizer1.getReference(L"test-id").title.c_str(), L"Example title");
+
+    EXPECT_STREQ(tokenizer2.getReference(L"test-id").url.c_str(), L"https://example.com/");
+    EXPECT_STREQ(tokenizer2.getReference(L"test-id").title.c_str(), L"Example title");
+
+    EXPECT_STREQ(tokenizer3.getReference(L"test-id").url.c_str(), L"https://example.com/");
+    EXPECT_STREQ(tokenizer3.getReference(L"test-id").title.c_str(), L"");
+
+    EXPECT_STREQ(tokenizer4.getReference(L"test-id").url.c_str(), L"https://polsl.pl/");
+    EXPECT_STREQ(tokenizer4.getReference(L"test-id").title.c_str(), L"Politechnika Śląska");
+}
