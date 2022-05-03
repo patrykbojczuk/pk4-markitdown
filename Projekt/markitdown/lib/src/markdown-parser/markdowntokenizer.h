@@ -54,14 +54,14 @@ namespace MarkdownParser {
 
             void start();
 
-            std::pair<std::vector<VMarkdownToken>, std::unordered_set<size_t>>
+            std::tuple<std::vector<VMarkdownToken>, std::unordered_set<size_t>, std::unordered_map<std::wstring, LinkableReference>>
             tokenize(
                     std::ranges::subrange<split_view_iterator> sublines) const;
 
             void addReference(const std::wstring &refId, const std::wstring &url, const std::wstring &title = L"");
 
             void createNextThread(
-                    std::vector<std::future<std::pair<std::vector<VMarkdownToken>, std::unordered_set<size_t>>>> &futures,
+                    std::vector<std::future<std::tuple<std::vector<VMarkdownToken>, std::unordered_set<size_t>, std::unordered_map<std::wstring, LinkableReference>>>> &futures,
                     size_t increment,
                     split_view_iterator &start, split_view_iterator &end) const;
         };
