@@ -382,3 +382,81 @@ TEST(MarkdownTokenizer, AddsLinkableReferences) {
     EXPECT_STREQ(tokenizer4.getReference(L"test-id").url.c_str(), L"https://polsl.pl/");
     EXPECT_STREQ(tokenizer4.getReference(L"test-id").title.c_str(), L"Politechnika Śląska");
 }
+
+TEST(MarkdownTokenizer, Combination) {
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer(
+            LR";(##### Sed sed placerat elit.
+Nunc ac rhoncus risus. Phasellus viverra erat quis tempus bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+- - -
+- First element
+- Second element
+  - Subelement
+- Third element
+
+1. First element
+2. Second element
+  - Subelement
+3. Third element
+
+>Nullam vel lorem eu risus dapibus posuere.
+>>Aliquam venenatis luctus malesuada.
+
+```typescript
+const isPrime = (num: number) => {
+    for (let i = 2; i*i <= num; ++i) {
+        if (!(num % i)) {
+            return false
+        }
+    }
+    return num >= 2
+}
+```
+
+Curabitur id eros leo.
+---
+
+Duis ornare libero varius quam blandit, id lobortis ante ultrices. Morbi rutrum et lectus ut mollis. Nulla magna ante, congue ut purus non, accumsan finibus lacus. Sed tincidunt placerat enim, ac placerat nisl semper elementum.);");
+
+    auto &tokens = tokenizer.getTokens();
+
+    EXPECT_NO_THROW(
+            std::get<MarkdownParser::MarkdownParser::HeaderToken>(tokens[0]));          // Sed sed placerat elit.
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::PlainTextToken>(
+            tokens[1]));       // Nunc ac ... inceptos himenaeos.
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::HorizontalRuleToken>(tokens[2]));  // - - -
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokens[3]));   // First element
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokens[4]));   // Second element
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokens[5]));   // Subelement
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokens[6]));   // Third element
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::EmptyToken>(tokens[7]));           // \n
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::OrderedListToken>(tokens[8]));     // First element
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::OrderedListToken>(tokens[9]));     // Second element
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokens[10]));  // Subelement
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::OrderedListToken>(tokens[11]));    // Third element
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::EmptyToken>(tokens[12]));          // \n
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::BlockquoteToken>(
+            tokens[13]));     // Nullam vel lorem eu risus dapibus posuere.
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::BlockquoteToken>(
+            tokens[14]));     // >Aliquam venenatis luctus malesuada.
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::EmptyToken>(tokens[15]));          // \n
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::CodeToken>(tokens[16]));           // typescript
+    EXPECT_NO_THROW(
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[17]);
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[18]);
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[19]);
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[20]);
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[21]);
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[22]);
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[23]);
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[24]);
+    );
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::CodeToken>(tokens[25]));           //
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::EmptyToken>(tokens[26]));          // \n
+    EXPECT_NO_THROW(
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(tokens[27]));      // Curabitur id eros leo.
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::HeaderUnderlineToken>(tokens[28]));// Following tokens[27]
+    EXPECT_NO_THROW(std::get<MarkdownParser::MarkdownParser::EmptyToken>(tokens[29]));          // \n
+    EXPECT_NO_THROW(
+            std::get<MarkdownParser::MarkdownParser::PlainTextToken>(
+                    tokens[30]));      // Duis ornare ... semper elementum.
+}
