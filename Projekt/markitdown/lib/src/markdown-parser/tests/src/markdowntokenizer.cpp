@@ -344,21 +344,32 @@ TEST(MarkdownTokenizer, CreatesOrderedList) {
 
 TEST(MarkdownTokenizer, CreatesUnorderedList) {
     // should create list element
-    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer1(L"- First element\n* Second\n+ Third");
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer1(L"- First element\n* Second\n  - Subelement\n+ Third");
 
     EXPECT_NO_THROW(
             std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer1.getTokens()[0]);
             std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer1.getTokens()[1]);
             std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer1.getTokens()[2]);
+            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer1.getTokens()[3]);
     );
 
+    EXPECT_EQ(std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer1.getTokens()[1]).getIndent(), 0);
+    EXPECT_EQ(std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer1.getTokens()[2]).getIndent(), 2);
+
     // should not create list element
-    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer2(L"-First element\n*Second\n+Third");
+    MarkdownParser::MarkdownParser::MarkdownTokenizer tokenizer2(L"-First element\n*Second\n  -Subelement\n+Third");
 
     EXPECT_THROW(
-            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[0]);
-            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[1]);
-            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[2]);,
+            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[0]),
+            std::bad_variant_access);
+    EXPECT_THROW(
+            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[1]),
+            std::bad_variant_access);
+    EXPECT_THROW(
+            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[2]),
+            std::bad_variant_access);
+    EXPECT_THROW(
+            std::get<MarkdownParser::MarkdownParser::UnorderedListToken>(tokenizer2.getTokens()[3]),
             std::bad_variant_access);
 }
 

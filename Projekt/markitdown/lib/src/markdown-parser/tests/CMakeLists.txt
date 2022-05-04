@@ -21,6 +21,7 @@ set(TEST_FILES
         src/markdown-tokens/headertoken.cpp
         src/markdown-tokens/headerunderlinetoken.cpp
         src/markdown-tokens/codetoken.cpp
+        src/markdown-tokens/unorderedlisttoken.cpp
         src/markdowntokenizer.cpp) # Files with tests to run
 
 add_executable(run_gtest ${TEST_FILES})
