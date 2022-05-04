@@ -62,8 +62,7 @@ namespace MarkdownParser {
 
             void createNextThread(
                     std::vector<std::future<std::tuple<std::vector<VMarkdownToken>, std::unordered_set<size_t>, std::unordered_map<std::wstring, LinkableReference>>>> &futures,
-                    size_t increment,
-                    split_view_iterator &start, split_view_iterator &end) const;
+                    size_t increment, split_view_iterator &start) const;
         };
     }
 }
