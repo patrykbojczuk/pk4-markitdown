@@ -5,7 +5,6 @@
 #include <regex>
 #include <string_view>
 #include "markdowntokenizer.h"
-#include "nthelement.hpp"
 #include "helpers/trim.h"
 
 MarkdownParser::MarkdownParser::MarkdownTokenizer::MarkdownTokenizer(const std::wstring &markdown) : sourceMarkdown(
