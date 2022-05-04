@@ -33,13 +33,13 @@ set(H_FILES
         markdown-tokens/headerunderlinetoken.h
         markdown-tokens/codetoken.h
         markdowntokenizer.h
-        nthelement.hpp
         markdown-tokens/blockquotetoken.h
         markdown-tokens/emptytoken.h
         markdown-tokens/horizontalruletoken.h
         markdown-tokens/orderedlisttoken.h
         markdown-tokens/unorderedlisttoken.h
-        helpers/trim.h)
+        helpers/trim.h
+        regex.defs.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
