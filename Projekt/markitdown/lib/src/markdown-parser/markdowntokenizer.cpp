@@ -8,7 +8,7 @@
 #include "helpers/trim.h"
 
 MarkdownParser::MarkdownParser::MarkdownTokenizer::MarkdownTokenizer(const std::wstring &markdown) : sourceMarkdown(
-        markdown), lines(std::wstring_view(sourceMarkdown.begin(), sourceMarkdown.end()) |
+        markdown), lines(std::wstring_view(std::begin(sourceMarkdown), std::end(sourceMarkdown)) |
                          std::views::split(L"\n"sv)), numOfLines(std::ranges::distance(lines)) {
     start();
 }
@@ -47,7 +47,7 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::start() {
     size_t i = 0,
             increment = numOfLines / runOnThreads;
 
-    auto start = lines.begin();
+    auto start = std::begin(lines);
 
     if (additionalLineThreadsLeft) {
         for (i; i < runOnThreads - additionalLineThreadsLeft; ++i) {
@@ -107,49 +107,51 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
     std::unordered_map<std::wstring, LinkableReference> retRefs;
 
     for (auto _line: sublines) {
-        std::wstring_view line(_line.begin(), _line.end());
+        std::wstring_view line(std::begin(_line), std::end(_line));
         line = wsv_trim(line, L"\n\r");
         std::match_results<std::wstring_view::const_iterator> match;
 
         if (wsv_trim(line).empty()) {
             // Empty Token
             retVec.push_back(EmptyToken{});
-        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(LR";(^>[ ]?(.*));"))) {
+        } else if (std::regex_match(std::begin(line), std::end(line), match, std::wregex(LR";(^>[ ]?(.*));"))) {
             // Blockquote
             retVec.push_back(BlockquoteToken(std::wstring(match[1].str())));
-        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(LR";(^`{3}(.*));"))) {
+        } else if (std::regex_match(std::begin(line), std::end(line), match, std::wregex(LR";(^`{3}(.*));"))) {
             // Code block
             retVec.push_back(CodeToken(std::wstring(match[1].str())));
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(LR";(^={1,}\s*$);"))) {
+        } else if (std::regex_match(std::begin(line), std::end(line), std::wregex(LR";(^={1,}\s*$);"))) {
             // Lvl 1 Header Underline
             retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level1));
-        } else if (std::regex_match(line.begin(), line.end(), std::wregex(LR";(^-{1,}\s*$);"))) {
+        } else if (std::regex_match(std::begin(line), std::end(line), std::wregex(LR";(^-{1,}\s*$);"))) {
             // Lvl 2 Header Underline
             retVecCollisionIds.insert(retVec.size());
             retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level2));
-        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(LR";(^(#{1,6})\s+(.*)$);"))) {
+        } else if (std::regex_match(std::begin(line), std::end(line), match, std::wregex(LR";(^(#{1,6})\s+(.*)$);"))) {
             // Header
             std::match_results<std::wstring_view::const_iterator> idMatch;
             const std::wstring matchedText = match[2].str();
             const std::wstring_view text = wsv_rtrim(matchedText, L"\t\n\v\f\r# ");
-            if (std::regex_match(text.begin(), text.end(), idMatch, std::wregex(LR";(^(.*)\s+\{#(.*)\}\s*$);"))) {
+            if (std::regex_match(std::begin(text), std::end(text), idMatch,
+                                 std::wregex(LR";(^(.*)\s+\{#(.*)\}\s*$);"))) {
                 retVec.push_back(
                         HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(idMatch[1].str()),
                                     std::wstring(idMatch[2].str())));
             } else {
                 retVec.push_back(HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(text)));
             }
-        } else if (std::regex_match(line.begin(), line.end(),
+        } else if (std::regex_match(std::begin(line), std::end(line),
                                     std::wregex(L"^([-_*][ \\t]*){3,}$"))) {
             // Horizontal Rule
             retVec.push_back(HorizontalRuleToken{});
-        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(LR";(^([ ]*)[-*+]\s+(.+)$);"))) {
+        } else if (std::regex_match(std::begin(line), std::end(line), match,
+                                    std::wregex(LR";(^([ ]*)[-*+]\s+(.+)$);"))) {
             // Unordered list
             retVec.push_back(UnorderedListToken(std::wstring(match[2].str()))); // TODO: Add preceding spaces count
-        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(LR";(^\d+\.\s+(.+)$);"))) {
+        } else if (std::regex_match(std::begin(line), std::end(line), match, std::wregex(LR";(^\d+\.\s+(.+)$);"))) {
             // Ordered list
             retVec.push_back(OrderedListToken(std::wstring(match[1].str())));
-        } else if (std::regex_match(line.begin(), line.end(), match, std::wregex(
+        } else if (std::regex_match(std::begin(line), std::end(line), match, std::wregex(
                 LR";(^\s*\[\s*([a-zA-Z0-9_-]+)\s*\]\s*:\s*(\S+)\s*(?:\"(.*?)\")?\s*$);"
         ))) {
             // Reference
