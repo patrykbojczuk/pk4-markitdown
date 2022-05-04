@@ -150,7 +150,8 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
         } else if (std::regex_match(lineBegin, lineEnd, match,
                                     std::wregex(UNORDERED_LIST_TOKEN_REGEXP))) {
             // Unordered list
-            retVec.push_back(UnorderedListToken(std::wstring(match[2].str()))); // TODO: Add preceding spaces count
+            retVec.push_back(UnorderedListToken(
+                    std::wstring(match[2].str()), match[1].length()));
         } else if (std::regex_match(lineBegin, lineEnd, match, std::wregex(ORDERED_LIST_TOKEN_REGEXP))) {
             // Ordered list
             retVec.push_back(OrderedListToken(std::wstring(match[1].str())));
