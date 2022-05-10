@@ -2,25 +2,34 @@
 #define VTOPLEVELMARKDOWNELEMENT_H
 
 #include <variant>
-#include "blockquoteelement.h"
-#include "codeblockelement.h"
-#include "headerelement.h"
-#include "horizontalruleelement.h"
-#include "imageelement.h"
-#include "orderedlistelement.h"
-#include "paragraphelement.h"
-#include "unorderedlistelement.h"
+#include "recursivevarianttype.h"
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        using VTopLevelMarkdownElement = std::variant<ImageElement,
-                                                      CodeblockElement,
-                                                      HeaderElement,
-                                                      ParagraphElement,
-                                                      BlockquoteElement,
-                                                      OrderedListElement,
-                                                      UnorderedListElement,
-                                                      HorizontalRuleElement>;
+        class ImageElement;
+
+        class CodeblockElement;
+
+        class HeaderElement;
+
+        class ParagraphElement;
+
+        class BlockquoteElement;
+
+        class OrderedListElement;
+
+        class UnorderedListElement;
+
+        class HorizontalRuleElement;
+
+        using VTopLevelMarkdownElement = std::variant<Recursive<ImageElement>,
+                Recursive<CodeblockElement>,
+                Recursive<HeaderElement>,
+                Recursive<ParagraphElement>,
+                Recursive<BlockquoteElement>,
+                Recursive<OrderedListElement>,
+                Recursive<UnorderedListElement>,
+                Recursive<HorizontalRuleElement>>;
     };
 };
 

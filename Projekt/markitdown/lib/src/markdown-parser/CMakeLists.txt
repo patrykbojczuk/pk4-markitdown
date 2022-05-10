@@ -40,7 +40,8 @@ set(H_FILES
         markdown-tokens/unorderedlisttoken.h
         helpers/trim.h
         regex.defs.h
-        markdown-tokens/rawtexthandler.h)
+        markdown-tokens/rawtexthandler.h 
+        markdown-document/markdown-elements/recursivevarianttype.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
