@@ -1,3 +1,4 @@
 #include "unorderedlistelement.h"
 
-MarkdownParser::MarkdownDocument::UnorderedListElement::UnorderedListElement(MultilineTextElement &item) : ListElement(item) { }
+MarkdownParser::MarkdownDocument::UnorderedListElement::UnorderedListElement(const VListItem &item) : ListElement(
+        item) {}

@@ -1,20 +1,30 @@
 #ifndef LISTELEMENT_H
 #define LISTELEMENT_H
 
-#include "multilinetextelement.h"
+#include <variant>
+#include <vector>
+#include "recursivevarianttype.h"
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class ListElement
-        {
-        private:
-            std::vector<MultilineTextElement> items;
-        protected:
-            ListElement(MultilineTextElement& item);
+        class MultilineTextElement;
+
+        class UnorderedListElement;
+
+        class ListElement {
         public:
-            void add(MultilineTextElement& item);
-            const std::vector<MultilineTextElement>& getItems() const;
-            MultilineTextElement& operator[](int pos);
+            using VListItem = std::variant<Recursive<MultilineTextElement>, Recursive<UnorderedListElement>>;
+        private:
+            std::vector<VListItem> items;
+        protected:
+            ListElement(const VListItem &item);
+
+        public:
+            void add(const VListItem &item);
+
+            const std::vector<VListItem> &getItems() const;
+
+            VListItem &operator[](int pos);
         };
     };
 };

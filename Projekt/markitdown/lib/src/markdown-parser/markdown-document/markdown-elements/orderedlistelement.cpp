@@ -1,3 +1,3 @@
 #include "orderedlistelement.h"
 
-MarkdownParser::MarkdownDocument::OrderedListElement::OrderedListElement(MultilineTextElement &item) : ListElement(item) { }
+MarkdownParser::MarkdownDocument::OrderedListElement::OrderedListElement(const VListItem &item) : ListElement(item) {}

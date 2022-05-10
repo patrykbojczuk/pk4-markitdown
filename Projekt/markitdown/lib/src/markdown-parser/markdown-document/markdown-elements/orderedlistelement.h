@@ -5,10 +5,9 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class OrderedListElement : public ListElement
-        {
+        class OrderedListElement : public ListElement {
         public:
-            OrderedListElement(MultilineTextElement& item);
+            OrderedListElement(const VListItem &item);
         };
     };
 };

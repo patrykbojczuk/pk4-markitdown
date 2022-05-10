@@ -5,10 +5,9 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class UnorderedListElement : public ListElement
-        {
+        class UnorderedListElement : public ListElement {
         public:
-            UnorderedListElement(MultilineTextElement& item);
+            UnorderedListElement(const VListItem &item);
         };
     };
 };
