@@ -10,7 +10,6 @@
 #include "markdown-tokens/blockquotetoken.h"
 #include "markdown-tokens/codetoken.h"
 #include "markdown-tokens/emptytoken.h"
-#include "markdown-tokens/endofdocument.h"
 #include "markdown-tokens/headertoken.h"
 #include "markdown-tokens/headerunderlinetoken.h"
 #include "markdown-tokens/horizontalruletoken.h"
@@ -32,7 +31,7 @@ namespace MarkdownParser {
     namespace MarkdownParser {
         class MarkdownTokenizer {
         public:
-            using VMarkdownToken = std::variant<EmptyToken, EndOfDocument, HorizontalRuleToken, CodeToken, HeaderUnderlineToken, PlainTextToken, OrderedListToken, UnorderedListToken, BlockquoteToken, HeaderToken>;
+            using VMarkdownToken = std::variant<EmptyToken, HeaderUnderlineToken, HeaderToken, HorizontalRuleToken, PlainTextToken, BlockquoteToken, CodeToken, OrderedListToken, UnorderedListToken>;
 
             MarkdownTokenizer(const std::wstring &markdown);
 

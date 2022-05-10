@@ -1,12 +1,13 @@
 #ifndef HORIZONTALRULETOKEN_H
 #define HORIZONTALRULETOKEN_H
 
+#include "rawtexthandler.h"
+
 namespace MarkdownParser {
     namespace MarkdownParser {
-        class HorizontalRuleToken
-        {
+        class HorizontalRuleToken : public RawTextHandler {
         public:
-            HorizontalRuleToken();
+            HorizontalRuleToken(const std::wstring &rawText = L"");
         };
     };
 };

@@ -5,10 +5,9 @@
 
 namespace MarkdownParser {
     namespace MarkdownParser {
-        class BlockquoteToken : public PlainTextToken
-        {
+        class BlockquoteToken : public PlainTextToken {
         public:
-            BlockquoteToken(const std::wstring& text);
+            BlockquoteToken(const std::wstring &text, const std::wstring &rawText = L"");
         };
     };
 };

@@ -2,20 +2,19 @@
 #define PLAINTEXTTOKEN_H
 
 #include <string>
+#include "rawtexthandler.h"
 
 namespace MarkdownParser {
     namespace MarkdownParser {
-        class PlainTextToken
-        {
+        class PlainTextToken : public RawTextHandler {
         private:
             std::wstring text;
             std::wstring rawText;
 
         public:
-            PlainTextToken(const std::wstring& text, const std::wstring& rawText = L"");
-            const std::wstring& getText() const;
-            bool hasRawText() const;
-            const std::wstring& getRawText() const;
+            PlainTextToken(const std::wstring &text, const std::wstring &rawText = L"");
+
+            const std::wstring &getText() const;
         };
     };
 };

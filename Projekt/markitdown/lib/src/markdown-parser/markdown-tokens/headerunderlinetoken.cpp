@@ -1,9 +1,10 @@
 #include "headerunderlinetoken.h"
 #include <stdexcept>
 
-MarkdownParser::MarkdownParser::HeaderUnderlineToken::HeaderUnderlineToken(MarkdownHeaderLevel level)
-{
-    switch (level){
+MarkdownParser::MarkdownParser::HeaderUnderlineToken::HeaderUnderlineToken(MarkdownHeaderLevel level,
+                                                                           const std::wstring &rawText)
+        : RawTextHandler(rawText) {
+    switch (level) {
         case MarkdownHeaderLevel::Level3:
         case MarkdownHeaderLevel::Level4:
         case MarkdownHeaderLevel::Level5:
@@ -13,10 +14,9 @@ MarkdownParser::MarkdownParser::HeaderUnderlineToken::HeaderUnderlineToken(Markd
         case MarkdownHeaderLevel::Level2:
             break;
     }
-    this->isLevel1 = ((int)level - 1);
+    this->isLevel1 = ((int) level - 1);
 }
 
-MarkdownHeaderLevel MarkdownParser::MarkdownParser::HeaderUnderlineToken::getLevel() const
-{
-    return (MarkdownHeaderLevel)(this->isLevel1 + 1);
+MarkdownHeaderLevel MarkdownParser::MarkdownParser::HeaderUnderlineToken::getLevel() const {
+    return (MarkdownHeaderLevel) (this->isLevel1 + 1);
 }

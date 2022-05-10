@@ -61,17 +61,13 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::start() {
     }
 
     for (i = 0; i < runOnThreads; ++i) {
-        std::vector<VMarkdownToken> returnedTokens;
-        std::unordered_set<size_t> encounteredCollisions;
-        std::unordered_map<std::wstring, LinkableReference> returnedReferences;
-
-        std::tie(returnedTokens, encounteredCollisions, returnedReferences) = futures[i].get();
+        auto [returnedTokens, encounteredCollisions, returnedReferences] = futures[i].get();
         tokens.reserve(tokens.size() + returnedTokens.size());
 
         // Check for returnedReferences' size is slower than just merging with references
         references.merge(returnedReferences);
         for (const auto &ref: returnedReferences) {
-            references.insert_or_assign(ref.first, std::move(ref.second));
+            references.insert_or_assign(std::move(ref.first), std::move(ref.second));
         }
 
         if (encounteredCollisions.size()) {
@@ -119,17 +115,17 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
             retVec.push_back(EmptyToken{});
         } else if (std::regex_match(lineBegin, lineEnd, match, std::wregex(BLOCKQUOTE_TOKEN_REGEXP))) {
             // Blockquote
-            retVec.push_back(BlockquoteToken(std::wstring(match[1].str())));
+            retVec.push_back(BlockquoteToken(std::wstring(match[1].str()), std::wstring(line)));
         } else if (std::regex_match(lineBegin, lineEnd, match, std::wregex(CODEBLOCK_TOKEN_REGEXP))) {
             // Code block
             retVec.push_back(CodeToken(std::wstring(match[1].str())));
         } else if (std::regex_match(lineBegin, lineEnd, std::wregex(L1_HEADER_UNDERLINE_TOKEN_REGEXP))) {
             // Lvl 1 Header Underline
-            retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level1));
+            retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level1, std::wstring(line)));
         } else if (std::regex_match(lineBegin, lineEnd, std::wregex(L2_HEADER_UNDERLINE_TOKEN_REGEXP))) {
             // Lvl 2 Header Underline
             retVecCollisionIds.insert(retVec.size());
-            retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level2));
+            retVec.push_back(HeaderUnderlineToken(MarkdownHeaderLevel::Level2, std::wstring(line)));
         } else if (std::regex_match(lineBegin, lineEnd, match, std::wregex(HEADER_TOKEN_REGEXP))) {
             // Header
             std::match_results<std::wstring_view::const_iterator> idMatch;
@@ -139,22 +135,23 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
                                  std::wregex(HEADER_TOKEN_SUB_REGEXP))) {
                 retVec.push_back(
                         HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(idMatch[1].str()),
-                                    std::wstring(idMatch[2].str())));
+                                    std::wstring(idMatch[2].str()), std::wstring(line)));
             } else {
-                retVec.push_back(HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(text)));
+                retVec.push_back(HeaderToken((MarkdownHeaderLevel) match[1].length(), std::wstring(text), L"",
+                                             std::wstring(line)));
             }
         } else if (std::regex_match(lineBegin, lineEnd,
                                     std::wregex(HORIZONTAL_RULE_TOKEN_REGEXP))) {
             // Horizontal Rule
-            retVec.push_back(HorizontalRuleToken{});
+            retVec.push_back(HorizontalRuleToken{std::wstring(line)});
         } else if (std::regex_match(lineBegin, lineEnd, match,
                                     std::wregex(UNORDERED_LIST_TOKEN_REGEXP))) {
             // Unordered list
             retVec.push_back(UnorderedListToken(
-                    std::wstring(match[2].str()), match[1].length()));
+                    std::wstring(match[2].str()), match[1].length(), std::wstring(line)));
         } else if (std::regex_match(lineBegin, lineEnd, match, std::wregex(ORDERED_LIST_TOKEN_REGEXP))) {
             // Ordered list
-            retVec.push_back(OrderedListToken(std::wstring(match[1].str())));
+            retVec.push_back(OrderedListToken(std::wstring(match[1].str()), std::wstring(line)));
         } else if (std::regex_match(lineBegin, lineEnd, match, std::wregex(
                 LINKABLE_REFERENCE_REGEXP
         ))) {
@@ -163,7 +160,8 @@ MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
                     .url = match[2].str(),
                     .title = (match.size() == 4 && match[3].str().length())
                              ? match[3].str()
-                             : L""
+                             : L"",
+                    .rawText = std::wstring(line)
             });
         } else {
             // Plain Text

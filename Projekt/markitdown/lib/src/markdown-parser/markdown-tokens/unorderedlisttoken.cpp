@@ -1,8 +1,9 @@
 #include "unorderedlisttoken.h"
 
-MarkdownParser::MarkdownParser::UnorderedListToken::UnorderedListToken(const std::wstring &text, size_t indent)
+MarkdownParser::MarkdownParser::UnorderedListToken::UnorderedListToken(const std::wstring &text, size_t indent,
+                                                                       const std::wstring &rawText)
         : PlainTextToken(
-        text), indent(indent) {}
+        text, rawText), indent(indent) {}
 
 const size_t MarkdownParser::MarkdownParser::UnorderedListToken::getIndent() const {
     return indent;

@@ -6,16 +6,19 @@
 
 namespace MarkdownParser {
     namespace MarkdownParser {
-        class HeaderToken : public PlainTextToken
-        {
+        class HeaderToken : public PlainTextToken {
         private:
             MarkdownHeaderLevel level;
             std::wstring id;
         public:
-            HeaderToken(MarkdownHeaderLevel level, const std::wstring& text, const std::wstring& id = L"");
+            HeaderToken(MarkdownHeaderLevel level, const std::wstring &text, const std::wstring &id = L"",
+                        const std::wstring &rawText = L"");
+
             MarkdownHeaderLevel getLevel() const;
+
             bool hasId() const;
-            const std::wstring& getId() const;
+
+            const std::wstring &getId() const;
         };
     };
 };

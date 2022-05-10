@@ -39,7 +39,8 @@ set(H_FILES
         markdown-tokens/orderedlisttoken.h
         markdown-tokens/unorderedlisttoken.h
         helpers/trim.h
-        regex.defs.h)
+        regex.defs.h
+        markdown-tokens/rawtexthandler.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -72,7 +73,8 @@ set(SRC_FILES
         markdown-tokens/emptytoken.cpp
         markdown-tokens/horizontalruletoken.cpp
         markdown-tokens/orderedlisttoken.cpp
-        markdown-tokens/unorderedlisttoken.cpp)
+        markdown-tokens/unorderedlisttoken.cpp
+        markdown-tokens/rawtexthandler.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 

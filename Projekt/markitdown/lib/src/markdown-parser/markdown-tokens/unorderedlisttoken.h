@@ -7,7 +7,7 @@ namespace MarkdownParser {
     namespace MarkdownParser {
         class UnorderedListToken : public PlainTextToken {
         public:
-            UnorderedListToken(const std::wstring &text, size_t indent = 0);
+            UnorderedListToken(const std::wstring &text, size_t indent = 0, const std::wstring &rawText = L"");
 
             const size_t getIndent() const;
 
