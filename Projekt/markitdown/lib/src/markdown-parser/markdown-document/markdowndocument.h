@@ -10,20 +10,24 @@
 #include "markdown-elements/strongemphasiselement.h"
 #include "markdown-elements/plaintextelement.h"
 
-namespace MarkdownParser
-{
-    namespace MarkdownDocument
-    {
-        class MarkdownDocument
-        {
+namespace MarkdownParser {
+    namespace MarkdownDocument {
+        class MarkdownDocument {
         private:
             std::vector<VTopLevelMarkdownElement> elements;
 
         public:
             MarkdownDocument();
+
             void add(const VTopLevelMarkdownElement &line);
+
             const std::vector<VTopLevelMarkdownElement> &getElements() const;
-            VTopLevelMarkdownElement& operator[](int pos);
+
+            const size_t size() const;
+
+            VTopLevelMarkdownElement &operator[](int pos);
+
+            VTopLevelMarkdownElement &back();
         };
     };
 };

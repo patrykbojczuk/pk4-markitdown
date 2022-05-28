@@ -19,3 +19,11 @@ MarkdownParser::MarkdownDocument::ListElement::VListItem &
 MarkdownParser::MarkdownDocument::ListElement::operator[](int pos) {
     return items.at(pos);
 }
+
+const size_t MarkdownParser::MarkdownDocument::ListElement::size() const {
+    return items.size();
+}
+
+MarkdownParser::MarkdownDocument::ListElement::VListItem &MarkdownParser::MarkdownDocument::ListElement::back() {
+    return items.back();
+}

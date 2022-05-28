@@ -24,7 +24,11 @@ namespace MarkdownParser {
 
             const std::vector<VListItem> &getItems() const;
 
+            const size_t size() const;
+
             VListItem &operator[](int pos);
+
+            VListItem &back();
         };
     };
 };
