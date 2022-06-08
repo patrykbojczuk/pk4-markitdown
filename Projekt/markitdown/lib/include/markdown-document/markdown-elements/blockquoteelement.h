@@ -4,7 +4,6 @@
 #include <stack>
 #include "multilinetextelement.h"
 #include "../markdowndocument.h"
-#include "../../markdownparser.h"
 
 namespace MarkdownParser
 {
