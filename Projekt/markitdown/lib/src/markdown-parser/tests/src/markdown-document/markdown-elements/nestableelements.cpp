@@ -9,35 +9,35 @@
 
 using namespace MarkdownParser::MarkdownDocument;
 
-TEST(NestableElements, CanNestLeaves){
+TEST(NestableElements, CanNestLeaves) {
     EXPECT_NO_THROW(
-        VInlineMarkdownElement text{make_recursive<PlainTextElement>(L"Example text")};
-        EmphasisElement emphasisElement(text);
+            VInlineMarkdownElement text{make_recursive<PlainTextElement>(L"Example text")};
+            EmphasisElement emphasisElement{text};
 
-        std::get<Recursive<PlainTextElement>>(emphasisElement.getElement())->getText();
+            std::get<Recursive<PlainTextElement>>(emphasisElement.getContents()[0])->getText();
     );
     EXPECT_NO_THROW(
-        VInlineMarkdownElement inlineCode{make_recursive<InlineCodeElement>(L"javascript")};
-        EmphasisElement emphasisElement(inlineCode);
+            VInlineMarkdownElement inlineCode{make_recursive<InlineCodeElement>(L"javascript")};
+            EmphasisElement emphasisElement{inlineCode};
 
-        std::get<Recursive<InlineCodeElement>>(emphasisElement.getElement())->getText();
+            std::get<Recursive<InlineCodeElement>>(emphasisElement.getContents()[0])->getText();
     );
     EXPECT_NO_THROW(
-        VInlineMarkdownElement link{make_recursive<LinkElement>(L"https://example.com", L"Example text")};
-        EmphasisElement emphasisElement(link);
+            VInlineMarkdownElement link{make_recursive<LinkElement>(L"https://example.com", L"Example text")};
+            EmphasisElement emphasisElement{link};
 
-        std::get<Recursive<LinkElement>>(emphasisElement.getElement())->getText();
+            std::get<Recursive<LinkElement>>(emphasisElement.getContents()[0])->getText();
     );
 }
 
-TEST(NestableElements, CanNestNestablesAndLeaves){
+TEST(NestableElements, CanNestNestablesAndLeaves) {
     EXPECT_NO_THROW(
             VInlineMarkdownElement text{make_recursive<PlainTextElement>(L"Example text")};
             VInlineMarkdownElement emphasisElement{make_recursive<EmphasisElement>(text)};
             StrikethroughElement strikethroughElement{emphasisElement};
 
             std::get<Recursive<PlainTextElement>>(
-                std::get<Recursive<EmphasisElement>>(strikethroughElement.getElement())->getElement()
+                    std::get<Recursive<EmphasisElement>>(strikethroughElement[0])->getContents()[0]
             )->getText();
     );
 }

@@ -22,7 +22,8 @@ set(TEST_FILES
         src/markdown-tokens/headerunderlinetoken.cpp
         src/markdown-tokens/codetoken.cpp
         src/markdown-tokens/unorderedlisttoken.cpp
-        src/markdowntokenizer.cpp) # Files with tests to run
+        src/markdowntokenizer.cpp
+        src/markdownparser.cpp) # Files with tests to run
 
 add_executable(run_gtest ${TEST_FILES})
 target_link_libraries(run_gtest markdownparser)

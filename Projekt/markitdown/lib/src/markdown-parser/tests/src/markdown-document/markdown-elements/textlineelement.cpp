@@ -13,7 +13,8 @@ TEST(TextLineElement, SetsInlineElementOnConstruction) {
     std::wstring retStr = L"";
 
     ASSERT_NO_THROW(
-        retStr = std::get<Recursive<PlainTextElement>>(std::get<Recursive<EmphasisElement>>(element.getContents()[0])->getElement())->getText();
+            retStr = std::get<Recursive<PlainTextElement>>(std::get<Recursive<EmphasisElement>>(
+                    element.getContents()[0])->getContents()[0])->getText();
     );
     EXPECT_STREQ(retStr.c_str(), L"Example text");
 }
@@ -30,8 +31,8 @@ TEST(TextLineElement, AddsInlineElements) {
     std::wstring retStr1 = L"", retStr2 = L"";
 
     ASSERT_NO_THROW(
-        retStr1 = std::get<Recursive<PlainTextElement>>(element.getContents()[1])->getText();
-        retStr2 = std::get<Recursive<PlainTextElement>>(element.getContents()[2])->getText();
+            retStr1 = std::get<Recursive<PlainTextElement>>(element.getContents()[1])->getText();
+            retStr2 = std::get<Recursive<PlainTextElement>>(element.getContents()[2])->getText();
     );
     EXPECT_STREQ(retStr1.c_str(), L"Another text");
     EXPECT_STREQ(retStr2.c_str(), L"Yet another text");
@@ -56,7 +57,7 @@ TEST(TextLineElement, ReturnsElementOnIndex) {
     element.add(textElement3);
 
     EXPECT_STREQ(std::get<Recursive<PlainTextElement>>(
-        std::get<Recursive<EmphasisElement>>(element[0])->getElement()
+            std::get<Recursive<EmphasisElement>>(element[0])->getContents()[0]
     )->getText().c_str(), L"Example text");
     EXPECT_STREQ(std::get<Recursive<PlainTextElement>>(element[2])->getText().c_str(), L"Yet another text");
 }
