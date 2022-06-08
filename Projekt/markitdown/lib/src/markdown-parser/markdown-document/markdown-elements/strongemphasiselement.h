@@ -5,10 +5,9 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class StrongEmphasisElement : public NestedElement
-        {
+        class StrongEmphasisElement : public NestedElement {
         public:
-            StrongEmphasisElement(VInlineMarkdownElement& element);
+            StrongEmphasisElement(VInlineMarkdownElement &element);
         };
     };
 };

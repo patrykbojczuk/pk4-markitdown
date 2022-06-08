@@ -40,8 +40,10 @@ set(H_FILES
         markdown-tokens/unorderedlisttoken.h
         helpers/trim.h
         regex.defs.h
-        markdown-tokens/rawtexthandler.h 
-        markdown-document/markdown-elements/recursivevarianttype.h)
+        markdownparser.h
+        markdown-tokens/rawtexthandler.h
+        markdown-document/markdown-elements/recursivevarianttype.h
+        markdowninlineelementsparser.h)
 
 set(SRC_FILES
         markdown-document/markdown-elements/plaintextelement.cpp
@@ -75,7 +77,9 @@ set(SRC_FILES
         markdown-tokens/horizontalruletoken.cpp
         markdown-tokens/orderedlisttoken.cpp
         markdown-tokens/unorderedlisttoken.cpp
-        markdown-tokens/rawtexthandler.cpp)
+        markdownparser.cpp
+        markdown-tokens/rawtexthandler.cpp
+        markdowninlineelementsparser.cpp)
 
 add_library(markdownparser ${SRC_FILES} ${H_FILES})
 

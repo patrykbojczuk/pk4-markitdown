@@ -6,6 +6,8 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
+        class ImageElement;
+
         class LinkElement;
 
         class PlainTextElement;
@@ -18,12 +20,15 @@ namespace MarkdownParser {
 
         class StrongEmphasisElement;
 
-        using VInlineMarkdownElement = std::variant<Recursive<LinkElement>,
+        using VInlineMarkdownElement = std::variant<
+                Recursive<ImageElement>,
+                Recursive<LinkElement>,
                 Recursive<PlainTextElement>,
                 Recursive<InlineCodeElement>,
                 Recursive<EmphasisElement>,
                 Recursive<StrikethroughElement>,
-                Recursive<StrongEmphasisElement>>;
+                Recursive<StrongEmphasisElement>
+        >;
     };
 };
 

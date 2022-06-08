@@ -85,6 +85,9 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::start() {
                       std::make_move_iterator(std::end(returnedTokens)));
     }
 
+    VMarkdownToken endToken = EmptyToken();
+    tokens.push_back(endToken);
+
     finished = true;
 }
 

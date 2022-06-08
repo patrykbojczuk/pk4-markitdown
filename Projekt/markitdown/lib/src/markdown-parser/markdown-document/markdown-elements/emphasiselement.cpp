@@ -1,3 +1,4 @@
 #include "emphasiselement.h"
 
-MarkdownParser::MarkdownDocument::EmphasisElement::EmphasisElement(VInlineMarkdownElement &element) : NestedElement(element) { }
+MarkdownParser::MarkdownDocument::EmphasisElement::EmphasisElement(VInlineMarkdownElement &element) : NestedElement(
+        element) {}

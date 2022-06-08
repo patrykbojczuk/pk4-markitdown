@@ -1,3 +1,5 @@
 #include "strikethroughelement.h"
 
-MarkdownParser::MarkdownDocument::StrikethroughElement::StrikethroughElement(VInlineMarkdownElement &element) : NestedElement(element) { }
+MarkdownParser::MarkdownDocument::StrikethroughElement::StrikethroughElement(VInlineMarkdownElement &element)
+        : NestedElement(
+        element) {}

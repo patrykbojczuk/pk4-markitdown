@@ -1,3 +1,4 @@
 #include "strongemphasiselement.h"
 
-MarkdownParser::MarkdownDocument::StrongEmphasisElement::StrongEmphasisElement(VInlineMarkdownElement &element) : NestedElement(element) { }
+MarkdownParser::MarkdownDocument::StrongEmphasisElement::StrongEmphasisElement(VInlineMarkdownElement &element)
+        : NestedElement(element) {}

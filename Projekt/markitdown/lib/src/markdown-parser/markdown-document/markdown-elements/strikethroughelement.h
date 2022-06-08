@@ -5,10 +5,9 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class StrikethroughElement : public NestedElement
-        {
+        class StrikethroughElement : public NestedElement {
         public:
-            StrikethroughElement(VInlineMarkdownElement& element);
+            StrikethroughElement(VInlineMarkdownElement &element);
         };
     };
 };

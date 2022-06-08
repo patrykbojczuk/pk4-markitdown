@@ -1,8 +1,5 @@
 #include "nestedelement.h"
 
-MarkdownParser::MarkdownDocument::NestedElement::NestedElement(VInlineMarkdownElement& element) : element(element) { }
+MarkdownParser::MarkdownDocument::NestedElement::NestedElement(VInlineMarkdownElement &element) : TextLineElement(
+        element) {}
 
-const MarkdownParser::MarkdownDocument::VInlineMarkdownElement &MarkdownParser::MarkdownDocument::NestedElement::getElement() const
-{
-    return element;
-}

@@ -2,17 +2,13 @@
 #define NESTEDELEMENT_H
 
 #include "vinlinemarkdownelement.h"
+#include "textlineelement.h"
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-
-        class NestedElement
-        {
-        private:
-            VInlineMarkdownElement element;
+        class NestedElement : public TextLineElement {
         public:
-            NestedElement(VInlineMarkdownElement& element);
-            const VInlineMarkdownElement& getElement() const;
+            NestedElement(VInlineMarkdownElement &element);
         };
     };
 };

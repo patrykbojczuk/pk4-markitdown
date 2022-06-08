@@ -6,8 +6,6 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class ImageElement;
-
         class CodeblockElement;
 
         class HeaderElement;
@@ -22,14 +20,15 @@ namespace MarkdownParser {
 
         class HorizontalRuleElement;
 
-        using VTopLevelMarkdownElement = std::variant<Recursive<ImageElement>,
+        using VTopLevelMarkdownElement = std::variant<
                 Recursive<CodeblockElement>,
                 Recursive<HeaderElement>,
                 Recursive<ParagraphElement>,
                 Recursive<BlockquoteElement>,
                 Recursive<OrderedListElement>,
                 Recursive<UnorderedListElement>,
-                Recursive<HorizontalRuleElement>>;
+                Recursive<HorizontalRuleElement>
+        >;
     };
 };
 
