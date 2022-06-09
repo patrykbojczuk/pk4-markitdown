@@ -1,10 +1,7 @@
 #ifndef MARKDOWNPARSER_H
 #define MARKDOWNPARSER_H
 
-#include <unordered_map>
 #include <string>
-#include <vector>
-#include <stack>
 #include "markdown-document/markdowndocument.h"
 
 namespace MarkdownParser

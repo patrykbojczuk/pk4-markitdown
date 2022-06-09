@@ -3,6 +3,9 @@ project(markdownparser)
 add_subdirectory(tests)
 
 set(CMAKE_CXX_STANDARD 23)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -nostdinc++ -nodefaultlibs -I/usr/local/Cellar/llvm/13.0.1_1/include/c++/v1 -lc -lc++ -lc++abi -lunwind")
+
+include_directories(${CMAKE_SOURCE_DIR}/lib)
 
 set(H_FILES
         markdown-document/markdown-elements/plaintextelement.h

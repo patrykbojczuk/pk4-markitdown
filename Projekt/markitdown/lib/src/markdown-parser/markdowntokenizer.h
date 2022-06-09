@@ -6,6 +6,8 @@
 #include <variant>
 #include <vector>
 #include <ranges>
+#include "range/v3/view/split.hpp"
+#include "range/v3/view/subrange.hpp"
 #include <unordered_set>
 #include "markdown-tokens/blockquotetoken.h"
 #include "markdown-tokens/codetoken.h"
@@ -25,7 +27,7 @@ namespace std::ranges {
 
 using namespace std::string_view_literals;
 
-using split_view_iterator = decltype(std::declval<std::ranges::split_view<std::wstring_view, std::wstring_view>>().begin());
+using split_view_iterator = decltype(std::declval<ranges::split_view<std::wstring_view, std::wstring_view>>().begin());
 
 namespace MarkdownParser {
     namespace MarkdownParser {
@@ -47,7 +49,7 @@ namespace MarkdownParser {
             std::unordered_map<std::wstring, LinkableReference> references;
             std::vector<VMarkdownToken> tokens;
             const std::wstring sourceMarkdown;
-            std::ranges::split_view<std::wstring_view, std::wstring_view> lines;
+            ranges::split_view<std::wstring_view, std::wstring_view> lines;
             bool finished = false;
             size_t numOfLines = 0;
 

@@ -1,15 +1,17 @@
 #ifndef TEXTLINEELEMENT_H
 #define TEXTLINEELEMENT_H
 
-#include <vector>
 #include "vinlinemarkdownelement.h"
+#include <vector>
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
         class TextLineElement {
             std::vector<VInlineMarkdownElement> contents;
-            
+
         public:
+            TextLineElement() = default;
+
             TextLineElement(VInlineMarkdownElement &element);
 
             void add(VInlineMarkdownElement &element);

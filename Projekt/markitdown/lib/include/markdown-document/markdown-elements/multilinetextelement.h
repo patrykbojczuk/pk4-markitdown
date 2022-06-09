@@ -1,6 +1,7 @@
 #ifndef MULTILINETEXTELEMENT_H
 #define MULTILINETEXTELEMENT_H
 
+#include <vector>
 #include "textlineelement.h"
 
 namespace MarkdownParser

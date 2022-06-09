@@ -5,13 +5,15 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class PlainTextElement
-        {
+        class PlainTextElement {
         private:
             std::wstring text;
         public:
-            PlainTextElement(const std::wstring& text);
-            const std::wstring& getText() const;
+            PlainTextElement() = default;
+
+            PlainTextElement(const std::wstring &text);
+
+            const std::wstring &getText() const;
         };
     };
 };

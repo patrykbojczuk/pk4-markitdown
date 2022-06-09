@@ -1,6 +1,8 @@
 #include <algorithm>
 #include <thread>
 #include <future>
+#include "range/v3/distance.hpp"
+#include "range/v3/view/split.hpp"
 #include <ranges>
 #include <regex>
 #include <string_view>
@@ -9,8 +11,8 @@
 #include "regex.defs.h"
 
 MarkdownParser::MarkdownParser::MarkdownTokenizer::MarkdownTokenizer(const std::wstring &markdown) : sourceMarkdown(
-        markdown), lines(std::wstring_view(std::begin(sourceMarkdown), std::end(sourceMarkdown)) |
-                         std::views::split(L"\n"sv)), numOfLines(std::ranges::distance(lines)) {
+        markdown), lines(ranges::split_view(std::wstring_view(sourceMarkdown),
+                                            L"\n"sv)), numOfLines(ranges::distance(lines)) {
     start();
 }
 
@@ -101,13 +103,13 @@ void MarkdownParser::MarkdownParser::MarkdownTokenizer::createNextThread(
 
 std::tuple<std::vector<MarkdownParser::MarkdownParser::MarkdownTokenizer::VMarkdownToken>, std::unordered_set<size_t>, std::unordered_map<std::wstring, MarkdownParser::MarkdownParser::LinkableReference>>
 MarkdownParser::MarkdownParser::MarkdownTokenizer::tokenize(
-        std::ranges::subrange<decltype(std::declval<std::ranges::split_view<std::wstring_view, std::wstring_view>>().begin())> sublines) const {
+        std::ranges::subrange<split_view_iterator> sublines) const {
     std::vector<VMarkdownToken> retVec;
     std::unordered_set<size_t> retVecCollisionIds;
     std::unordered_map<std::wstring, LinkableReference> retRefs;
 
     for (auto _line: sublines) {
-        std::wstring_view line(std::begin(_line), std::end(_line));
+        std::wstring_view line(&_line.front(), ranges::distance(std::begin(_line), std::end(_line)));
         line = wsv_trim(line, L"\n\r");
         std::match_results<std::wstring_view::const_iterator> match;
         auto lineBegin = std::begin(line),

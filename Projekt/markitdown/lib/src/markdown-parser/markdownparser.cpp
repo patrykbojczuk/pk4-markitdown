@@ -31,6 +31,9 @@ struct overloaded : Ts ... {
     using Ts::operator()...;
 };
 
+template<class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
+
 MarkdownParser::MarkdownDocument::MarkdownDocument MarkdownParser::MarkdownParser::MarkdownParser::docFromTokens() {
     auto &tokens = tokenizer.getTokens();
     stateStack.push(ParserState::MainPass);

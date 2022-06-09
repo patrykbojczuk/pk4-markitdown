@@ -7,17 +7,20 @@
 
 namespace MarkdownParser {
     namespace MarkdownDocument {
-        class CodeblockElement
-        {
+        class CodeblockElement {
         private:
             std::wstring language;
             std::vector<PlainTextElement> lines;
         public:
-            CodeblockElement(const std::wstring& language);
-            void add(const PlainTextElement& line);
-            const std::vector<PlainTextElement>& getLines() const;
-            const std::wstring& getLanguage() const;
-            PlainTextElement& operator[](int pos);
+            CodeblockElement(const std::wstring &language);
+
+            void add(const PlainTextElement &line);
+
+            const std::vector<PlainTextElement> &getLines() const;
+
+            const std::wstring &getLanguage() const;
+
+            PlainTextElement &operator[](int pos);
         };
     };
 };
