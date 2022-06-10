@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
-#include <ranges>
 #include "range/v3/view/split.hpp"
 #include "range/v3/view/subrange.hpp"
 #include <unordered_set>
@@ -19,11 +18,6 @@
 #include "markdown-tokens/plaintexttoken.h"
 #include "markdown-tokens/unorderedlisttoken.h"
 #include "linkablereference.h"
-
-namespace std::ranges {
-    template<>
-    inline constexpr bool enable_view<std::wstring_view> = true;
-}
 
 using namespace std::string_view_literals;
 
@@ -48,7 +42,7 @@ namespace MarkdownParser {
         private:
             std::unordered_map<std::wstring, LinkableReference> references;
             std::vector<VMarkdownToken> tokens;
-            const std::wstring sourceMarkdown;
+            std::wstring sourceMarkdown;
             ranges::split_view<std::wstring_view, std::wstring_view> lines;
             bool finished = false;
             size_t numOfLines = 0;
@@ -56,8 +50,7 @@ namespace MarkdownParser {
             void start();
 
             std::tuple<std::vector<VMarkdownToken>, std::unordered_set<size_t>, std::unordered_map<std::wstring, LinkableReference>>
-            tokenize(
-                    std::ranges::subrange<split_view_iterator> sublines) const;
+            tokenize(ranges::subrange<split_view_iterator> sublines) const;
 
             void addReference(const std::wstring &refId, const std::wstring &url, const std::wstring &title = L"");
 

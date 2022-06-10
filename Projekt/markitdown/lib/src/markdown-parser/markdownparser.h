@@ -15,6 +15,8 @@ namespace MarkdownParser {
         public:
             static MarkdownDocument::MarkdownDocument parse(const std::wstring &markdown);
 
+            static MarkdownDocument::MarkdownDocument parse(const wchar_t *markdown, size_t size);
+
             enum ParserState {
                 MainPass,
                 CodeBlock,
