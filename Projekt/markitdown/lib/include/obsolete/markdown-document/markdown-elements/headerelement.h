@@ -10,6 +10,7 @@ namespace MarkdownParser
     {
         class HeaderElement
         {
+        public:
             HeaderElement(MarkdownHeaderLevel level, const TextLineElement &text, const std::wstring &id = L"");
             MarkdownHeaderLevel getLevel() const;
             const TextLineElement &getText() const;
