@@ -12,7 +12,6 @@
 #include "src/converters/iconverter.h"
 #include "src/converters/htmlconverter.h"
 #include "markdownfilemanager.h"
-#include "tabmanager.h"
 
 class Tab : public QObject
 {
@@ -21,8 +20,9 @@ class Tab : public QObject
     Q_PROPERTY(unsigned short id READ id NOTIFY idChanged)
     Q_PROPERTY(QString content READ content WRITE setContent NOTIFY contentChanged)
     Q_PROPERTY(QString htmlContent READ htmlContent NOTIFY htmlContentChanged)
+    Q_PROPERTY(QString filename READ filename NOTIFY filenameChanged)
 public:
-    Tab(const QString &filename);
+    Tab(const QString &filename, QObject *parent = nullptr);
 
     unsigned short id() const;
 
@@ -38,9 +38,17 @@ public:
     template <typename T = IConverter>
     void save(const QString &filename);
 
+    const QString &filename() const;
+
+    Q_INVOKABLE
+    QString getFilenameStem() const;
+
+    Q_INVOKABLE
+    void close();
+
 private:
     unsigned short m_id;
-    QString filename;
+    QString m_filename;
     QString m_content;
     QString m_htmlContent;
 
@@ -54,12 +62,11 @@ private:
 
     MarkdownParser::MarkdownDocument::MarkdownDocument getParsedContent();
 
-    friend void TabManager::assignTabId(Tab *tab);
-
 signals:
     void idChanged();
     void contentChanged();
     void htmlContentChanged();
+    void filenameChanged();
 };
 
 template<typename T>
