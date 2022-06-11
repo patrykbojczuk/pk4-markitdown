@@ -8,6 +8,9 @@ Item {
     width: 1920
     height: 1080
 
+    property alias text: textEdit.text
+    property string htmlText: ""
+
     MarkdownToolBar {
         id: toolBar
         anchors.top: parent.top
@@ -25,7 +28,6 @@ Item {
         anchors.bottomMargin: 13
         anchors.rightMargin: 13
         anchors.leftMargin: 13
-
 
         Flickable {
             id: textEditFlickable
@@ -49,7 +51,7 @@ Item {
 
             TextEdit {
                 id: textEdit
-                text: qsTr("Text Edit")
+                text: ""
                 height: implicitHeight
                 font.pixelSize: 14
                 wrapMode: Text.WordWrap
@@ -62,7 +64,7 @@ Item {
                 anchors.top: parent.top
                 focus: true
 
-                Component.onCompleted:{
+                Component.onCompleted: {
                     textEdit.selectAll()
                     textEdit.deselect()
                 }
@@ -128,7 +130,8 @@ Item {
 
             Text {
                 id: textDisplay
-                text: textEdit.text
+                text: editorScreen.htmlText
+                textFormat: Text.RichText
                 height: implicitHeight
                 font.pixelSize: 14
                 wrapMode: Text.WordWrap
@@ -150,7 +153,8 @@ Item {
                     },
                     Scale {
                         origin.y: textDisplayScrollBar / 2
-                        yScale: (textDisplayScrollBar.height - (2 * 26)) / textDisplayScrollBar.height
+                        yScale: (textDisplayScrollBar.height - (2 * 26))
+                                / textDisplayScrollBar.height
                     }
                 ]
             }
@@ -246,3 +250,4 @@ Designer {
     D{i:0;height:620;width:510}
 }
 ##^##*/
+
