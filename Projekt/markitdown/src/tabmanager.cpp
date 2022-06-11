@@ -9,14 +9,15 @@ TabManager &TabManager::GetInstance()
 
 void TabManager::createTab(const QString &filename)
 {
-    Tab newTab(filename);
+    Tab *newTab = new Tab(filename, this);
+    emit tabOpened(newTab->id());
 }
 
-const std::shared_ptr<Tab> &TabManager::getTabById(unsigned short id) {
-    return openedTabs().at(id);
+Tab *TabManager::getTabById(unsigned short id) {
+    return openedTabs().find(id).value().get();
 }
 
-const std::unordered_map<unsigned short, std::shared_ptr<Tab>> &TabManager::openedTabs()
+const QHash<unsigned short, QSharedPointer<Tab>> &TabManager::openedTabs()
 {
     return m_openedTabs;
 }
@@ -24,30 +25,30 @@ const std::unordered_map<unsigned short, std::shared_ptr<Tab>> &TabManager::open
 void TabManager::closeTab(unsigned short id)
 {
     s_openedTabs.acquire();
-    m_openedTabs.erase(id);
+    m_openedTabs.remove(id);
     s_openedTabs.release();
     emit openedTabsChanged();
+    emit tabClosed(id);
 }
 
-void TabManager::addTabAndAssignId(Tab *tab)
+unsigned short TabManager::addTabAndGetId(Tab *tab)
 {
-    assignTabId(tab);
-    addTab(tab);
+    auto id = getNextId();
+    addTab(id, tab);
+    return id;
 }
 
-void TabManager::assignTabId(Tab *tab)
+unsigned short TabManager::getNextId()
 {
-    unsigned short nextId = ++lastIssuedId;
-    tab->m_id = nextId;
-    emit tab->idChanged();
+    return ++lastIssuedId;
 }
 
 TabManager::TabManager() { }
 
-void TabManager::addTab(Tab *tab)
+void TabManager::addTab(unsigned short id, Tab *tab)
 {
     s_openedTabs.acquire();
-    m_openedTabs.insert(make_pair(tab->id(), std::shared_ptr<Tab>(tab)));
+    m_openedTabs.insert(id, QSharedPointer<Tab>(tab));
     s_openedTabs.release();
     emit openedTabsChanged();
 }

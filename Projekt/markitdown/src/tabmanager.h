@@ -5,15 +5,14 @@
 #include <QtQml/qqml.h>
 #include <atomic>
 #include <semaphore>
-#include <unordered_map>
-#include <memory>
-
-class Tab;
+#include <QHash>
+#include <QSharedPointer>
+#include "tab.h"
 
 class TabManager: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(std::unordered_map<unsigned short, std::shared_ptr<Tab>> openedTabs READ openedTabs NOTIFY openedTabsChanged)
+    Q_PROPERTY(QHash<unsigned short, QSharedPointer<Tab>> openedTabs READ openedTabs NOTIFY openedTabsChanged)
 public:
     static TabManager &GetInstance();
 
@@ -21,27 +20,31 @@ public:
     void createTab(const QString &filename);
 
     Q_INVOKABLE
-    const std::shared_ptr<Tab> &getTabById(unsigned short id);
+    Tab *getTabById(unsigned short id);
 
-    Q_INVOKABLE
-    const std::unordered_map<unsigned short, std::shared_ptr<Tab>> &openedTabs();
+    const QHash<unsigned short, QSharedPointer<Tab>> &openedTabs();
 
     Q_INVOKABLE
     void closeTab(unsigned short id);
 
-    void addTabAndAssignId(Tab* tab);
-    void assignTabId(Tab* tab);
+    unsigned short addTabAndGetId(Tab* tab);
+    unsigned short getNextId();
 
 private:
     TabManager();
-    void addTab(Tab* tab);
+    void addTab(unsigned short id, Tab* tab);
 
     std::atomic<unsigned short> lastIssuedId{0};
-    std::unordered_map<unsigned short, std::shared_ptr<Tab>> m_openedTabs{};
+    QHash<unsigned short, QSharedPointer<Tab>> m_openedTabs{};
     std::binary_semaphore s_openedTabs{1};
 
 signals:
     void openedTabsChanged();
+
+    Q_SIGNAL
+    void tabOpened(unsigned short tabId);
+    Q_SIGNAL
+    void tabClosed(unsigned short tabId);
 };
 
 #endif // TABMANAGER_H
