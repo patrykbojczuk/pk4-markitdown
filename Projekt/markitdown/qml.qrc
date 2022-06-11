@@ -3,6 +3,7 @@
         <file alias="main.qml">qml/main.qml</file>
         <file alias="Constants.qml">qml/Constants.qml</file>
         <file alias="qmldir">qml/qmldir</file>
+        <file alias="FileHandler.qml">qml/FileHandler.qml</file>
     </qresource>
     <qresource prefix="/assets"/>
     <qresource prefix="/components">
