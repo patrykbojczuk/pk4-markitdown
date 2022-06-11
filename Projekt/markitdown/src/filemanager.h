@@ -17,6 +17,8 @@ public:
 
     static void checkAndCreateParentPath(const QString &filename);
 
+    static QString getFilenameStem(const QString &filename);
+
 private:
     static QString openTextFile(QFile &file);
     static void saveTextFile(QFile &file, const QString &content);

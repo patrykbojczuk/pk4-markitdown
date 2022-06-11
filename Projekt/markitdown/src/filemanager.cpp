@@ -54,13 +54,18 @@ void FileManager::saveTextFile(QFile &file, const QString &content)
 }
 
 bool FileManager::fileExists(const QString &filename) {
-    return std::filesystem::exists(filename.toStdString());
+    return std::filesystem::exists(filename.toStdWString());
 }
 
 void FileManager::checkAndCreateParentPath(const QString &filename) {
-    auto parentPath = std::filesystem::path(filename.toStdString()).parent_path();
+    auto parentPath = std::filesystem::path(filename.toStdWString()).parent_path();
     if (!std::filesystem::exists(parentPath)) {
         std::filesystem::create_directories(parentPath);
     }
+}
+
+QString FileManager::getFilenameStem(const QString &filename)
+{
+    return QString::fromStdWString(std::filesystem::path(filename.toStdWString()).stem().generic_wstring());
 }
 
