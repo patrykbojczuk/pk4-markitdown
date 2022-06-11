@@ -29,21 +29,21 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
 
     // code
     while (std::regex_search(markdownSource, match, std::wregex(INLINE_CODE_REGEXP))) {
-        substituteMatchedAtomic(match);
         atomics.push_back(make_recursive<MarkdownDocument::InlineCodeElement>(match[1].str()));
+
+        substituteMatchedAtomic(match);
     }
 
     // image direct
     while (std::regex_search(markdownSource, match, std::wregex(IMAGE_WITH_URL_REGEXP))) {
-        substituteMatchedAtomic(match);
         atomics.push_back(make_recursive<MarkdownDocument::ImageElement>(match[2].str(), match[1].str(),
                                                                          match[3].str()));
+
+        substituteMatchedAtomic(match);
     }
 
     // image reference
     while (std::regex_search(markdownSource, match, std::wregex(IMAGE_FROM_REF_REGEXP))) {
-        substituteMatchedAtomic(match);
-
         try {
             auto reference = getReference(match[1].str());
             atomics.push_back(
@@ -51,19 +51,20 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
         } catch (std::out_of_range &e) {
             atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
+
+        substituteMatchedAtomic(match);
     }
 
     // link direct
     while (std::regex_search(markdownSource, match, std::wregex(LINK_WITH_URL_REGEXP))) {
-        substituteMatchedAtomic(match);
         atomics.push_back(make_recursive<MarkdownDocument::LinkElement>(match[2].str(), match[1].str(),
                                                                         match[3].str()));
+
+        substituteMatchedAtomic(match);
     }
 
     // link reference
     while (std::regex_search(markdownSource, match, std::wregex(LINK_FROM_REF_REGEXP))) {
-        substituteMatchedAtomic(match);
-
         try {
             // get reference from match[1].str() from parser
             auto reference = getReference(match[1].str());
@@ -72,12 +73,12 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
         } catch (std::out_of_range &e) {
             atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
+
+        substituteMatchedAtomic(match);
     }
 
     // link implicit
     while (std::regex_search(markdownSource, match, std::wregex(IMPLICIT_LINK_FROM_REF_REGEXP))) {
-        substituteMatchedAtomic(match);
-
         try {
             // get reference from match[1].str() from parser
             auto reference = getReference(match[1].str());
@@ -86,29 +87,31 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
         } catch (std::out_of_range &e) {
             atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
+
+        substituteMatchedAtomic(match);
     }
 
     // link literal
     while (std::regex_search(markdownSource, match, std::wregex(LINK_LITERAL_REGEXP))) {
-        substituteMatchedAtomic(match);
-
         atomics.push_back(
                 make_recursive<MarkdownDocument::LinkElement>(match[1].str(), match[1].str()));
+
+        substituteMatchedAtomic(match);
     }
 
     // email literal
     while (std::regex_search(markdownSource, match, std::wregex(EMAIL_LITERAL_REGEXP))) {
-        substituteMatchedAtomic(match);
-
         atomics.push_back(
                 make_recursive<MarkdownDocument::LinkElement>(L"mailto:" + match[1].str(), match[1].str()));
+
+        substituteMatchedAtomic(match);
     }
 }
 
 void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::substituteMatchedAtomic(
         const std::wsmatch &match) {
     markdownSource.replace(match.position(), match.length(), L"\x07" + std::to_wstring(
-            atomics.size()) + L"\x07");
+            atomics.size() - 1) + L"\x07");
 }
 
 MarkdownParser::MarkdownDocument::TextLineElement
@@ -167,8 +170,8 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseNestedElement
     }
     addPlainTextElementIfExists(currentPlainText, lineElems);
 
-    MarkdownDocument::TextLineElement returnElement{lineElems[0]};
-    returnElement.push_back_many(std::next(std::begin(lineElems), 1), std::end(lineElems));
+    MarkdownDocument::TextLineElement returnElement{};
+    returnElement.push_back_many(std::begin(lineElems), std::end(lineElems));
     return returnElement;
 }
 
