@@ -13,34 +13,7 @@ void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocu
 
 void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocument::HeaderElement> &header)
 {
-    short level;
-    switch(header->getLevel()){
-        case MarkdownHeaderLevel::Level1:{
-            level = 1;
-            break;
-        }
-        case MarkdownHeaderLevel::Level2:{
-            level = 2;
-            break;
-        }
-        case MarkdownHeaderLevel::Level3:{
-            level = 3;
-            break;
-        }
-        case MarkdownHeaderLevel::Level4:{
-            level = 4;
-            break;
-        }
-        case MarkdownHeaderLevel::Level5:{
-            level = 5;
-            break;
-        }
-        case MarkdownHeaderLevel::Level6:
-        default:{
-            level = 6;
-            break;
-        }
-    }
+    unsigned short level = static_cast<unsigned short>(header->getLevel());
     addToReturnString("<h" + QString::number(level) + (header->hasId() ? " id=\"" + QString::fromStdWString(header->getId()) + "\"" : "") + ">");
     textLineHandler(header->getText());
     addToReturnString("</h" + QString::number(level) + ">");
