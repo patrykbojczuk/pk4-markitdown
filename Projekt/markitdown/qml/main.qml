@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import pb.pk.markitdown 1.0
 import "qrc:/"
 import "qrc:/components"
 import "qrc:/views"
@@ -22,6 +23,26 @@ Window {
 
         FileHandler {
             id: fileHandler
+        }
+
+        QtObject {
+            id: openedTabs
+
+            property Connections connections: Connections {
+                target: TabManager
+
+                function onOpenedTabsChanged() {}
+
+                function onTabOpened(id) {
+                    contentWrapper.createTabEditorScreen(id)
+                    tabBar.onOpenedTab(id)
+                }
+
+                function onTabClosed(id) {
+                    tabBar.onClosedTab(id)
+                    contentWrapper.closeTabEditorScreen(id)
+                }
+            }
         }
 
         WindowTabBar {
@@ -65,16 +86,54 @@ Window {
             anchors.topMargin: tabBar.height
             currentIndex: tabBar.currentIndex
 
+            readonly property var editorScreenCreator: Qt.createComponent(
+                                                           "qrc:/views/EditorScreen.qml")
+
+            property var createdEditors: ({})
+
+            function createdTabEditorScreen(tab, incubator) {
+                console.log('created editor for', tab.id)
+                const editorScreen = incubator.object
+                createdEditors[tab.id] = editorScreen
+                editorScreen.textChanged.connect(() => {
+                                                     tab.content = editorScreen.text
+                                                 })
+                tab.htmlContentChanged.connect(() => {
+                                                   editorScreen.htmlText = tab.htmlContent
+                                               })
+            }
+
+            function createTabEditorScreen(id) {
+                const tab = TabManager.getTabById(id)
+
+                const incubator = editorScreenCreator.incubateObject(
+                                    contentWrapper, {
+                                        "text": Qt.binding(() => tab.content),
+                                        "htmlText": Qt.binding(
+                                                        () => tab.htmlContent)
+                                    })
+                if (incubator.status !== Component.Ready) {
+                    incubator.onStatusChanged = function (status) {
+                        if (status === Component.Ready) {
+                            createdTabEditorScreen(tab, incubator)
+                        }
+                    }
+                } else {
+                    createdTabEditorScreen(tab, incubator)
+                }
+            }
+
+            function closeTabEditorScreen(id) {
+                if (createdEditors.hasOwnProperty(id)) {
+                    createdEditors[id].destroy()
+                    delete createdEditors[id]
+                }
+            }
+
             HomeScreen {
                 onAddNewFile: fileHandler.createNewFileOrOverwrite()
                 onOpenFile: fileHandler.openFile()
             }
-
-            EditorScreen {}
-
-            EditorScreen {}
-
-            EditorScreen {}
         }
 
         Rectangle {
