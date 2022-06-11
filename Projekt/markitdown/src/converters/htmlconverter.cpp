@@ -78,7 +78,7 @@ void HtmlConverter::inlineElementHandler(const Recursive<MarkdownParser::Markdow
 
 void HtmlConverter::inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::LinkElement> &link)
 {
-    addToReturnString("<a href=\"" + QString::fromStdWString(link->getUrl()) + (link->hasTitle() ? " title=\"" + QString::fromStdWString(link->getTitle()) + "\"" : "") + ">" + QString::fromStdWString(link->getText()) + "</a>");
+    addToReturnString("<a href=\"" + QString::fromStdWString(link->getUrl()) + "\"" + (link->hasTitle() ? " title=\"" + QString::fromStdWString(link->getTitle()) + "\"" : "") + ">" + QString::fromStdWString(link->getText()) + "</a>");
 }
 
 void HtmlConverter::inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::PlainTextElement> &plainText)
