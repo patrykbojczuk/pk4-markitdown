@@ -8,6 +8,7 @@
 #include "src/configmanager.h"
 #include "src/markdownfilemanager.h"
 #include "src/tabmanager.h"
+#include "src/tab.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,9 +29,13 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    qmlRegisterUncreatableType<Tab*>("pb.pk.markitdown", 1, 0, "Tab", "Tab is creatable by backend only");
+
     qmlRegisterSingletonInstance<ConfigManager>("pb.pk.markitdown", 1, 0, "ConfigManager", &ConfigManager::GetInstance());
     qmlRegisterSingletonInstance<TabManager>("pb.pk.markitdown", 1, 0, "TabManager", &TabManager::GetInstance());
     qmlRegisterSingletonInstance<MarkdownFileManager>("pb.pk.markitdown", 1, 0, "MarkdownFileManager", &MarkdownFileManager::GetInstance());
+
+    qRegisterMetaType<unsigned short>("unsigned short");
 
     const QUrl url(u"qrc:/main.qml"_qs);
     QObject::connect(
