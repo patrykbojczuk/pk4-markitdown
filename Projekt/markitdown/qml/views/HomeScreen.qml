@@ -10,6 +10,9 @@ Item {
     width: 510
     height: 1080
 
+    signal addNewFile
+    signal openFile
+
     Item {
         id: leftContainer
         width: appNameHeader.implicitWidth
@@ -48,7 +51,6 @@ Item {
             verticalAlignment: Text.AlignVCenter
             font.weight: Font.Thin
         }
-
 
         IconButton {
             id: markdownCheatsheetButton
@@ -102,6 +104,7 @@ Item {
                 iconSource: "qrc:/assets/icons/HomeScreen/new-file.svg"
                 linkText: "New file"
                 tooltipText: "Create and open new markdown file"
+                onClicked: addNewFile()
             }
 
             IconLink {
@@ -112,6 +115,7 @@ Item {
                 iconSource: "qrc:/assets/icons/HomeScreen/open-file.svg"
                 linkText: "Open"
                 tooltipText: "Open existing markdown file"
+                onClicked: openFile()
             }
         }
 
@@ -269,3 +273,4 @@ Designer {
     D{i:0;formeditorZoom:0.9}
 }
 ##^##*/
+
