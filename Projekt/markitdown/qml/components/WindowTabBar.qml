@@ -92,7 +92,8 @@ Rectangle {
             color: "transparent"
         }
         onCurrentItemChanged: {
-            readonlyProperties.currentId = (tabs.currentItem as ClosableTabButton | ImageTabButton)?.customId ?? -1
+            readonlyProperties.currentId = (tabs.currentItem as ClosableTabButton
+                                            | ImageTabButton)?.customId ?? -1
         }
 
         ImageTabButton {
@@ -161,7 +162,7 @@ Rectangle {
             imageSource: "qrc:/assets/icons/tab-new.svg"
             imageSize: 15
             checkable: false
-            onClicked: addNewFile
+            onClicked: addNewFile()
         }
     }
 
@@ -172,7 +173,6 @@ Rectangle {
         width: 80
         color: Constants.lighterBackgroundColor
         radius: Constants.windowRadius
-
 
         Rectangle {
             // Hide
@@ -207,7 +207,8 @@ Rectangle {
 
                         resizeButton.color = Constants.resizeButtonColor
                         resizeButton.borderColor = Constants.resizeButtonBorderColor
-                    } else if (!closeButton.hovered && !minimizeButton.hovered && !resizeButton.hovered) {
+                    } else if (!closeButton.hovered && !minimizeButton.hovered
+                               && !resizeButton.hovered) {
                         closeButton.color = "#00000000"
                         closeButton.borderColor = Constants.backgroundColor
 
