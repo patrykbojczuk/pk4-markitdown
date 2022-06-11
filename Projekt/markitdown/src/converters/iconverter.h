@@ -75,15 +75,17 @@ private:
 
 void IConverter::listItemConverter(
     const MarkdownParser::MarkdownDocument::ListElement::VListItem &listItem) {
-  std::visit(
-      overloaded{
-          [this](const Recursive<
-                 MarkdownParser::MarkdownDocument::UnorderedListElement>
-                     &unorderedList) { topLevelHandler(unorderedList); },
-          [this](const Recursive<
-                 MarkdownParser::MarkdownDocument::MultilineTextElement>
-                     &multilineText) { multilineTextHandler(*multilineText); }},
-      listItem);
+    if (listItem.index() != std::variant_npos) {
+        std::visit(
+          overloaded{
+              [this](const Recursive<
+                     MarkdownParser::MarkdownDocument::UnorderedListElement>
+                         &unorderedList) { topLevelHandler(unorderedList); },
+              [this](const Recursive<
+                     MarkdownParser::MarkdownDocument::MultilineTextElement>
+                         &multilineText) { multilineTextHandler(*multilineText); }},
+          listItem);
+    }
 }
 
 void IConverter::textLineConverter(
@@ -104,7 +106,9 @@ void IConverter::paragraphConverter(
 void IConverter::inlineElementConverter(
     const MarkdownParser::MarkdownDocument::VInlineMarkdownElement
         &inlineElement) {
-  std::visit([this](auto &&el) { inlineElementHandler(el); }, inlineElement);
+    if (inlineElement.index() != std::variant_npos) {
+        std::visit([this](auto &&el) { inlineElementHandler(el); }, inlineElement);
+    }
 }
 
 void IConverter::emphasisConverter(
