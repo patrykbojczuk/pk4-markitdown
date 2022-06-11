@@ -20,6 +20,10 @@ Window {
         radius: Constants.windowRadius
         anchors.fill: parent
 
+        FileHandler {
+            id: fileHandler
+        }
+
         WindowTabBar {
             id: tabBar
             anchors.top: parent.top
@@ -31,9 +35,9 @@ Window {
 
             isMaximized: window.visibility === 4
 
-            onClose:{
-                window.close();
-                Qt.quit();
+            onClose: {
+                window.close()
+                Qt.quit()
             }
             onMinimize: {
                 window.visibility = window.visibility !== 3 ? 3 : 1
@@ -45,24 +49,32 @@ Window {
             onStartSystemMove: {
                 supportsSystemMove = window.startSystemMove()
             }
-            onAddWindowX: function(dX) {
+            onAddWindowX: function (dX) {
                 window.setX(window.x + dX)
             }
-            onAddWindowY: function(dY) {
+            onAddWindowY: function (dY) {
                 window.setY(window.y + dY)
             }
 
-            onAddNewFile: {
-                console.log("Handle file opening")
-            }
+            onAddNewFile: fileHandler.createNewFileOrOverwrite()
         }
 
         StackLayout {
             id: contentWrapper
             anchors.fill: parent
             anchors.topMargin: tabBar.height
+            currentIndex: tabBar.currentIndex
 
-            HomeScreen {}
+            HomeScreen {
+                onAddNewFile: fileHandler.createNewFileOrOverwrite()
+                onOpenFile: fileHandler.openFile()
+            }
+
+            EditorScreen {}
+
+            EditorScreen {}
+
+            EditorScreen {}
         }
 
         Rectangle {
@@ -77,7 +89,7 @@ Window {
 
     ResizeHandler {
         anchors.fill: parent
-        onChangeGeometry: function(x, y, w, h) {
+        onChangeGeometry: function (x, y, w, h) {
             window.setGeometry(x, y, w, h)
         }
     }
