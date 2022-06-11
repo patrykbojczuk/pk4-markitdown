@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import pb.pk.markitdown 1.0
 import "qrc:/"
 import "qrc:/components"
 
@@ -32,6 +33,17 @@ Rectangle {
     signal startSystemMove
     signal addWindowX(real dX)
     signal addWindowY(real dY)
+
+    signal openedTab
+    signal closedTab
+
+    function onOpenedTab(id) {
+        tabs.openedTab(id)
+    }
+
+    function onClosedTab(id) {
+        tabs.closedTab(id)
+    }
 
     Rectangle {
         // Hides bottom radius
@@ -96,6 +108,70 @@ Rectangle {
                                             | ImageTabButton)?.customId ?? -1
         }
 
+        function closeTab(id) {
+            TabManager.closeTab(id)
+        }
+
+        property var createdTabs: ({})
+
+        readonly property var closableTabButtonCreator: Qt.createComponent(
+                                                            "qrc:/components/ClosableTabButton.qml")
+
+        function tabCreated(incubator) {
+            const tabButton = incubator.object
+            let i = tabs.contentChildren.length - 1
+            for (i; i > 0; --i) {
+                if (tabs.itemAt(i) === tabButton) {
+                    tabs.moveItem(i, tabs.contentChildren.length - 2)
+                    tabButton.visible = true
+                    tabButton.closed.connect(tabs.closeTab)
+                    createdTabs[tabButton.customId] = tabButton
+                    break
+                }
+            }
+        }
+
+        function tabCreator(id, filename) {
+            const incubator = closableTabButtonCreator.incubateObject(tabs, {
+                                                                          "y": 0,
+                                                                          "height": parent.height,
+                                                                          "text": filename,
+                                                                          "customId": id,
+                                                                          "visible": false
+                                                                      })
+            if (incubator.status !== Component.Ready) {
+                incubator.onStatusChanged = function (status) {
+                    if (status === Component.Ready) {
+                        tabCreated(incubator)
+                    }
+                }
+            } else {
+                tabCreated(incubator)
+            }
+        }
+
+        function createTabOfId(id) {
+            const tab = TabManager.getTabById(id)
+            tabCreator(id, tab.getFilenameStem())
+        }
+
+        function openedTab(id) {
+            if (!createdTabs.hasOwnProperty(id)) {
+                createTabOfId(id)
+            } else {
+                console.error(`Trying to add tab of existing id (${id})`)
+            }
+        }
+
+        function closedTab(id) {
+            if (createdTabs.hasOwnProperty(id)) {
+                createdTabs[id].destroy()
+                delete createdTabs[id]
+            } else {
+                console.error(`Trying to close not existing tab of id (${id})`)
+            }
+        }
+
         ImageTabButton {
             y: 0
             width: parent.height
@@ -106,54 +182,7 @@ Rectangle {
             checked: true
             property int customId: -1
         }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test1"
-            customId: 0
-        }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test2asdasdasdasdasdasd"
-            customId: 1
-        }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test1asdasdasdasdasdasdasdas"
-            customId: 2
-        }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test2asdasdasdasdasdsadasd"
-            customId: 4
-        }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test1asdasdasdasd"
-            customId: 5
-        }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test2asdasdasdasdasd"
-            customId: 7
-        }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test1asdasdasdasdasdasdasdasdasdasdasdasdasd"
-            customId: 9
-        }
-        ClosableTabButton {
-            y: 0
-            height: parent.height
-            text: "test2asdasdasd"
-            customId: 10
-        }
+
         ImageTabButton {
             y: 0
             width: parent.height
