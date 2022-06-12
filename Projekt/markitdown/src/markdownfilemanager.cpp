@@ -11,7 +11,7 @@ MarkdownFileManager &MarkdownFileManager::GetInstance()
     return manager;
 }
 
-QString MarkdownFileManager::open(const QString &filename)
+QFuture<QString> MarkdownFileManager::open(const QString &filename)
 {
     if (filename.contains("file://")) {
         return FileManager::openTextFile(filename.sliced(7));

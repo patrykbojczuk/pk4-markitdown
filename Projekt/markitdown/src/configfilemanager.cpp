@@ -4,7 +4,7 @@
 
 ConfigFileManager::ConfigFileManager() {}
 
-const QString ConfigFileManager::openConfig(const QString &defaultConfig) const
+QFuture<QString> ConfigFileManager::openConfig(const QString &defaultConfig) const
 {
     return FileManager::openTextFileOrCreate(ConfigFileManager::getConfigFilePath(), defaultConfig);
 }

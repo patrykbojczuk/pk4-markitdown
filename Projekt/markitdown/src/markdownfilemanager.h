@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QFuture>
 #include "converters/iconverter.h"
 #include "lib/src/markdown-parser/markdown-document/markdowndocument.h"
 
@@ -13,7 +14,7 @@ public:
     static MarkdownFileManager &GetInstance();
 
     Q_INVOKABLE
-    QString open(const QString &filename);
+    QFuture<QString> open(const QString &filename);
 
     Q_INVOKABLE
     void save(const QString &filename, const QString &document);

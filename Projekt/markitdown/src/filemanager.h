@@ -1,6 +1,7 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
+#include <QFuture>
 #include <QString>
 #include <QFile>
 
@@ -9,9 +10,9 @@ class FileManager
 public:
     FileManager();
 
-    static QString openTextFile(const QString &filename);
-    static QString openTextFileOrCreate(const QString &filename, const QString &defaultValue = "");
-    static void saveTextFile(const QString &filename, const QString &content);
+    static QFuture<QString> openTextFile(const QString &filename);
+    static QFuture<QString> openTextFileOrCreate(const QString &filename, const QString &defaultValue = "");
+    static void saveTextFile(const QString &filename, QString content);
 
     static bool fileExists(const QString &filename);
 
@@ -20,8 +21,8 @@ public:
     static QString getFilenameStem(const QString &filename);
 
 private:
-    static QString openTextFile(QFile &file);
-    static void saveTextFile(QFile &file, const QString &content);
+    static QFuture<QString> openTextFile(QFile *file, bool handleFileOnThrow = true);
+    static void saveTextFile(QFile *file, const QString &content);
 };
 
 #endif // FILEMANAGER_H

@@ -9,7 +9,7 @@ class ConfigFileManager
 public:
     ConfigFileManager();
 
-    const QString openConfig(const QString &defaultConfig) const;
+    QFuture<QString> openConfig(const QString &defaultConfig) const;
     void saveConfig(const QString &content);
 
 private:

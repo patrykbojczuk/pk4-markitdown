@@ -1,55 +1,68 @@
 #include "filemanager.h"
 #include <QFile>
 #include <filesystem>
+#include <QtConcurrent>
 
 FileManager::FileManager() {}
 
-QString FileManager::openTextFile(const QString &filename)
+QFuture<QString> FileManager::openTextFile(const QString &filename)
 {
-    QFile file(filename);
+    QFile* file = new QFile(filename);
     return FileManager::openTextFile(file);
 }
 
-QString FileManager::openTextFileOrCreate(const QString &filename, const QString &defaultValue)
+QFuture<QString> FileManager::openTextFileOrCreate(const QString &filename, const QString &defaultValue)
 {
-    QFile file(filename);
-    try {
-        return FileManager::openTextFile(file);
-    } catch (...) {
+    QFile *file = new QFile(filename);
+
+    try{
+        return openTextFile(file, false);
+    } catch(...){
         saveTextFile(file, defaultValue);
-        file.close();
-        return defaultValue;
+        return QtConcurrent::run([&defaultValue](){
+            return defaultValue;
+        });
     }
 }
 
-void FileManager::saveTextFile(const QString &filename, const QString &content)
+void FileManager::saveTextFile(const QString &filename, QString content)
 {
-    QFile file(filename);
+    QFile *file = new QFile(filename);
     saveTextFile(file, content);
-    file.close();
 }
 
-QString FileManager::openTextFile(QFile &file)
+QFuture<QString> FileManager::openTextFile(QFile *file, bool handleFileOnThrow)
 {
-    if (fileExists(file.fileName())) {
-        if (file.open(QIODevice::ReadOnly)) {
-            auto configData = QString::fromUtf8(file.readAll());
-            file.close();
-            return configData;
+    if (fileExists(file->fileName())) {
+        if (file->open(QIODevice::ReadOnly)) {
+            return QtConcurrent::run([file](){
+                auto configData = QString::fromUtf8(file->readAll());
+                file->close();
+                delete file;
+                return configData;
+            });
         }
     }
-    file.close();
+    if (handleFileOnThrow){
+        file->close();
+        delete file;
+    }
     throw std::bad_exception();
 }
 
-void FileManager::saveTextFile(QFile &file, const QString &content)
+void FileManager::saveTextFile(QFile *file, const QString &content)
 {
-    checkAndCreateParentPath(file.fileName());
-    if (file.open(QIODevice::WriteOnly)) {
-        file.write(content.toUtf8());
+    checkAndCreateParentPath(file->fileName());
+    if (file->open(QIODevice::WriteOnly)) {
+        static_cast<void>(QtConcurrent::run([file, &content](){
+            file->write(content.toUtf8());
+            file->close();
+            delete file;
+        }));
         return;
     }
-    file.close();
+    file->close();
+    delete file;
     throw std::bad_exception();
 }
 
