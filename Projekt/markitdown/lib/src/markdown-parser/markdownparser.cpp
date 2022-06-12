@@ -128,7 +128,7 @@ void MarkdownParser::MarkdownParser::MarkdownParser::stateMachineMainPassOp(
             [this](const BlockquoteToken &token) {
                 stateStack.push(Blockquote);
                 this->document.add(
-                        make_recursive<MarkdownDocument::BlockquoteElement>(token.getRawText()));
+                        make_recursive<MarkdownDocument::BlockquoteElement>(token.getText()));
                 currentElementStack.push(document.back());
             },
             [this](const CodeToken &token) {
@@ -138,12 +138,14 @@ void MarkdownParser::MarkdownParser::MarkdownParser::stateMachineMainPassOp(
             },
             [this](const OrderedListToken &token) {
                 stateStack.push(OrderedList);
+                indentLevel.push(0);
                 this->document.add(make_recursive<MarkdownDocument::OrderedListElement>(
                         make_recursive<MarkdownDocument::MultilineTextElement>(parseInlineElements(token.getText()))));
                 currentElementStack.push(document.back());
             },
             [this](const UnorderedListToken &token) {
                 stateStack.push(UnorderedList);
+                indentLevel.push(token.getIndent());
                 this->document.add(make_recursive<MarkdownDocument::UnorderedListElement>(
                         make_recursive<MarkdownDocument::MultilineTextElement>(parseInlineElements(token.getText()))));
                 currentElementStack.push(document.back());
