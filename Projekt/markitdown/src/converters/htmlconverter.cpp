@@ -29,7 +29,8 @@ void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocu
 void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocument::BlockquoteElement> &blockquote)
 {
     addToReturnString("<blockquote>");
-    addToReturnString(convert(blockquote->getDocument()));
+    HtmlConverter converter;
+    addToReturnString(converter.convert(blockquote->getDocument()));
     addToReturnString("</blockquote>");
 }
 
@@ -58,17 +59,20 @@ void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocu
 
 void HtmlConverter::multilineTextHandler(const MarkdownParser::MarkdownDocument::MultilineTextElement &multilineText)
 {
-    for (const auto& line: multilineText.getLines()){
-        textLineHandler(line);
-        addToReturnString("<br>");
+    if (multilineText.getLines().size()) {
+        textLineHandler(multilineText.getLines()[0]);
+    }
+    for (auto lineIt = std::next(multilineText.getLines().cbegin(), 1); lineIt != multilineText.getLines().cend(); ++lineIt){
+        addToReturnString("<br />");
+        textLineHandler(*lineIt);
     }
 }
 
 void HtmlConverter::textLineHandler(const MarkdownParser::MarkdownDocument::TextLineElement &textLine)
 {
-    addToReturnString("<span>");
+    //addToReturnString("<span>");
     textLineConverter(textLine);
-    addToReturnString("</span>");
+    //addToReturnString("</span>");
 }
 
 void HtmlConverter::inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::ImageElement> &image)
