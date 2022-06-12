@@ -86,7 +86,8 @@ QT += \
     svg \
     xml \
     widgets \
-    quickcontrols2
+    quickcontrols2 \
+    concurrent
 
 CONFIG += \
     c++latest
