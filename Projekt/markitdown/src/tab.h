@@ -12,6 +12,7 @@
 #include "src/converters/iconverter.h"
 #include "src/converters/htmlconverter.h"
 #include "markdownfilemanager.h"
+#include <QFuture>
 
 class Tab : public QObject
 {
@@ -60,21 +61,22 @@ private:
     void convertContentToHtml();
     void setHtmlContent(const QString &htmlContent);
 
-    MarkdownParser::MarkdownDocument::MarkdownDocument getParsedContent();
+    QFuture<MarkdownParser::MarkdownDocument::MarkdownDocument> getParsedContent();
 
 signals:
     void idChanged();
     void contentChanged();
     void htmlContentChanged();
     void filenameChanged();
+    void contentSaved(Tab* thisTab);
 };
 
 template<typename T>
 void Tab::save(const QString &filename)
 {
-    s_content.acquire();
-    MarkdownFileManager::GetInstance().save<T>(filename, getParsedContent());
-    s_content.release();
+    getParsedContent().then([filename](const MarkdownParser::MarkdownDocument::MarkdownDocument &document){
+        MarkdownFileManager::GetInstance().save<T>(filename, document);
+    });
 }
 
 #endif // TAB_H

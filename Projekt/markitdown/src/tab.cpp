@@ -4,6 +4,7 @@
 #include <future>
 #include "filemanager.h"
 #include "tabmanager.h"
+#include <QtConcurrent>
 
 const QString &Tab::content() const { return m_content; }
 
@@ -19,10 +20,17 @@ void Tab::save() {
     s_content.acquire();
     MarkdownFileManager::GetInstance().save(m_filename, content());
     s_content.release();
+    emit contentSaved(this);
 }
 
 void Tab::convertContentToHtml() {
-    setHtmlContent(htmlConverter.convert(getParsedContent()));
+    getParsedContent()
+       .then([this](const MarkdownParser::MarkdownDocument::MarkdownDocument& document){
+            return htmlConverter.convert(document);
+        })
+        .then([this](const QString& html){
+            setHtmlContent(html);
+        });
 }
 
 void Tab::setHtmlContent(const QString &convertedContent) {
@@ -30,22 +38,28 @@ void Tab::setHtmlContent(const QString &convertedContent) {
     m_htmlContent = convertedContent;
     s_parsedContent.release();
     emit htmlContentChanged();
+    qDebug() << m_htmlContent << "\n\n";
 }
 
-MarkdownParser::MarkdownDocument::MarkdownDocument Tab::getParsedContent() {
+QFuture<MarkdownParser::MarkdownDocument::MarkdownDocument> Tab::getParsedContent() {
     s_content.acquire();
-    auto returnDoc = MarkdownParser::MarkdownParser::MarkdownParser::parse(content().toStdWString());
+    auto WS_content = content().toStdWString();
     s_content.release();
-    return returnDoc;
+
+    QFuture<MarkdownParser::MarkdownDocument::MarkdownDocument> future = QtConcurrent::run([WS_content](){
+        return MarkdownParser::MarkdownParser::MarkdownParser::parse(WS_content);
+    });
+    return future;
 }
 
 Tab::Tab(const QString &filename, QObject *parent): QObject(parent) {
-    auto fileContent = std::async([filename](){return MarkdownFileManager::GetInstance().open(filename);});
+    MarkdownFileManager::GetInstance().open(filename).then([this](const QString& content){
+        setContent(content);
+    });
     m_filename = filename;
     emit filenameChanged();
     m_id = TabManager::GetInstance().addTabAndGetId(this);
     emit idChanged();
-    setContent(fileContent.get());
 }
 
 unsigned short Tab::id() const { return m_id; }
