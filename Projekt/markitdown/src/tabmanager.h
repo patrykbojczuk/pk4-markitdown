@@ -30,13 +30,20 @@ public:
     unsigned short addTabAndGetId(Tab* tab);
     unsigned short getNextId();
 
+    Q_INVOKABLE
+    void saveAll(bool force = false);
+
 private:
     TabManager();
     void addTab(unsigned short id, Tab* tab);
 
+    void tabSavedContent(Tab* tab);
+
     std::atomic<unsigned short> lastIssuedId{0};
     QHash<unsigned short, QSharedPointer<Tab>> m_openedTabs{};
     std::binary_semaphore s_openedTabs{1};
+    std::binary_semaphore s_lastSaveContentHash{1};
+    QHash<unsigned short, QByteArray> lastSaveContentHash;
 
 signals:
     void openedTabsChanged();
