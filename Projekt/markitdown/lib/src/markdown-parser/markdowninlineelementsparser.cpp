@@ -45,9 +45,9 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
     // image reference
     while (std::regex_search(markdownSource, match, std::wregex(IMAGE_FROM_REF_REGEXP))) {
         try {
-            auto reference = getReference(match[1].str());
+            auto reference = getReference(match[2].str());
             atomics.push_back(
-                    make_recursive<MarkdownDocument::ImageElement>(reference.url, match[2].str(), reference.title));
+                    make_recursive<MarkdownDocument::ImageElement>(reference.url, match[1].str(), reference.title));
         } catch (std::out_of_range &e) {
             atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
@@ -66,10 +66,10 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
     // link reference
     while (std::regex_search(markdownSource, match, std::wregex(LINK_FROM_REF_REGEXP))) {
         try {
-            // get reference from match[1].str() from parser
-            auto reference = getReference(match[1].str());
+            // get reference from match[2].str() from parser
+            auto reference = getReference(match[2].str());
             atomics.push_back(
-                    make_recursive<MarkdownDocument::LinkElement>(reference.url, match[2].str(), reference.title));
+                    make_recursive<MarkdownDocument::LinkElement>(reference.url, match[1].str(), reference.title));
         } catch (std::out_of_range &e) {
             atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
@@ -260,7 +260,7 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::createStrikethroug
 void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::addPlainTextElementIfExists(std::wstring &text,
                                                                                                std::vector<MarkdownDocument::VInlineMarkdownElement> &lineElems) {
     if (!text.empty()) {
-        auto substitute = std::move(substitutedAtomic(text));
+        auto substitute = substitutedAtomic(text);
         if (!substitute.empty()) {
             lineElems.insert(std::end(lineElems), std::move_iterator(std::begin(substitute)),
                              std::move_iterator(std::end(substitute)));
