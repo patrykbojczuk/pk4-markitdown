@@ -32,7 +32,7 @@ namespace MarkdownParser {
             MarkdownTokenizer tokenizer;
             std::stack<ParserState> stateStack;
             std::stack<MarkdownDocument::VTopLevelMarkdownElement> currentElementStack;
-            std::stack<int> indentLevel;
+            std::stack<size_t> indentLevel;
             size_t stateMachineTokenIndex = 0;
 
             MarkdownParser(const std::wstring &markdown);
