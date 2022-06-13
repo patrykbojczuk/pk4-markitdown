@@ -21,11 +21,14 @@
         <file alias="MarkdownToolBar.qml">qml/components/MarkdownToolBar.qml</file>
         <file alias="HoverableMouseArea.qml">qml/components/HoverableMouseArea.qml</file>
         <file alias="HeaderLevelSelector.qml">qml/components/HeaderLevelSelector.qml</file>
+        <file alias="InputBox.qml">qml/components/InputBox.qml</file>
+        <file alias="DialogButton.qml">qml/components/DialogButton.qml</file>
     </qresource>
     <qresource prefix="/views">
         <file alias="HomeScreen.qml">qml/views/HomeScreen.qml</file>
         <file alias="MarkdownCheatsheet.qml">qml/views/MarkdownCheatsheet.qml</file>
         <file alias="EditorScreen.qml">qml/views/EditorScreen.qml</file>
+        <file alias="LinkableElementScreen.qml">qml/views/LinkableElementScreen.qml</file>
     </qresource>
     <qresource prefix="/assets/icons">
         <file alias="tab-close.svg">qml/assets/icons/tab-close.svg</file>
