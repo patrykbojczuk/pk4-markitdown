@@ -122,31 +122,7 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseNestedElement
     std::wstring currentPlainText = L"";
 
     while (!textView.empty()) {
-        if (std::regex_search(std::begin(textView), std::end(textView), match,
-                              std::wregex(BOLD_ITALIC_STRIKETHROUGH_REGEXP))) {
-            // bold + italic + strikethrough
-            addPlainTextElementIfExists(currentPlainText, lineElems);
-            lineElems.push_back(createStrongEmphasisElement(createEmphasisElement(match[1])));
-            textView = textView.substr(match[0].length());
-        } else if (std::regex_search(std::begin(textView), std::end(textView), match,
-                                     std::wregex(BOLD_ITALIC_REGEXP))) {
-            // bold + italic
-            addPlainTextElementIfExists(currentPlainText, lineElems);
-            lineElems.push_back(createStrongEmphasisElement(createEmphasisElement(match[1])));
-            textView = textView.substr(match[0].length());
-        } else if (std::regex_search(std::begin(textView), std::end(textView), match,
-                                     std::wregex(BOLD_STRIKETHROUGH_REGEXP))) {
-            // bold + strikethrough
-            addPlainTextElementIfExists(currentPlainText, lineElems);
-            lineElems.push_back(createStrikethroughElement(createStrongEmphasisElement(match[1])));
-            textView = textView.substr(match[0].length());
-        } else if (std::regex_search(std::begin(textView), std::end(textView), match,
-                                     std::wregex(ITALIC_STRIKETHROUGH_REGEXP))) {
-            // italic + strikethrough
-            addPlainTextElementIfExists(currentPlainText, lineElems);
-            lineElems.push_back(createStrikethroughElement(createEmphasisElement(match[1])));
-            textView = textView.substr(match[0].length());
-        } else if (std::regex_search(std::begin(textView), std::end(textView), match, std::wregex(BOLD_REGEXP))) {
+        if (std::regex_search(std::begin(textView), std::end(textView), match, std::wregex(BOLD_REGEXP))) {
             // bold
             addPlainTextElementIfExists(currentPlainText, lineElems);
             lineElems.push_back(createStrongEmphasisElement(match[1]));
@@ -201,9 +177,24 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::substitutedAtomic(
     return returnData;
 }
 
+std::vector<MarkdownParser::MarkdownDocument::VInlineMarkdownElement>
+MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::substitutedAtomic(const MarkdownDocument::TextLineElement &nestedTextLine)
+{
+    std::wstring substitutedString;
+    for (auto& nestedElement: nestedTextLine.getContents()) {
+        if (const Recursive<MarkdownDocument::PlainTextElement> * plainText = std::get_if<Recursive<MarkdownDocument::PlainTextElement>>(&nestedElement)) {
+            substitutedString.append((**plainText).getText());
+            continue;
+        }
+        substitutedString.append(L"\x07" + std::to_wstring(atomics.size()) + L"\x07");
+        atomics.push_back(nestedElement);
+    }
+    return substitutedAtomic(substitutedString);
+}
+
 MarkdownParser::MarkdownDocument::VInlineMarkdownElement
 MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::createEmphasisElement(const std::wstring &text) {
-    auto substitute = substitutedAtomic(text);
+    auto substitute = substitutedAtomic(MarkdownInlineElementsParser::parse(text, getReference));
     Recursive<MarkdownDocument::EmphasisElement> emphasisElement = make_recursive<MarkdownDocument::EmphasisElement>(
             substitute[0]);
     emphasisElement->push_back_many(std::next(std::begin(substitute), 1),
@@ -221,7 +212,7 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::createEmphasisElem
 
 MarkdownParser::MarkdownDocument::VInlineMarkdownElement
 MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::createStrongEmphasisElement(const std::wstring &text) {
-    auto substitute = substitutedAtomic(text);
+    auto substitute = substitutedAtomic(MarkdownInlineElementsParser::parse(text, getReference));
     Recursive<MarkdownDocument::StrongEmphasisElement> strongEmphasisElement = make_recursive<MarkdownDocument::StrongEmphasisElement>(
             substitute[0]);
     strongEmphasisElement->push_back_many(std::next(std::begin(substitute), 1),
@@ -240,7 +231,7 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::createStrongEmphas
 
 MarkdownParser::MarkdownDocument::VInlineMarkdownElement
 MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::createStrikethroughElement(const std::wstring &text) {
-    auto substitute = substitutedAtomic(text);
+    auto substitute = substitutedAtomic(MarkdownInlineElementsParser::parse(text, getReference));
     Recursive<MarkdownDocument::StrikethroughElement> strikethroughElement = make_recursive<MarkdownDocument::StrikethroughElement>(
             substitute[0]);
     strikethroughElement->push_back_many(std::next(std::begin(substitute), 1),

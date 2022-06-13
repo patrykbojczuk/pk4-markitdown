@@ -55,6 +55,9 @@ namespace MarkdownParser {
 
             std::vector<MarkdownDocument::VInlineMarkdownElement>
             substitutedAtomic(const std::wstring &text);
+
+            std::vector<MarkdownDocument::VInlineMarkdownElement>
+            substitutedAtomic(const MarkdownDocument::TextLineElement &nestedTextLine);
         };
     };
 };
