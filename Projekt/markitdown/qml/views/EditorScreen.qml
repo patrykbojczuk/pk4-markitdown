@@ -17,6 +17,212 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         height: 50
+
+        onFormatBold: function () {
+            console.log(formatBold)
+            const boldModifiers = ["**", "__"]
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            //            const startBefore = boldModifiers.includes( textEdit.getText( start - boldModifiers[ 0 ].length, start ) ),
+            //                startAt = boldModifiers.includes( textEdit.getText( start, start + boldModifiers[ 0 ].length ) ),
+            //                endBefore = boldModifiers.includes( textEdit.getText( end - boldModifiers[ 0 ].length, end ) ),
+            //                endAt = boldModifiers.includes( textEdit.getText( end, end + boldModifiers[ 0 ].length ) );
+            //            if ( startBefore && ( endBefore || endAt ) ) {
+            //                textEdit.remove( start - boldModifiers[ 0 ].length, start )
+            //            }
+            //            else if ( startAt && ( endBefore || endAt ) ) {
+            //                textEdit.remove( start, start + boldModifiers[ 0 ].length )
+            //            }
+            //            if ( endAt && ( startBefore || startAt ) ) {
+            //                textEdit.remove( end, end + boldModifiers[ 0 ].length )
+            //            }
+            //            else if ( endBefore && ( startBefore || startAt ) ) {
+            //                textEdit.remove( end - boldModifiers[ 0 ].length, end )
+            //            }
+            //            if ( !( endAt || endBefore ) || !( startBefore || startAt ) ) {
+            textEdit.insert(end, boldModifiers[0])
+            textEdit.insert(start, boldModifiers[0])
+            textEdit.select(start + boldModifiers[0].length,
+                            end + boldModifiers[0].length)
+
+            textEdit.textChanged()
+            //            }
+        }
+
+        onFormatItalic: function () {
+            const italicModifiers = ["*", "_"] //, boldModifiers = ["**", "__"]
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            //            if ((!boldModifiers.includes(
+            //                     textEdit.getText(start - boldModifiers[0].length, start))
+            //                 && italicModifiers.includes(textEdit.getText(
+            //                                                 start - italicModifiers[0].length,
+            //                                                 start))) && (!boldModifiers.includes(
+            //                                                                  textEdit.getText(end, end + boldModifiers[0].length)) && italicModifiers.includes(textEdit.getText(end, end + italicModifiers[0].length)))) {
+            //                textEdit.remove(start - italicModifiers[0].length, start)
+            //                textEdit.remove(end, end + italicModifiers[0].length)
+            //                return
+            //            }
+            textEdit.insert(end, italicModifiers[0])
+            textEdit.insert(start, italicModifiers[0])
+            textEdit.select(start + italicModifiers[0].length,
+                            end + italicModifiers[0].length)
+
+            textEdit.textChanged()
+        }
+
+        onFormatStrikethrough: function () {
+            const strikethroughModifier = '~~'
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            //            const startBefore = textEdit.getText(
+            //                                  start - strikethroughModifier.length,
+            //                                  start) === strikethroughModifier, startAt = textEdit.getText(
+            //                                                                        start, start + strikethroughModifier.length) === strikethroughModifier, endBefore = textEdit.getText(end - strikethroughModifier.length, end) === strikethroughModifier, endAt = textEdit.getText(end, end + strikethroughModifier.length) === strikethroughModifier
+            //            if (startBefore && (endBefore || endAt)) {
+            //                textEdit.remove(start - strikethroughModifier.length, start)
+            //            } else if (startAt && (endBefore || endAt)) {
+            //                textEdit.remove(start, start + strikethroughModifier.length)
+            //            }
+            //            if (endAt && (startBefore || startAt)) {
+            //                textEdit.remove(end, end + strikethroughModifier.length)
+            //            } else if (endBefore && (startBefore || startAt)) {
+            //                textEdit.remove(end - strikethroughModifier.length, end)
+            //            }
+            //            if (!(endAt || endBefore) || !(startBefore || startAt)) {
+            textEdit.insert(end, strikethroughModifier)
+            textEdit.insert(start, strikethroughModifier)
+            textEdit.select(start + strikethroughModifier.length,
+                            end + strikethroughModifier.length)
+
+            textEdit.textChanged()
+            //            }
+        }
+
+        onFormatHeading: function (level) {
+            const genLevelStr = () => {
+                let str = ""
+                for (var i = 0; i < level; ++i) {
+                    str += "#"
+                }
+                return str
+            }
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            textEdit.insert(end, "\n")
+            textEdit.insert(start, "\n" + genLevelStr() + " ")
+
+            textEdit.textChanged()
+        }
+
+        onFormatUL: function () {
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            let text = textEdit.getText(start, end)
+            const lines = text.split("\n")
+            lines.forEach(txt => txt = "- " + txt)
+            text = lines.join("\n")
+            textEdit.remove(start, end)
+            textEdit.insert(start, text)
+
+            textEdit.textChanged()
+        }
+
+        onFormatOL: function () {
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            let text = textEdit.getText(start, end)
+            const lines = text.split("\n")
+            let currentNum = 0
+            lines.forEach(txt => txt = ++currentNum + ". " + txt)
+            text = lines.join("\n")
+            textEdit.remove(start, end)
+            textEdit.insert(start, text)
+
+            textEdit.textChanged()
+        }
+
+        onFormatBlockquote: function () {
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            let text = textEdit.getText(start, end)
+            const lines = text.split("\n")
+            lines.forEach(txt => txt = "> " + txt)
+            text = lines.join("\n")
+            textEdit.remove(start, end)
+            textEdit.insert(start, text)
+
+            textEdit.textChanged()
+        }
+
+        onFormatInlineCode: function () {
+            const inlineCodeModifiers = ["`", "``"]
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            //            const startBefore = boldModifiers.includes(
+            //                                  textEdit.getText(start - boldModifiers[0].length, start)), startAt = boldModifiers.includes(textEdit.getText(start, start + boldModifiers[0].length)), endBefore = boldModifiers.includes(textEdit.getText(end - boldModifiers[0].length, end)), endAt = boldModifiers.includes(textEdit.getText(end, end + boldModifiers[0].length))
+            //            if (startBefore && (endBefore || endAt)) {
+            //                textEdit.remove(start - boldModifiers[0].length, start)
+            //            } else if (startAt && (endBefore || endAt)) {
+            //                textEdit.remove(start, start + boldModifiers[0].length)
+            //            }
+            //            if (endAt && (startBefore || startAt)) {
+            //                textEdit.remove(end, end + boldModifiers[0].length)
+            //            } else if (endBefore && (startBefore || startAt)) {
+            //                textEdit.remove(end - boldModifiers[0].length, end)
+            //            }
+            //            if (!(endAt || endBefore) || !(startBefore || startAt)) {
+            textEdit.insert(end, inlineCodeModifiers[0])
+            textEdit.insert(start, inlineCodeModifiers[0])
+            textEdit.select(start + inlineCodeModifiers[0].length,
+                            end + inlineCodeModifiers[0].length)
+
+            textEdit.textChanged()
+            //            }
+        }
+
+        onFormatCodeblock: function () {
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+            textEdit.insert(end, "\n```")
+            textEdit.insert(start, "```\n")
+
+            textEdit.textChanged()
+        }
+
+        onFormatLink: function () {
+            if (textEdit.selectedText !== '') {
+                linkableElementDialog.textInputText = textEdit.selectedText
+            } else {
+                linkableElementDialog.textInputText = ''
+            }
+            linkableElementDialog.urlInputText = ''
+            linkableElementDialog.titleInputText = ''
+
+            linkableElementDialog.type = LinkableElementScreen.LinkableType.Link
+            linkableElementDialog.open()
+
+            textEdit.textChanged()
+        }
+
+        onFormatImage: function () {
+            if (textEdit.selectedText !== '') {
+                linkableElementDialog.textInputText = textEdit.selectedText
+            } else {
+                linkableElementDialog.textInputText = ''
+            }
+            linkableElementDialog.urlInputText = ''
+            linkableElementDialog.titleInputText = ''
+
+            linkableElementDialog.type = LinkableElementScreen.LinkableType.Image
+            linkableElementDialog.open()
+
+            textEdit.textChanged()
+        }
+    }
+
+    LinkableElementScreen {
+        id: linkableElementDialog
+
+        onAccepted: function () {
+            const start = textEdit.selectionStart, end = textEdit.selectionEnd
+
+            textEdit.remove(start, end)
+            textEdit.insert(
+                        start,
+                        `${linkableElementDialog.type === LinkableElementScreen.LinkableType.Image ? '!' : ''}[${linkableElementDialog.textInputText}](${linkableElementDialog.urlInputText}${linkableElementDialog.titleInputText.length ? ' "' + linkableElementDialog.titleInputText + '"' : ''})`)
+        }
     }
 
     Item {
@@ -139,6 +345,9 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
+                onLinkActivated: function (link) {
+                    Qt.openUrlExternally(link)
+                }
             }
 
             Keys.onDownPressed: textDisplayScrollBar.increase()
