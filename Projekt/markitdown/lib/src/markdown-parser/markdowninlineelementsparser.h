@@ -16,9 +16,11 @@ namespace MarkdownParser {
                                                            const std::function<LinkableReference(
                                                                    const std::wstring &refId)> &getReference);
 
+            static void clearAtomics();
+
         private:
             std::wstring markdownSource;
-            std::vector<MarkdownDocument::VInlineMarkdownElement> atomics{}; // leafs - they don't nest other inline elements
+            static inline std::vector<MarkdownDocument::VInlineMarkdownElement> atomics{}; // leafs - they don't nest other inline elements
 
             std::function<LinkableReference(const std::wstring &refId)> getReference;
 

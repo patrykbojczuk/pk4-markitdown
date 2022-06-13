@@ -21,9 +21,7 @@
 #include "markdown-document/markdown-elements/unorderedlistelement.h"
 #include "markdowninlineelementsparser.h"
 
-MarkdownParser::MarkdownParser::MarkdownParser::MarkdownParser(const std::wstring &markdown) : tokenizer(markdown) {
-    indentLevel.push(0);
-}
+MarkdownParser::MarkdownParser::MarkdownParser::MarkdownParser(const std::wstring &markdown) : tokenizer(markdown) { }
 
 template<class... Ts>
 struct overloaded : Ts ... {
@@ -78,9 +76,11 @@ MarkdownParser::MarkdownDocument::MarkdownDocument MarkdownParser::MarkdownParse
 
 MarkdownParser::MarkdownDocument::TextLineElement
 MarkdownParser::MarkdownParser::MarkdownParser::parseInlineElements(const std::wstring &markdown) {
-    return std::move(MarkdownInlineElementsParser::parse(markdown, [this](const std::wstring &refId) {
+    auto returnLine = MarkdownInlineElementsParser::parse(markdown, [this](const std::wstring &refId) {
         return tokenizer.getReference(refId);
-    }));
+    });
+    MarkdownInlineElementsParser::clearAtomics();
+    return returnLine;
 }
 
 MarkdownParser::MarkdownDocument::MarkdownDocument

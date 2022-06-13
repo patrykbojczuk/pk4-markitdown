@@ -24,19 +24,24 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parse(const std::w
     return parser.parseNestedElementsAndReplaceSubstitutions();
 }
 
+void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::clearAtomics()
+{
+    MarkdownInlineElementsParser::atomics.clear();
+}
+
 void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubstituteAtomicElements() {
     std::wsmatch match;
 
     // code
     while (std::regex_search(markdownSource, match, std::wregex(INLINE_CODE_REGEXP))) {
-        atomics.push_back(make_recursive<MarkdownDocument::InlineCodeElement>(match[1].str()));
+        MarkdownInlineElementsParser::atomics.push_back(make_recursive<MarkdownDocument::InlineCodeElement>(match[1].str()));
 
         substituteMatchedAtomic(match);
     }
 
     // image direct
     while (std::regex_search(markdownSource, match, std::wregex(IMAGE_WITH_URL_REGEXP))) {
-        atomics.push_back(make_recursive<MarkdownDocument::ImageElement>(match[2].str(), match[1].str(),
+        MarkdownInlineElementsParser::atomics.push_back(make_recursive<MarkdownDocument::ImageElement>(match[2].str(), match[1].str(),
                                                                          match[3].str()));
 
         substituteMatchedAtomic(match);
@@ -46,10 +51,10 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
     while (std::regex_search(markdownSource, match, std::wregex(IMAGE_FROM_REF_REGEXP))) {
         try {
             auto reference = getReference(match[2].str());
-            atomics.push_back(
+            MarkdownInlineElementsParser::atomics.push_back(
                     make_recursive<MarkdownDocument::ImageElement>(reference.url, match[1].str(), reference.title));
         } catch (std::out_of_range &e) {
-            atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
+            MarkdownInlineElementsParser::atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
 
         substituteMatchedAtomic(match);
@@ -57,7 +62,7 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
 
     // link direct
     while (std::regex_search(markdownSource, match, std::wregex(LINK_WITH_URL_REGEXP))) {
-        atomics.push_back(make_recursive<MarkdownDocument::LinkElement>(match[2].str(), match[1].str(),
+        MarkdownInlineElementsParser::atomics.push_back(make_recursive<MarkdownDocument::LinkElement>(match[2].str(), match[1].str(),
                                                                         match[3].str()));
 
         substituteMatchedAtomic(match);
@@ -68,10 +73,10 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
         try {
             // get reference from match[2].str() from parser
             auto reference = getReference(match[2].str());
-            atomics.push_back(
+            MarkdownInlineElementsParser::atomics.push_back(
                     make_recursive<MarkdownDocument::LinkElement>(reference.url, match[1].str(), reference.title));
         } catch (std::out_of_range &e) {
-            atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
+            MarkdownInlineElementsParser::atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
 
         substituteMatchedAtomic(match);
@@ -82,10 +87,10 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
         try {
             // get reference from match[1].str() from parser
             auto reference = getReference(match[1].str());
-            atomics.push_back(
+            MarkdownInlineElementsParser::atomics.push_back(
                     make_recursive<MarkdownDocument::LinkElement>(reference.url, match[1].str(), reference.title));
         } catch (std::out_of_range &e) {
-            atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
+            MarkdownInlineElementsParser::atomics.push_back(make_recursive<MarkdownDocument::PlainTextElement>(match[0]));
         }
 
         substituteMatchedAtomic(match);
@@ -93,7 +98,7 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
 
     // link literal
     while (std::regex_search(markdownSource, match, std::wregex(LINK_LITERAL_REGEXP))) {
-        atomics.push_back(
+        MarkdownInlineElementsParser::atomics.push_back(
                 make_recursive<MarkdownDocument::LinkElement>(match[1].str(), match[1].str()));
 
         substituteMatchedAtomic(match);
@@ -101,7 +106,7 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
 
     // email literal
     while (std::regex_search(markdownSource, match, std::wregex(EMAIL_LITERAL_REGEXP))) {
-        atomics.push_back(
+        MarkdownInlineElementsParser::atomics.push_back(
                 make_recursive<MarkdownDocument::LinkElement>(L"mailto:" + match[1].str(), match[1].str()));
 
         substituteMatchedAtomic(match);
@@ -111,7 +116,7 @@ void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::parseAndSubst
 void MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::substituteMatchedAtomic(
         const std::wsmatch &match) {
     markdownSource.replace(match.position(), match.length(), L"\x07" + std::to_wstring(
-            atomics.size() - 1) + L"\x07");
+            MarkdownInlineElementsParser::atomics.size() - 1) + L"\x07");
 }
 
 MarkdownParser::MarkdownDocument::TextLineElement
@@ -186,8 +191,8 @@ MarkdownParser::MarkdownParser::MarkdownInlineElementsParser::substitutedAtomic(
             substitutedString.append((**plainText).getText());
             continue;
         }
-        substitutedString.append(L"\x07" + std::to_wstring(atomics.size()) + L"\x07");
-        atomics.push_back(nestedElement);
+        substitutedString.append(L"\x07" + std::to_wstring(MarkdownInlineElementsParser::atomics.size()) + L"\x07");
+        MarkdownInlineElementsParser::atomics.push_back(nestedElement);
     }
     return substitutedAtomic(substitutedString);
 }
