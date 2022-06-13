@@ -52,6 +52,8 @@ public:
     virtual void topLevelHandler(const Recursive<MarkdownParser::MarkdownDocument::UnorderedListElement>& unorderedList) = 0;
     virtual void topLevelHandler(const Recursive<MarkdownParser::MarkdownDocument::HorizontalRuleElement>& horizontalRule) = 0;
 
+    virtual void listItemHandler(const MarkdownParser::MarkdownDocument::ListElement::VListItem& listItem) = 0;
+
     virtual void multilineTextHandler(const MarkdownParser::MarkdownDocument::MultilineTextElement& multilineText) = 0;
 
     virtual void textLineHandler(const MarkdownParser::MarkdownDocument::TextLineElement& textLine) = 0;

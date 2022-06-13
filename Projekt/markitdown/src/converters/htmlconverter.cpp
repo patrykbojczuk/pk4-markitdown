@@ -38,7 +38,7 @@ void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocu
 {
     addToReturnString("<ol>");
     for (const auto& listItem: orderedList->getItems()){
-        listItemConverter(listItem);
+        listItemHandler(listItem);
     }
     addToReturnString("</ol>");
 }
@@ -47,7 +47,7 @@ void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocu
 {
     addToReturnString("<ul>");
     for (const auto& listItem: unorderedList->getItems()){
-        listItemConverter(listItem);
+        listItemHandler(listItem);
     }
     addToReturnString("</ul>");
 }
@@ -55,6 +55,13 @@ void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocu
 void HtmlConverter::topLevelHandler(const Recursive<MarkdownParser::MarkdownDocument::HorizontalRuleElement> &_)
 {
     addToReturnString("<hr />");
+}
+
+void HtmlConverter::listItemHandler(const MarkdownParser::MarkdownDocument::ListElement::VListItem &listItem)
+{
+    addToReturnString("<li>");
+    listItemConverter(listItem);
+    addToReturnString("</li>");
 }
 
 void HtmlConverter::multilineTextHandler(const MarkdownParser::MarkdownDocument::MultilineTextElement &multilineText)

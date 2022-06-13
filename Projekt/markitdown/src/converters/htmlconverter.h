@@ -18,6 +18,8 @@ public:
     void topLevelHandler(const Recursive<MarkdownParser::MarkdownDocument::UnorderedListElement> &unorderedList) override;
     void topLevelHandler(const Recursive<MarkdownParser::MarkdownDocument::HorizontalRuleElement> &_) override;
 
+    void listItemHandler(const MarkdownParser::MarkdownDocument::ListElement::VListItem &listItem) override;
+
     void multilineTextHandler(const MarkdownParser::MarkdownDocument::MultilineTextElement &multilineText) override;
 
     void textLineHandler(const MarkdownParser::MarkdownDocument::TextLineElement &textLine) override;
@@ -29,7 +31,6 @@ public:
     void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::EmphasisElement> &emphasis) override;
     void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::StrikethroughElement> &strikethrough) override;
     void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::StrongEmphasisElement> &strongEmphasis) override;
-
 };
 
 #endif // HTMLCONVERTER_H
