@@ -92,7 +92,6 @@ Window {
             property var createdEditors: ({})
 
             function createdTabEditorScreen(tab, incubator) {
-                console.log('created editor for', tab.id)
                 const editorScreen = incubator.object
                 createdEditors[tab.id] = editorScreen
                 editorScreen.textChanged.connect(() => {
