@@ -1,4 +1,5 @@
 #include "tabmanager.h"
+#include "src/configmanager.h"
 #include "src/tab.h"
 #include <QtConcurrent>
 #include <QCryptographicHash>
@@ -11,9 +12,17 @@ TabManager &TabManager::GetInstance()
 
 void TabManager::createTab(const QString &filename)
 {
+    for (const auto &tab: openedTabs().values()) {
+        if (tab->filename() == filename){
+            emit focusOnTab(tab->id());
+            return;
+        }
+    }
     Tab *newTab = new Tab(filename, this);
     emit tabOpened(newTab->id());
     connect(newTab, &Tab::contentSaved, this, &TabManager::tabSavedContent);
+    ConfigManager::GetInstance().addRecentFile(newTab->filename());
+    emit focusOnTab(newTab->id());
 }
 
 Tab *TabManager::getTabById(unsigned short id) {
@@ -91,4 +100,5 @@ void TabManager::tabSavedContent(Tab *tab)
         lastSaveContentHash.insert(tab->id(), QCryptographicHash::hash(tab->content().toUtf8(), QCryptographicHash::Md4));
         s_lastSaveContentHash.release();
     });
+    ConfigManager::GetInstance().addRecentFile(tab->filename(), true);
 }
