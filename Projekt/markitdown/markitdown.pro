@@ -87,7 +87,8 @@ QT += \
     xml \
     widgets \
     quickcontrols2 \
-    concurrent
+    concurrent \
+    printsupport
 
 CONFIG += \
     c++latest
