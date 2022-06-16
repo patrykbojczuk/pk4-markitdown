@@ -56,7 +56,14 @@ void ConfigManager::setFontFamily(const QFont &newFontFamily, bool save)
 
 void ConfigManager::addRecentFile(const QString &newRecentFile, bool save)
 {
-    m_recentFiles.push_back(newRecentFile);
+    QString file(newRecentFile.startsWith("file://") 
+                    ? newRecentFile.sliced(7) 
+                        : newRecentFile);
+
+    m_recentFiles.removeIf([file](const QString& elem){
+        return elem == file;
+    });
+    m_recentFiles.push_back(file);
     if (save) {
         saveConfig();
     }
@@ -69,13 +76,11 @@ void ConfigManager::setAutosave(bool newAutosave, bool save)
         QMetaObject::invokeMethod(&autosaveTimer, [this](){
             autosaveTimer.start(m_autosave);
         }, Qt::QueuedConnection);
-        //autosaveTimer.start(5000);
     }
     if (!newAutosave){
         QMetaObject::invokeMethod(&autosaveTimer, [this](){
             autosaveTimer.stop();
         }, Qt::QueuedConnection);
-        //autosaveTimer.stop();
     }
     m_autosave = newAutosave;
     if (save) {
@@ -102,6 +107,7 @@ void ConfigManager::saveConfig()
     obj.insert("fontSize", m_fontSize);
     obj.insert("fontName", m_fontFamily.family());
     obj.insert("autosave", m_autosave);
+    obj.insert("autosaveInterval_ms", QJsonValue((int)m_autosaveTimeout));
     obj.insert("recentFiles", QJsonValue(QJsonArray::fromStringList(m_recentFiles)));
     QJsonDocument doc;
     doc.setObject(obj);
@@ -150,6 +156,21 @@ void ConfigManager::autosaveElapsed()
 bool ConfigManager::getFinishedLoading() const
 {
     return finishedLoading;
+}
+
+QString ConfigManager::getFilenameStem(const QString &filename)
+{
+    return FileManager::getFilenameStem(filename);
+}
+
+QString ConfigManager::getFilenameName(const QString &filename)
+{
+    return FileManager::getFilenameName(filename);
+}
+
+QString ConfigManager::getFilenameParent(const QString &filename)
+{
+    return FileManager::getFilenameParent(filename);
 }
 
 ConfigManager::ConfigManager(QObject *parent): QObject(parent), autosaveTimer(this)

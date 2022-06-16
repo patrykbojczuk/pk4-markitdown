@@ -34,6 +34,15 @@ public:
 
     bool getFinishedLoading() const;
 
+    Q_INVOKABLE
+    QString getFilenameStem(const QString &filename);
+
+    Q_INVOKABLE
+    QString getFilenameName(const QString &filename);
+
+    Q_INVOKABLE
+    QString getFilenameParent(const QString &filename);
+
 signals:
     void fontSizeChanged();
     void fontFamilyChanged();
