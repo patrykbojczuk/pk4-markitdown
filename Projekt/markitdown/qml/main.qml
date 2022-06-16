@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import Qt.labs.platform 1.1
 import pb.pk.markitdown 1.0
 import "qrc:/"
 import "qrc:/components"
@@ -16,6 +17,262 @@ Window {
     minimumWidth: 510
     minimumHeight: 300
 
+    MenuBar {
+        id: menuBar
+
+        Menu {
+            id: fileMenu
+            title: "File"
+            enabled: true
+
+            MenuItem {
+                text: "New file"
+                onTriggered: fileHandler.createNewFileOrOverwrite()
+            }
+
+            MenuItem {
+                text: "Open file"
+                onTriggered: fileHandler.openFile()
+            }
+
+            MenuSeparator {
+                visible: tabBar.currentId !== -1
+            }
+
+            MenuItem {
+                visible: tabBar.currentId !== -1
+                text: "Save file"
+                onTriggered: {
+                    TabManager.getTabById(tabBar.currentId).save()
+                }
+            }
+
+            MenuItem {
+                visible: tabBar.currentId !== -1
+                text: "Save as"
+                onTriggered: {
+                    fileHandler.saveFileAs()
+                }
+            }
+
+            MenuSeparator {
+                visible: tabBar.currentId !== -1
+            }
+
+            Menu {
+                visible: tabBar.currentId !== -1
+                title: "Export"
+
+                MenuItem {
+                    text: "HTML"
+                    onTriggered: {
+                        fileHandler.exportToFile(FileHandler.ExportFormats.Html)
+                    }
+                }
+
+                MenuItem {
+                    text: "PDF"
+                    onTriggered: {
+                        fileHandler.exportToFile(FileHandler.ExportFormats.Pdf)
+                    }
+                }
+            }
+        }
+
+        Menu {
+            id: editMenu
+            title: "Edit"
+            visible: tabBar.currentId !== -1
+            enabled: true
+
+            MenuItem {
+                text: "Copy"
+                onTriggered: {
+                    contentWrapper.itemAt(contentWrapper.currentIndex).copy()
+                }
+            }
+
+            MenuItem {
+                text: "Cut"
+                onTriggered: {
+                    contentWrapper.itemAt(contentWrapper.currentIndex).cut()
+                }
+            }
+
+            MenuItem {
+                text: "Paste"
+                onTriggered: {
+                    contentWrapper.itemAt(contentWrapper.currentIndex).paste()
+                }
+            }
+
+            MenuSeparator {}
+
+            MenuItem {
+                text: "Bold"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatBold()
+                }
+            }
+
+            MenuItem {
+                text: "Italic"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatItalic()
+                }
+            }
+
+            MenuItem {
+                text: "Strikethrough"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatBold()
+                    contentWrapper.mdToolbar.onFormatStrikethrough()
+                }
+            }
+
+            Menu {
+                title: "Header"
+
+                MenuItem {
+                    text: "Level 1"
+                    onTriggered: {
+                        contentWrapper.itemAt(
+                                    contentWrapper.currentIndex).formatHeading(
+                                    1)
+                    }
+                }
+
+                MenuItem {
+                    text: "Level 2"
+                    onTriggered: {
+                        contentWrapper.itemAt(
+                                    contentWrapper.currentIndex).formatHeading(
+                                    2)
+                    }
+                }
+
+                MenuItem {
+                    text: "Level 3"
+                    onTriggered: {
+                        contentWrapper.itemAt(
+                                    contentWrapper.currentIndex).formatHeading(
+                                    3)
+                    }
+                }
+
+                MenuItem {
+                    text: "Level 4"
+                    onTriggered: {
+                        contentWrapper.itemAt(
+                                    contentWrapper.currentIndex).formatHeading(
+                                    4)
+                    }
+                }
+
+                MenuItem {
+                    text: "Level 5"
+                    onTriggered: {
+                        contentWrapper.itemAt(
+                                    contentWrapper.currentIndex).formatHeading(
+                                    5)
+                    }
+                }
+
+                MenuItem {
+                    text: "Level 6"
+                    onTriggered: {
+                        contentWrapper.itemAt(
+                                    contentWrapper.currentIndex).formatHeading(
+                                    6)
+                    }
+                }
+            }
+
+            MenuItem {
+                text: "Link"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatLink()
+                }
+            }
+
+            MenuItem {
+                text: "Unordered list"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatUL()
+                }
+            }
+
+            MenuItem {
+                text: "Ordered list"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatOL()
+                }
+            }
+
+            MenuItem {
+                text: "Blockquote"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatBlockquote()
+                }
+            }
+
+            MenuItem {
+                text: "Inline code"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatInlineCode()
+                }
+            }
+
+            MenuItem {
+                text: "Code block"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatCodeblock()
+                }
+            }
+
+            MenuItem {
+                text: "Image"
+                onTriggered: {
+                    contentWrapper.itemAt(
+                                contentWrapper.currentIndex).formatImage()
+                }
+            }
+        }
+
+        Menu {
+            title: "More"
+
+            MenuItem {
+                text: "Settings"
+                onTriggered: {
+                    settingsScreen.open()
+                }
+            }
+
+            MenuSeparator {}
+
+            MenuItem {
+                text: "About"
+                onTriggered: {
+                    console.log(text)
+                }
+            }
+        }
+    }
+
+    SettingsScreen {
+        id: settingsScreen
+    }
+
     Rectangle {
         color: Constants.backgroundColor
         radius: Constants.windowRadius
@@ -23,6 +280,22 @@ Window {
 
         FileHandler {
             id: fileHandler
+
+            onFileSavedAs: function (filename) {
+                TabManager.getTabById(tabBar.currentId).save(filename)
+            }
+
+            onFileExportedTo: function (filename, type) {
+                if (type === FileHandler.ExportFormats.Pdf) {
+                    TabManager.getTabById(tabBar.currentId).exportPdf(filename)
+                    console.log("export pdf")
+                } else if (type === FileHandler.ExportFormats.Html) {
+                    TabManager.getTabById(tabBar.currentId).exportHtml(filename)
+                    console.log("export html")
+                } else {
+                    console.error("Invalid export type")
+                }
+            }
         }
 
         QtObject {
