@@ -47,6 +47,7 @@ private:
 
 signals:
     void openedTabsChanged();
+    void focusOnTab(int id);
 
     Q_SIGNAL
     void tabOpened(unsigned short tabId);
