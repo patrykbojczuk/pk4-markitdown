@@ -104,8 +104,7 @@ Rectangle {
             color: "transparent"
         }
         onCurrentItemChanged: {
-            readonlyProperties.currentId = (tabs.currentItem as ClosableTabButton
-                                            | ImageTabButton)?.customId ?? -1
+            readonlyProperties.currentId = tabs.currentItem.customId
         }
 
         function closeTab(id) {
