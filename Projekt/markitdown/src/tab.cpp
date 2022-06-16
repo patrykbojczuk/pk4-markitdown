@@ -5,6 +5,8 @@
 #include "filemanager.h"
 #include "tabmanager.h"
 #include <QtConcurrent>
+#include <QTextDocument>
+#include <QPrinter>
 
 const QString &Tab::content() const { return m_content; }
 
@@ -16,11 +18,29 @@ void Tab::setContent(const QString &newContent) {
     convertContentToHtml();
 }
 
-void Tab::save() {
+void Tab::save(const QString &filename) {
+    if (filename != ""){
+        setFilename(filename);
+    }
     s_content.acquire();
     MarkdownFileManager::GetInstance().save(m_filename, content());
     s_content.release();
     emit contentSaved(this);
+}
+
+void Tab::exportHtml(const QString &filename)
+{
+    save<HtmlConverter>(filename);
+}
+
+void Tab::exportPdf(const QString &filename)
+{
+    qDebug() << "Start exporting PDF...";
+    getParsedContent()
+        .then([filename](const MarkdownParser::MarkdownDocument::MarkdownDocument& document){
+            qDebug() << "Starting saving PDF...";
+            MarkdownFileManager::GetInstance().savePdf(filename.sliced(7), document);
+        });
 }
 
 void Tab::convertContentToHtml() {
@@ -38,7 +58,13 @@ void Tab::setHtmlContent(const QString &convertedContent) {
     m_htmlContent = convertedContent;
     s_parsedContent.release();
     emit htmlContentChanged();
-    qDebug() << m_htmlContent << "\n\n";
+    //qDebug() << m_htmlContent << "\n\n";
+}
+
+void Tab::setFilename(const QString &filename)
+{
+    m_filename = filename;
+    emit filenameChanged();
 }
 
 QFuture<MarkdownParser::MarkdownDocument::MarkdownDocument> Tab::getParsedContent() {

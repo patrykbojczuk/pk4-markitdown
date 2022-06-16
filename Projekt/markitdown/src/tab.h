@@ -33,11 +33,12 @@ public:
     void setContent(const QString &newContent);
 
     Q_INVOKABLE
-    void save();
+    void save(const QString &filename = "");
 
     Q_INVOKABLE
-    template <typename T = IConverter>
-    void save(const QString &filename);
+    void exportHtml(const QString &filename);
+    Q_INVOKABLE
+    void exportPdf(const QString &filename);
 
     const QString &filename() const;
 
@@ -60,6 +61,11 @@ private:
 
     void convertContentToHtml();
     void setHtmlContent(const QString &htmlContent);
+
+    template <typename T = IConverter>
+    void save(const QString &filename);
+
+    void setFilename(const QString &filename);
 
     QFuture<MarkdownParser::MarkdownDocument::MarkdownDocument> getParsedContent();
 
