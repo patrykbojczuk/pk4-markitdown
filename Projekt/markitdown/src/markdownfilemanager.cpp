@@ -1,6 +1,10 @@
 #include "markdownfilemanager.h"
+#include <QtConcurrent>
+#include <QTextDocument>
+#include <QPrinter>
 #include "filemanager.h"
 #include "lib/src/markdown-parser/markdownparser.h"
+#include "converters/htmlconverter.h"
 
 MarkdownFileManager::MarkdownFileManager() {}
 
@@ -30,7 +34,24 @@ void MarkdownFileManager::save(const QString &filename, const QString &document)
     FileManager::saveTextFile(filename, document);
 }
 
-void MarkdownFileManager::save(const QString &filename, MarkdownParser::MarkdownDocument::MarkdownDocument document, std::unique_ptr<IConverter> converter)
+void MarkdownFileManager::savePdf(const QString &filename, MarkdownParser::MarkdownDocument::MarkdownDocument document){
+    QtConcurrent::run([document, filename](){
+        HtmlConverter converter;
+
+        QTextDocument textDocument;
+        textDocument.setHtml(converter.convert(document));
+
+        QPrinter printer(QPrinter::HighResolution);
+        printer.setPageSize(QPageSize::A4);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+
+        printer.setOutputFileName(filename);
+
+        textDocument.print(&printer);
+    });
+}
+
+void MarkdownFileManager::save(const QString &filename, const MarkdownParser::MarkdownDocument::MarkdownDocument &document, std::unique_ptr<IConverter> &converter)
 {
     if (filename.contains("file://")) {
         MarkdownFileManager::save(filename.sliced(7), converter->convert(document));

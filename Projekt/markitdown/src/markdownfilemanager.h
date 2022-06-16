@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QFuture>
+#include <QtConcurrent>
 #include "converters/iconverter.h"
 #include "lib/src/markdown-parser/markdown-document/markdowndocument.h"
 
@@ -23,15 +24,21 @@ public:
     template <typename T = IConverter>
     void save(const QString &filename, MarkdownParser::MarkdownDocument::MarkdownDocument document);
 
+    Q_INVOKABLE
+    void savePdf(const QString &filename, MarkdownParser::MarkdownDocument::MarkdownDocument document);
+
 private:
     MarkdownFileManager();
-    void save(const QString &filename, MarkdownParser::MarkdownDocument::MarkdownDocument document, std::unique_ptr<IConverter> converter);
+    void save(const QString &filename, const MarkdownParser::MarkdownDocument::MarkdownDocument &document, std::unique_ptr<IConverter> &converter);
 };
 
 template<typename T>
 void MarkdownFileManager::save(const QString &filename, MarkdownParser::MarkdownDocument::MarkdownDocument document)
 {
-    MarkdownFileManager::save(filename, document, std::move(std::unique_ptr<T>()));
+    QtConcurrent::run([this, &filename, &document](){
+        std::unique_ptr<IConverter> converter(new T());
+        save(filename, document, converter);
+    });
 }
 
 #endif // MARKDOWNFILEMANAGER_H
