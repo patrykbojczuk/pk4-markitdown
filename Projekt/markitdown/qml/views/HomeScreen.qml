@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
+import pb.pk.markitdown 1.0
 import "qrc:/"
 import "qrc:/components"
 import "qrc:/views"
@@ -129,6 +130,19 @@ Item {
             font.kerning: true
             verticalAlignment: Text.AlignVCenter
             anchors.topMargin: 64
+            visible: ConfigManager.recentFiles.length
+        }
+
+        readonly property var iconLinkFactory: Qt.createComponent(
+                                                   "qrc:/components/IconLink.qml")
+
+        property Connections connections: Connections {
+            target: ConfigManager
+
+            function onRecentFilesChanged() {
+                recentFilesSectionSectionLinks.generateList()
+                recentFilesSectionHeader.visible = ConfigManager.recentFiles.length
+            }
         }
 
         Column {
@@ -143,52 +157,53 @@ Item {
             anchors.rightMargin: 0
             spacing: 5
 
-            IconLink {
-                maxWidth: parent.width
-                anchors.left: parent.left
-                anchors.rightMargin: 0
-                anchors.leftMargin: 0
-                height: 20
-                iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
-                linkText: "example.md"
-                linkPath: "~/Documents/projects/mid"
-                tooltipText: 'Open ' + linkPath + '/' + linkText
+            function cleanList() {
+                for (const childId in recentFilesSectionSectionLinks.children) {
+                    recentFilesSectionSectionLinks.children[childId].destroy()
+                }
             }
 
-            IconLink {
-                maxWidth: parent.width
-                anchors.left: parent.left
-                anchors.rightMargin: 0
-                anchors.leftMargin: 0
-                height: 20
-                iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
-                linkText: "README.md"
-                linkPath: "~/Documents/projects/mid"
-                tooltipText: 'Open ' + linkPath + '/' + linkText
+            function addListItem(name, path) {
+                const incubator = leftContainer.iconLinkFactory.incubateObject(
+                                    recentFilesSectionSectionLinks, {
+                                        "maxWidth": recentFilesSectionSectionLinks.width,
+                                        "anchors.left": recentFilesSectionSectionLinks.left,
+                                        "anchors.rightMargin": 0,
+                                        "anchors.leftMargin": 0,
+                                        "height": 20,
+                                        "iconSource": "qrc:/assets/icons/HomeScreen/markdown-link.svg",
+                                        "linkText": name,
+                                        "linkPath": path,
+                                        "tooltipText": 'Open ' + path + '/' + name
+                                    })
+                if (incubator.status !== Component.Ready) {
+                    incubator.onStatusChanged = function (status) {
+                        if (status === Component.Ready) {
+                            incubator.object.clicked.connect(
+                                        linkClicked.bind(this, name, path))
+                        }
+                    }
+                } else {
+                    incubator.object.clicked.connect(linkClicked.bind(this,
+                                                                      name,
+                                                                      path))
+                }
             }
 
-            IconLink {
-                maxWidth: parent.width
-                anchors.left: parent.left
-                anchors.rightMargin: 0
-                anchors.leftMargin: 0
-                height: 20
-                iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
-                linkText: "privacy policy but the filename definitely exceeds allowed length.md"
-                linkPath: "~/Documents/projects/mid"
-                tooltipText: 'Open ' + linkPath + '/' + linkText
+            function linkClicked(name, path) {
+                TabManager.createTab(path + '/' + name)
             }
 
-            IconLink {
-                maxWidth: parent.width
-                anchors.left: parent.left
-                anchors.rightMargin: 0
-                anchors.leftMargin: 0
-                height: 20
-                iconSource: "qrc:/assets/icons/HomeScreen/markdown-link.svg"
-                linkText: "example2.md"
-                linkPath: "~/Documents/projects/mid"
-                tooltipText: 'Open ' + linkPath + '/' + linkText
+            function generateList() {
+                cleanList()
+                for (var i = ConfigManager.recentFiles.length - 1, max = 4; i !== 0
+                     && max !== 0; --i & --max) {
+
+                    addListItem(ConfigManager.getFilenameName(
+                                    ConfigManager.recentFiles[i]),
+                                ConfigManager.getFilenameParent(
+                                    ConfigManager.recentFiles[i]))
+                }
             }
         }
     }
