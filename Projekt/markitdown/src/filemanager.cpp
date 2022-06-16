@@ -82,3 +82,13 @@ QString FileManager::getFilenameStem(const QString &filename)
     return QString::fromStdWString(std::filesystem::path(filename.toStdWString()).stem().generic_wstring());
 }
 
+QString FileManager::getFilenameName(const QString &filename)
+{
+    return QString::fromStdWString(std::filesystem::path(filename.toStdWString()).filename().generic_wstring());
+}
+
+QString FileManager::getFilenameParent(const QString &filename)
+{
+    return QString::fromStdWString(std::filesystem::path(filename.toStdWString()).parent_path().generic_wstring());
+}
+

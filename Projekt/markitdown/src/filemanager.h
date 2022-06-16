@@ -19,6 +19,8 @@ public:
     static void checkAndCreateParentPath(const QString &filename);
 
     static QString getFilenameStem(const QString &filename);
+    static QString getFilenameName(const QString &filename);
+    static QString getFilenameParent(const QString &filename);
 
 private:
     static QFuture<QString> openTextFile(QFile *file, bool handleFileOnThrow = true);
