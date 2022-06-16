@@ -28,6 +28,7 @@
         <file alias="HomeScreen.qml">qml/views/HomeScreen.qml</file>
         <file alias="MarkdownCheatsheet.qml">qml/views/MarkdownCheatsheet.qml</file>
         <file alias="EditorScreen.qml">qml/views/EditorScreen.qml</file>
+        <file alias="SettingsScreen.qml">qml/views/SettingsScreen.qml</file>
         <file alias="LinkableElementScreen.qml">qml/views/LinkableElementScreen.qml</file>
     </qresource>
     <qresource prefix="/assets/icons">
