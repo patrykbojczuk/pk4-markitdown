@@ -130,7 +130,7 @@ Item {
             font.kerning: true
             verticalAlignment: Text.AlignVCenter
             anchors.topMargin: 64
-            visible: ConfigManager.recentFiles.length
+            visible: !!ConfigManager.recentFiles.length
         }
 
         readonly property var iconLinkFactory: Qt.createComponent(
@@ -140,8 +140,8 @@ Item {
             target: ConfigManager
 
             function onRecentFilesChanged() {
+                recentFilesSectionHeader.visible = !!ConfigManager.recentFiles.length
                 recentFilesSectionSectionLinks.generateList()
-                recentFilesSectionHeader.visible = ConfigManager.recentFiles.length
             }
         }
 
@@ -156,6 +156,12 @@ Item {
             anchors.topMargin: 7
             anchors.rightMargin: 0
             spacing: 5
+
+            Component.onCompleted: {
+                if (ConfigManager.recentFiles.length) {
+                    generateList()
+                }
+            }
 
             function cleanList() {
                 for (const childId in recentFilesSectionSectionLinks.children) {
@@ -196,8 +202,9 @@ Item {
 
             function generateList() {
                 cleanList()
-                for (var i = ConfigManager.recentFiles.length - 1, max = 4; i !== 0
-                     && max !== 0; --i & --max) {
+                for (var i = ConfigManager.recentFiles.length - 1, max = 4; i !== -1
+                     && max !== 0; --i) {
+                    --max
 
                     addListItem(ConfigManager.getFilenameName(
                                     ConfigManager.recentFiles[i]),
