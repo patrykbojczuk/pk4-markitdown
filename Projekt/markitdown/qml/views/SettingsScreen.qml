@@ -45,6 +45,7 @@ Dialog {
     FontDialog {
         id: fontDialog
         title: "Select display font"
+        selectedFont: ConfigManager.fontFamily
         onAccepted: {
             ConfigManager.fontFamily = fontDialog.selectedFont
         }
@@ -92,15 +93,17 @@ Dialog {
             leftPadding: 0
             bottomPadding: 0
             topPadding: 0
+            checked: ConfigManager.autosave
             onCheckedChanged: {
-                ConfigManager.autosave = autosaveSwitch.checked
+                if (autosaveSwitch.checked !== ConfigManager.autosave) {
+                    ConfigManager.autosave = autosaveSwitch.checked
+                }
             }
         }
 
         Button {
             id: fontButton
             y: 175
-            text: qsTrId("Choose font")
             anchors.left: parent.left
             anchors.leftMargin: 60
             rightPadding: 12
@@ -113,10 +116,23 @@ Dialog {
                 anchors.fill: fontButton
                 color: Constants.lighterLighterBackgroundColor
             }
+            contentItem: Text {
+                text: qsTrId("Choose font")
+                color: Constants.fontColor
+            }
 
             onClicked: {
                 fontDialog.open()
             }
+        }
+
+        Text {
+            color: Constants.fontColor
+            text: qsTrId("Autosave interval (ms)")
+            anchors.verticalCenter: autosaveSwitch.verticalCenter
+            font.pointSize: 10
+            anchors.right: autosaveTimeoutText.left
+            anchors.rightMargin: 5
         }
 
         TextField {
@@ -126,7 +142,6 @@ Dialog {
             anchors.right: parent.right
             anchors.verticalCenterOffset: 0
             anchors.rightMargin: 60
-            placeholderText: qsTrId("Autosave interval (ms)")
             color: Constants.fontColor
             validator: IntValidator {
                 bottom: 500
@@ -140,6 +155,7 @@ Dialog {
                 border.color: autosaveTimeoutText.acceptableInput ? "transparent" : "#aa0000"
             }
 
+            text: ConfigManager.autosaveTimeout
             onFocusChanged: {
                 if (!autosaveTimeoutText.focus
                         && autosaveTimeoutText.acceptableInput) {
@@ -149,6 +165,15 @@ Dialog {
             }
         }
 
+        Text {
+            color: Constants.fontColor
+            text: qsTrId("Font size (pt)")
+            anchors.verticalCenter: fontButton.verticalCenter
+            font.pointSize: 10
+            anchors.right: fontSizeText.left
+            anchors.rightMargin: 5
+        }
+
         TextField {
             id: fontSizeText
             x: 274
@@ -156,7 +181,6 @@ Dialog {
             anchors.right: parent.right
             anchors.verticalCenterOffset: 0
             anchors.rightMargin: 60
-            placeholderText: qsTrId("Font size (pt)")
             color: Constants.fontColor
             validator: IntValidator {
                 bottom: 10
@@ -171,6 +195,7 @@ Dialog {
                 border.color: fontSizeText.acceptableInput ? "transparent" : "#aa0000"
             }
 
+            text: ConfigManager.fontSize
             onFocusChanged: {
                 if (!fontSizeText.focus && fontSizeText.acceptableInput) {
                     ConfigManager.fontSize = parseInt(fontSizeText.text)
