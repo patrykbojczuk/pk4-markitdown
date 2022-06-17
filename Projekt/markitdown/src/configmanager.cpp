@@ -48,6 +48,7 @@ void ConfigManager::setFontSize(unsigned short newFontSize, bool save)
 void ConfigManager::setFontFamily(const QFont &newFontFamily, bool save)
 {
     m_fontFamily = newFontFamily;
+    setFontSize(newFontFamily.pointSize(), false);
     if (save) {
         saveConfig();
     }
@@ -91,13 +92,11 @@ void ConfigManager::setAutosave(bool newAutosave, bool save)
 
 void ConfigManager::setAutosaveTimeout(size_t newAutosaveTimeout, bool save)
 {
-    if (m_autosave){
-        autosaveTimer.setInterval(newAutosaveTimeout);
-    }
     m_autosaveTimeout = newAutosaveTimeout;
     if (save) {
         saveConfig();
     }
+    autosaveTimer.setInterval(newAutosaveTimeout);
     emit autosaveTimeoutChanged();
 }
 
@@ -111,7 +110,7 @@ void ConfigManager::saveConfig()
     obj.insert("recentFiles", QJsonValue(QJsonArray::fromStringList(m_recentFiles)));
     QJsonDocument doc;
     doc.setObject(obj);
-    configFileManager.saveConfig(doc.toJson(QJsonDocument::JsonFormat::Compact));
+    configFileManager.saveConfig(QString::fromUtf8(doc.toJson(QJsonDocument::JsonFormat::Compact)));
 }
 
 const QString defaultConfig = "{\n"
@@ -175,6 +174,6 @@ QString ConfigManager::getFilenameParent(const QString &filename)
 
 ConfigManager::ConfigManager(QObject *parent): QObject(parent), autosaveTimer(this)
 {
-    loadConfig();
     connect(&autosaveTimer, &QTimer::timeout, this, QOverload<>::of(&ConfigManager::autosaveElapsed));
+    loadConfig();
 }
