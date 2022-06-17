@@ -128,8 +128,7 @@ Window {
                 text: "Strikethrough"
                 onTriggered: {
                     contentWrapper.itemAt(
-                                contentWrapper.currentIndex).formatBold()
-                    contentWrapper.mdToolbar.onFormatStrikethrough()
+                                contentWrapper.currentIndex).formatStrikethrough()
                 }
             }
 
