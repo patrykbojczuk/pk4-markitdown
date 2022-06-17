@@ -35,10 +35,10 @@ private:
 template<typename T>
 void MarkdownFileManager::save(const QString &filename, MarkdownParser::MarkdownDocument::MarkdownDocument document)
 {
-    QtConcurrent::run([this, &filename, &document](){
+    QtConcurrent::run([this](const QString &filename, const MarkdownParser::MarkdownDocument::MarkdownDocument &document) {
         std::unique_ptr<IConverter> converter(new T());
         save(filename, document, converter);
-    });
+    }, filename, document);
 }
 
 #endif // MARKDOWNFILEMANAGER_H
