@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import pb.pk.markitdown 1.0
 import "qrc:/"
 import "qrc:/components"
 
@@ -180,17 +181,17 @@ Item {
         anchors.right: parent.right
         height: 50
 
-        onFormatBold: editorScreen.formatBold
-        onFormatItalic: editorScreen.formatItalic
-        onFormatStrikethrough: editorScreen.formatStrikethrough
-        onFormatHeading: editorScreen.formatHeading
-        onFormatUL: editorScreen.formatUL
-        onFormatOL: editorScreen.formatOL
-        onFormatBlockquote: editorScreen.formatBlockquote
-        onFormatInlineCode: editorScreen.formatInlineCode
-        onFormatCodeblock: editorScreen.formatCodeblock
-        onFormatLink: editorScreen.formatLink
-        onFormatImage: editorScreen.formatImage
+        onFormatBold: editorScreen.formatBold()
+        onFormatItalic: editorScreen.formatItalic()
+        onFormatStrikethrough: editorScreen.formatStrikethrough()
+        onFormatHeading: id => editorScreen.formatHeading(id)
+        onFormatUL: editorScreen.formatUL()
+        onFormatOL: editorScreen.formatOL()
+        onFormatBlockquote: editorScreen.formatBlockquote()
+        onFormatInlineCode: editorScreen.formatInlineCode()
+        onFormatCodeblock: editorScreen.formatCodeblock()
+        onFormatLink: editorScreen.formatLink()
+        onFormatImage: editorScreen.formatImage()
     }
 
     LinkableElementScreen {
@@ -203,6 +204,20 @@ Item {
             textEdit.insert(
                         start,
                         `${linkableElementDialog.type === LinkableElementScreen.LinkableType.Image ? '!' : ''}[${linkableElementDialog.textInputText}](${linkableElementDialog.urlInputText}${linkableElementDialog.titleInputText.length ? ' "' + linkableElementDialog.titleInputText + '"' : ''})`)
+        }
+    }
+
+    Connections {
+        target: ConfigManager
+
+        function onFontFamilyChanged() {
+            textEdit.font.family = ConfigManager.fontFamily.family
+            textDisplay.font.family = ConfigManager.fontFamily.family
+        }
+
+        function onFontSizeChanged() {
+            textEdit.font.pointSize = ConfigManager.fontSize
+            textDisplay.font.pointSize = ConfigManager.fontSize
         }
     }
 
@@ -240,7 +255,8 @@ Item {
                 id: textEdit
                 text: ""
                 height: implicitHeight
-                font.pixelSize: 14
+                font.family: ConfigManager.fontFamily.family
+                font.pointSize: ConfigManager.fontSize
                 wrapMode: Text.WordWrap
                 persistentSelection: true
                 selectByMouse: true
@@ -320,7 +336,8 @@ Item {
                 text: editorScreen.htmlText
                 textFormat: Text.RichText
                 height: implicitHeight
-                font.pixelSize: 14
+                font.family: ConfigManager.fontFamily.family
+                font.pointSize: ConfigManager.fontSize
                 wrapMode: Text.WordWrap
                 color: Constants.fontColor
                 anchors.left: parent.left
