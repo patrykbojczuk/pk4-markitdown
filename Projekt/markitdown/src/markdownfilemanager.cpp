@@ -53,9 +53,6 @@ void MarkdownFileManager::savePdf(const QString &filename, MarkdownParser::Markd
 
 void MarkdownFileManager::save(const QString &filename, const MarkdownParser::MarkdownDocument::MarkdownDocument &document, std::unique_ptr<IConverter> &converter)
 {
-    if (filename.contains("file://")) {
-        MarkdownFileManager::save(filename.sliced(7), converter->convert(document));
-        return;
-    }
-    MarkdownFileManager::save(filename, converter->convert(document));
+    QString converted = converter->convert(document);
+    save(filename, converted);
 }
