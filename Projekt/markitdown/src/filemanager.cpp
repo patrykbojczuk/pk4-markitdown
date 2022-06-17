@@ -54,11 +54,11 @@ void FileManager::saveTextFile(QFile *file, const QString &content)
 {
     checkAndCreateParentPath(file->fileName());
     if (file->open(QIODevice::WriteOnly)) {
-        static_cast<void>(QtConcurrent::run([file, &content](){
+        static_cast<void>(QtConcurrent::run([file](const QString &content){
             file->write(content.toUtf8());
             file->close();
             delete file;
-        }));
+        }, content));
         return;
     }
     file->close();
