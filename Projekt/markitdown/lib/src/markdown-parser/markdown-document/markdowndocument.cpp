@@ -2,6 +2,26 @@
 
 MarkdownParser::MarkdownDocument::MarkdownDocument::MarkdownDocument() {}
 
+MarkdownParser::MarkdownDocument::MarkdownDocument::MarkdownDocument(MarkdownDocument &&old)
+{
+    elements.swap(old.elements);
+}
+
+MarkdownParser::MarkdownDocument::MarkdownDocument::MarkdownDocument(const MarkdownDocument &other)
+{
+    elements = other.elements;
+}
+
+void MarkdownParser::MarkdownDocument::MarkdownDocument::operator=(MarkdownDocument &&old)
+{
+    elements.swap(old.elements);
+}
+
+void MarkdownParser::MarkdownDocument::MarkdownDocument::operator=(const MarkdownDocument& other)
+{
+    elements = other.elements;
+}
+
 void MarkdownParser::MarkdownDocument::MarkdownDocument::add(const VTopLevelMarkdownElement &line) {
     elements.push_back(line);
 }

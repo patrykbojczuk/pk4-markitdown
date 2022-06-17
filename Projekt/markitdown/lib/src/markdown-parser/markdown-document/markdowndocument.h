@@ -18,6 +18,11 @@ namespace MarkdownParser {
 
         public:
             MarkdownDocument();
+            MarkdownDocument(MarkdownDocument&& old);
+            MarkdownDocument(const MarkdownDocument& other);
+
+            void operator=(MarkdownDocument&& old);
+            void operator=(const MarkdownDocument& other);
 
             void add(const VTopLevelMarkdownElement &line);
 
