@@ -34,8 +34,10 @@ Rectangle {
     signal addWindowX(real dX)
     signal addWindowY(real dY)
 
-    signal openedTab
-    signal closedTab
+    signal openedTab(int id)
+    signal closedTab(int id)
+
+    signal focusOnTab(int id)
 
     function onOpenedTab(id) {
         tabs.openedTab(id)
@@ -43,6 +45,10 @@ Rectangle {
 
     function onClosedTab(id) {
         tabs.closedTab(id)
+    }
+
+    function onFocusOnTab(id) {
+        tabs.focusOnTab(id)
     }
 
     Rectangle {
@@ -105,6 +111,7 @@ Rectangle {
         }
         onCurrentItemChanged: {
             readonlyProperties.currentId = tabs.currentItem.customId
+            //tabs.cu
         }
 
         function closeTab(id) {
@@ -116,8 +123,12 @@ Rectangle {
         readonly property var closableTabButtonCreator: Qt.createComponent(
                                                             "qrc:/components/ClosableTabButton.qml")
 
-        function tabCreated(incubator) {
+        function tabCreated(incubator, tab) {
             const tabButton = incubator.object
+            tab.filenameChanged.connect(() => {
+                                            tabButton.text = tab.getFilenameStem()
+                                        })
+
             let i = tabs.contentChildren.length - 1
             for (i; i > 0; --i) {
                 if (tabs.itemAt(i) === tabButton) {
@@ -125,33 +136,34 @@ Rectangle {
                     tabButton.visible = true
                     tabButton.closed.connect(tabs.closeTab)
                     createdTabs[tabButton.customId] = tabButton
+                    focusOnTab(tabButton.customId)
                     break
                 }
             }
         }
 
-        function tabCreator(id, filename) {
+        function tabCreator(id, tab) {
             const incubator = closableTabButtonCreator.incubateObject(tabs, {
                                                                           "y": 0,
                                                                           "height": parent.height,
-                                                                          "text": filename,
+                                                                          "text": tab.getFilenameStem(),
                                                                           "customId": id,
                                                                           "visible": false
                                                                       })
             if (incubator.status !== Component.Ready) {
                 incubator.onStatusChanged = function (status) {
                     if (status === Component.Ready) {
-                        tabCreated(incubator)
+                        tabCreated(incubator, tab)
                     }
                 }
             } else {
-                tabCreated(incubator)
+                tabCreated(incubator, tab)
             }
         }
 
         function createTabOfId(id) {
             const tab = TabManager.getTabById(id)
-            tabCreator(id, tab.getFilenameStem())
+            tabCreator(id, tab)
         }
 
         function openedTab(id) {
@@ -168,6 +180,14 @@ Rectangle {
                 delete createdTabs[id]
             } else {
                 console.error(`Trying to close not existing tab of id (${id})`)
+            }
+        }
+
+        function focusOnTab(id) {
+            if (createdTabs.hasOwnProperty(id)) {
+                setCurrentIndex(createdTabs[id].TabBar.index)
+            } else {
+                console.error(`Trying to focus not existing tab of id (${id})`)
             }
         }
 
