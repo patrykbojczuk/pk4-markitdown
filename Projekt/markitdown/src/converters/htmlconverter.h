@@ -31,6 +31,8 @@ public:
     void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::EmphasisElement> &emphasis) override;
     void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::StrikethroughElement> &strikethrough) override;
     void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::StrongEmphasisElement> &strongEmphasis) override;
+
+    virtual ~HtmlConverter() = default;
 };
 
 #endif // HTMLCONVERTER_H

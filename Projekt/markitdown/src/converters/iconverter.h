@@ -66,6 +66,8 @@ public:
     virtual void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::StrikethroughElement>& strikethrough) = 0;
     virtual void inlineElementHandler(const Recursive<MarkdownParser::MarkdownDocument::StrongEmphasisElement>& strongEmphasis) = 0;
 
+    virtual ~IConverter() = default;
+
 protected:
     IConverter() = default;
     inline void addToReturnString(const QString &string);
