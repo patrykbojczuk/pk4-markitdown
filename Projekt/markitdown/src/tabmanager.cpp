@@ -60,16 +60,15 @@ unsigned short TabManager::getNextId()
 
 void TabManager::saveAll(bool force)
 {
-    /*
     QtConcurrent::run([this, force](){
-        if(force){
+        if (force) {
             for (auto tab : openedTabs()) {
                 tab->save();
             }
             return;
         }
         bool valueToSave;
-        for (auto tab : openedTabs()) {
+        for (auto& tab : openedTabs()) {
             s_lastSaveContentHash.acquire();
             valueToSave = !lastSaveContentHash.contains(tab->id()) ||
                                                   QCryptographicHash::hash(tab->content().toUtf8(), QCryptographicHash::Md4)
@@ -80,7 +79,6 @@ void TabManager::saveAll(bool force)
             }
         }
     });
-    */
 }
 
 TabManager::TabManager() { }
@@ -100,5 +98,5 @@ void TabManager::tabSavedContent(Tab *tab)
         lastSaveContentHash.insert(tab->id(), QCryptographicHash::hash(tab->content().toUtf8(), QCryptographicHash::Md4));
         s_lastSaveContentHash.release();
     });
-    ConfigManager::GetInstance().addRecentFile(tab->filename(), true);
+    ConfigManager::GetInstance().addRecentFile(tab->filename());
 }
