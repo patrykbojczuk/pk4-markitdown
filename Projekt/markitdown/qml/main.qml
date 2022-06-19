@@ -262,7 +262,7 @@ Window {
             MenuItem {
                 text: "About"
                 onTriggered: {
-                    console.log(text)
+                    aboutScreen.open()
                 }
             }
         }
@@ -270,6 +270,10 @@ Window {
 
     SettingsScreen {
         id: settingsScreen
+    }
+
+    AboutScreen{
+        id: aboutScreen
     }
 
     Rectangle {

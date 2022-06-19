@@ -30,6 +30,7 @@
         <file alias="EditorScreen.qml">qml/views/EditorScreen.qml</file>
         <file alias="SettingsScreen.qml">qml/views/SettingsScreen.qml</file>
         <file alias="LinkableElementScreen.qml">qml/views/LinkableElementScreen.qml</file>
+        <file alias="AboutScreen.qml">qml/views/AboutScreen.qml</file>
     </qresource>
     <qresource prefix="/assets/icons">
         <file alias="tab-close.svg">qml/assets/icons/tab-close.svg</file>
